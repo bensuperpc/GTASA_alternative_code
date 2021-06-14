@@ -232,7 +232,10 @@ template <class T> void findStringInv(T n, char *array) {
 int main(int arc, char *argv[]) {
   std::ios_base::sync_with_stdio(false);
 
-  const size_t from_range = 1; // Alphabetic sequence range min, change it only
+  size_t from_range = 1; // Alphabetic sequence range min
+  if (arc >= 3) {
+    from_range = std::stoll(argv[1]);
+  }
                                // if you want begin on higer range, 1 = A
   // 141167095653376 = ~17 days on I7 9750H
   // 5429503678976 = ~14h on I7 9750H
@@ -240,9 +243,15 @@ int main(int arc, char *argv[]) {
   // 8031810176 = ~1 min on I7 9750H
   // 1544578880 = ~11 sec on I7 9750H
   // 308915776 = 2 sec on I7 9750H
-  const size_t to_range =
-      308915776; // Alphabetic sequence range max, must be > from_range !
 
+  size_t to_range =
+      600000000; // Alphabetic sequence range max, must be > from_range !
+  if (arc == 2) {
+    to_range = std::stoll(argv[1]);
+  } 
+  if (arc >= 3) {
+    to_range = std::stoll(argv[2]);
+  }
 #ifdef DNDEBUG
   assert(from_range <
          to_range);       // Test if begining value is highter than end value
