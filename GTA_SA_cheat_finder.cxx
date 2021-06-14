@@ -34,16 +34,18 @@
 //////////////////////////////////////////////////////////////
 
 #include <algorithm> // std::find
-#include <chrono>
-#include <cstring> // strlen
 #include <cassert>
+#include <chrono>
+#include <cstring>  // strlen
 #include <iomanip>  // std::setw
 #include <iostream> // std::cout
 #include <string>   // std::string
+#if ((defined(_MSVC_LANG) && _MSVC_LANG >= 201703L) || __cplusplus >= 201703L)
 #include <string_view> // std::string_view
+#endif
 #include <tuple>
 #include <utility> // std::make_pair
-#include <vector> // std::vector
+#include <vector>  // std::vector
 typedef std::chrono::high_resolution_clock Clock;
 
 #if __has_include("omp.h")
@@ -182,8 +184,14 @@ std::vector<std::tuple<std::size_t, std::string, unsigned int>> results =
  * @param my_string String input
  * @return uint32_t with JAMCRC value
  */
+#if ((defined(_MSVC_LANG) && _MSVC_LANG >= 201703L) || __cplusplus >= 201703L)
 unsigned int jamcrc(const std::string_view my_string);
 unsigned int jamcrc(const std::string_view my_string) {
+#else
+#warning C++17 is not enabled, the program will be less efficient with previous standards.
+unsigned int jamcrc(const std::string my_string);
+unsigned int jamcrc(const std::string my_string) {
+#endif
   uint32_t crc = ~0;
   unsigned char *current = (unsigned char *)my_string.data();
   size_t length = my_string.length();
@@ -264,8 +272,7 @@ int main(int arc, char *argv[]) {
   for (std::size_t i = from_range; i < to_range; i++) {
     findStringInv<size_t>(i, tmp); // Generate Alphabetic sequence from size_t
                                    // value, A=1, Z=27, AA = 28, AB = 29
-    crc = jamcrc(
-        tmp); // JAMCRC
+    crc = jamcrc(tmp);             // JAMCRC
     if (std::find(std::begin(cheat_list), std::end(cheat_list), crc) !=
         std::end(cheat_list)) {             // If crc is present in Array
       std::reverse(tmp, tmp + strlen(tmp)); // Invert char array

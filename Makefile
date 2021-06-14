@@ -21,7 +21,7 @@
 CC=g++
 TARGET=gta
 SOURCES=GTA_SA_cheat_finder.cxx
-CFLAGS=-Ofast -march=native -fopenmp -std=c++17
+CFLAGS=-Ofast -march=native -fopenmp #-std=c++17
 LFLAGS=-fopenmp
 
 OBJS=$(SOURCES:.cxx=.o)
