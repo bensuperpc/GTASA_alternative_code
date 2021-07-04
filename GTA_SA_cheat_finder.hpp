@@ -40,6 +40,7 @@
 #include <iomanip>  // std::setw
 #include <iostream> // std::cout
 #include <string>   // std::string
+#include <array> // std::array
 #if ((defined(_MSVC_LANG) && _MSVC_LANG >= 201703L) || __cplusplus >= 201703L)
 #include <string_view> // std::string_view
 #endif
