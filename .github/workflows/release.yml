@@ -31,7 +31,7 @@ jobs:
       - name: "🛠️ docker"
         run: make docker
       - name: "compress"
-        if: "!startsWith(matrix.arch_name, 'windows')"
+        if: "!startsWith(matrix.arch_name, 'windows') && matrix.arch_name != 'web-wasm'"
         run: xz -c build-${{ matrix.arch_name }}/gta -e9 -T0 -C sha256 > gta-${{ matrix.arch_name }}.xz
       - name: "compress web-wasm"
         if: matrix.arch_name == 'web-wasm'
