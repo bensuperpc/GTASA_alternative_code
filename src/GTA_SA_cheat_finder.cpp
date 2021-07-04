@@ -65,7 +65,7 @@ template <class T> void findStringInv(T n, char *array) {
   constexpr std::array<char, stringSizeAlphabet> alpha{alphabetUp};
   // If n < 27
   if (n < stringSizeAlphabet) {
-    array[0] = alpha[n - 1];
+    array[0] = alpha[n];
     return;
   }
   // If n > 27
@@ -80,7 +80,7 @@ template <class T> void findStringInv(T n, char *array) {
 int main(int arc, char *argv[]) {
   std::ios_base::sync_with_stdio(false);
 
-  size_t from_range = 1; // Alphabetic sequence range min
+  size_t from_range = 0; // Alphabetic sequence range min
   if (arc >= 3) {
     from_range = std::stoll(argv[1]);
   }
@@ -100,13 +100,10 @@ int main(int arc, char *argv[]) {
   if (arc >= 3) {
     to_range = std::stoll(argv[2]);
   }
-#ifdef DNDEBUG
   assert(from_range <
          to_range);       // Test if begining value is highter than end value
-  assert(from_range > 0); // Test forbiden value
-#endif
+  //assert(from_range > 0); // Test forbiden value
 
-#ifdef MORE_INFO
   std::cout << "Number of calculations: " << (to_range - from_range)
             << std::endl;
   std::cout << "" << std::endl;
@@ -118,7 +115,6 @@ int main(int arc, char *argv[]) {
   std::cout << "From: " << tmp1 << " to: " << tmp2 << " Alphabetic sequence"
             << std::endl;
   std::cout << "" << std::endl;
-#endif
 
   char tmp[29] = {0}; // Temp array
   uint32_t crc = 0;   // CRC value

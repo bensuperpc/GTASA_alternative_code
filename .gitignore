@@ -31,3 +31,6 @@
 *.out
 *.app
 gta
+build-web-wasm/*
+dockcross-linux-s390x
+dockcross-web-wasm

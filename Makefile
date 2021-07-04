@@ -20,8 +20,8 @@
 
 CC=g++
 TARGET=gta
-SOURCES=GTA_SA_cheat_finder.cpp
-HEADERS=GTA_SA_cheat_finder.hpp
+SOURCES=src/GTA_SA_cheat_finder.cpp
+HEADERS=src/GTA_SA_cheat_finder.hpp
 CFLAGS=-O3 -march=native -Wall -Wextra -Wpedantic -Wconversion -Wshadow -fopenmp #-std=c++17
 LFLAGS=-fopenmp
 
@@ -30,7 +30,7 @@ OBJS=$(SOURCES:.cpp=.o)
 all: $(TARGET)
 
 %.o: %.cpp Makefile
-	$(CC) $(CFLAGS) -c $<
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 $(TARGET): $(OBJS) $(HEADERS)
 	$(CC) $(LFLAGS) $(OBJS) -o $(TARGET)
