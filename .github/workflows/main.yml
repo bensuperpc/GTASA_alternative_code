@@ -33,4 +33,4 @@ jobs:
       - name: "🛠️ cmake"
         run: ./builder/cmake.sh ${{ matrix.arch_name }}
       - name: "Package"
-        run: xz -e9 -T0 build-${{ matrix.arch_name }}/gta gta-${{ matrix.arch_name }}.tar.xz
+        run: xz -e9 -T0 gta-${{ matrix.arch_name }}.tar.xz build-${{ matrix.arch_name }}/gta
