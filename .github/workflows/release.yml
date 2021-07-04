@@ -28,10 +28,12 @@ jobs:
         run: ./builder/makefile.sh ${{ matrix.arch_name }}
       - name: "🛠️ docker"
         run: make docker
-      - uses: "marvinpinto/action-automatic-releases@latest"
+      - name: "🛠️ docker"
+        run: make docker
+      - name: "save binaries"
+        if: matrix.arch_name != 'web-wasm'
+        uses: actions/upload-artifact@v2
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          prerelease: false
-          files: |
-            LICENSE
-            build-${{ matrix.arch_name }}/*gta*
+          name: docker-artifact
+          path: build-${{ matrix.arch_name }}/gta
+          retention-days: 1        
