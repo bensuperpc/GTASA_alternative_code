@@ -31,7 +31,11 @@ jobs:
       - name: "🛠️ docker"
         run: make docker
       - name: "compress"
+        if: "!startsWith(matrix.arch_name, 'windows')"
         run: cat build-${{ matrix.arch_name }}/gta | xz -e9 -T0 -C sha256 > gta-${{ matrix.arch_name }}.xz
+      - name: "compress windows"
+        if: startsWith(matrix.arch_name, 'windows')
+        run: cat build-${{ matrix.arch_name }}/gta.exe | xz -e9 -T0 -C sha256 > gta-${{ matrix.arch_name }}.xz
       - name: "test archive"
         run: xz -tvv gta-${{ matrix.arch_name }}.xz
       - name: "save binaries"
