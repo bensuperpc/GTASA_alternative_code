@@ -18,11 +18,11 @@
 #//                                                          //
 #//////////////////////////////////////////////////////////////
 
-CC=g++
+CXX=g++
 TARGET=gta
 SOURCES=src/GTA_SA_cheat_finder.cpp
 HEADERS=src/GTA_SA_cheat_finder.hpp
-CFLAGS=-O3 -march=native -Wall -Wextra -Wpedantic -Wconversion -Wshadow -fopenmp #-std=c++17
+CFLAGS=-O3 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -fopenmp -std=c++17
 LFLAGS=-fopenmp
 
 OBJS=$(SOURCES:.cpp=.o)
@@ -30,10 +30,13 @@ OBJS=$(SOURCES:.cpp=.o)
 all: $(TARGET)
 
 %.o: %.cpp Makefile
-	$(CC) $(CFLAGS) -c -o $@ $<
+	$(CXX) $(CFLAGS) -c -o $@ $<
 
 $(TARGET): $(OBJS) $(HEADERS)
-	$(CC) $(LFLAGS) $(OBJS) -o $(TARGET)
+	$(CXX) $(LFLAGS) $(OBJS) -o $(TARGET)
+
+docker:
+	docker build . -t bensuperpc/gta:latest
 
 purge: clean
 	@rm -f $(TARGET)

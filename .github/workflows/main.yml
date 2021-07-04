@@ -32,3 +32,7 @@ jobs:
           fetch-depth: 0
       - name: "🛠️ cmake"
         run: ./builder/cmake.sh ${{ matrix.arch_name }}
+      - name: "🛠️ make"
+        run: ./builder/makefile.sh ${{ matrix.arch_name }}
+      - name: "🛠️ docker"
+        run: make docker
