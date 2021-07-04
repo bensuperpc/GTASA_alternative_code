@@ -31,7 +31,7 @@ jobs:
       - name: "🛠️ docker"
         run: make docker
       - name: "compress"
-        run: XZ_OPT=-e9 tar cJf gta-${{ matrix.arch_name }}.tar.xz -C build-${{ matrix.arch_name }} gta*
+        run: find ./build-${{ matrix.arch_name }} -maxdepth 1 -name "gta*" | XZ_OPT=-e9 tar -cJf gta-${{ matrix.arch_name }}.tar.xz -T -
       - name: "save binaries"
         uses: actions/upload-artifact@v2
         with:
