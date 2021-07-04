@@ -31,22 +31,12 @@ jobs:
       - name: "🛠️ docker"
         run: make docker
       - name: "compress"
-        if: "!startsWith(matrix.arch_name, 'windows') && matrix.arch_name != 'web-wasm'"
-        run: xz -c build-${{ matrix.arch_name }}/gta -e9 -T0 -C sha256 > gta-${{ matrix.arch_name }}.xz
-      - name: "compress web-wasm"
-        if: matrix.arch_name == 'web-wasm'
-        run: xz -c build-${{ matrix.arch_name }}/gta.js build-${{ matrix.arch_name }}/gta.wasm -e9 -T0 -C sha256 > gta-${{ matrix.arch_name }}.xz
-      - name: "compress windows"
-        if: startsWith(matrix.arch_name, 'windows')
-        run: xz -c build-${{ matrix.arch_name }}/gta.exe -e9 -T0 -C sha256 > gta-${{ matrix.arch_name }}.xz
-      - name: "test archive"
-        run: xz -tvv gta-${{ matrix.arch_name }}.xz
+        run: XZ_OPT=-e9 tar cJf gta-${{ matrix.arch_name }}.tar.xz -C build-${{ matrix.arch_name }} gta*
       - name: "save binaries"
-        if: matrix.arch_name != 'web-wasm'
         uses: actions/upload-artifact@v2
         with:
           name: docker-artifact
-          path: gta-${{ matrix.arch_name }}.xz
+          path: gta-${{ matrix.arch_name }}.tar.xz
           retention-days: 1        
   release:
     name: release
@@ -70,4 +60,4 @@ jobs:
           prerelease: false
           files: |
             LICENSE
-            *.xz
+            *.tar.xz
