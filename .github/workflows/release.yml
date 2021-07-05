@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: build
+    name: build ${{ matrix.arch_name }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -22,7 +22,7 @@ jobs:
           submodules: 'recursive'
           fetch-depth: 0
       - name: "🛠️ cmake"
-        run: ./builder/cmake.sh ${{ matrix.arch_name }}
+        run: ./builder/cmake.sh ${{ matrix.arch_name }} -DCMAKE_BUILD_TYPE=Release
       - name: "🛠️ make"
         if: matrix.arch_name != 'web-wasm' && matrix.arch_name != 'linux-armv6' && matrix.arch_name != 'manylinux2014-aarch64' && matrix.arch_name != 'manylinux1-x64' && matrix.arch_name != 'manylinux1-x86'
         run: ./builder/makefile.sh ${{ matrix.arch_name }}
