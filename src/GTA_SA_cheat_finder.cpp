@@ -57,14 +57,14 @@ unsigned int jamcrc(const std::string my_string) {
 }
 
 /**
- * \brief Generate Alphabetic sequence from size_t value, A=1, Z=27, AA = 28, AB
+ * \brief Generate Alphabetic sequence from size_t value, A=0, Z=26, AA = 27, BA = 28
  * = 29 \tparam T \param n index in base 26 \param array return array
  */
 template <class T> void findStringInv(T n, char *array) {
   constexpr std::uint32_t stringSizeAlphabet{alphabetSize + 1};
   constexpr std::array<char, stringSizeAlphabet> alpha{alphabetUp};
   // If n < 27
-  if (n < stringSizeAlphabet) {
+  if (n < stringSizeAlphabet - 1) {
     array[0] = alpha[n];
     return;
   }
