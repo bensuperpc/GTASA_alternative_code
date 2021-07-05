@@ -30,9 +30,11 @@ jobs:
         run: make docker
       - name: "🛠️ docker"
         run: make docker
-      - name: "compress"
-        run: find ./build-${{ matrix.arch_name }} -maxdepth 1 -name "gta*" | XZ_OPT=-e9 tar -cJf gta-${{ matrix.arch_name }}.tar.xz -T -
-      - name: "save binaries"
+      - name: "✅ checksum"
+        run: cd build-${{ matrix.arch_name }} && find . -maxdepth 1 -name "gta*" | xargs sha256sum > checksum.sha256
+      - name: "🗜️ compress"
+        run: cd build-${{ matrix.arch_name }} && find . -maxdepth 1 -name "gta*" -o -name "*.sha256" | XZ_OPT=-e9 tar -cJf gta-${{ matrix.arch_name }}.tar.xz -T -
+      - name: "💾 save binaries"
         uses: actions/upload-artifact@v2
         with:
           name: docker-artifact
@@ -51,13 +53,16 @@ jobs:
       - name: get artifact
         uses: actions/download-artifact@v2
         with:
-          name: docker-artifact
+          name: get artifact
           path: .
+      - name: "✅ checksum"
+        run: find . -maxdepth 1 -name "*.tar.xz" | xargs sha256sum > checksum_all.sha256
       - uses: "marvinpinto/action-automatic-releases@latest"
-        name: upload to github
+        name: "📤 upload to github"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: false
           files: |
             LICENSE
             *.tar.xz
+            *.sha256
