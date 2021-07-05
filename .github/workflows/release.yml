@@ -33,7 +33,7 @@ jobs:
       - name: "✅ checksum"
         run: cd build-${{ matrix.arch_name }} && find . -maxdepth 1 -name "gta*" | xargs sha256sum > checksum.sha256
       - name: "🗜️ compress"
-        run: cd build-${{ matrix.arch_name }} && find . -maxdepth 1 -name "gta*" -o -name "*.sha256" | XZ_OPT=-e9 tar -cJf gta-${{ matrix.arch_name }}.tar.xz -T -
+        run: cd build-${{ matrix.arch_name }} && find . -maxdepth 1 -name "gta*" -o -name "*.sha256" | XZ_OPT=-e9 tar -cJf gta-${{ matrix.arch_name }}.tar.xz -T - && mv gta-${{ matrix.arch_name }}.tar.xz ..
       - name: "💾 save binaries"
         uses: actions/upload-artifact@v2
         with:
