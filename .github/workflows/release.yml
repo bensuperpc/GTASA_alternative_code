@@ -24,7 +24,7 @@ jobs:
       - name: "🛠️ cmake"
         run: ./builder/cmake.sh ${{ matrix.arch_name }}
       - name: "🛠️ make"
-        if: matrix.arch_name != 'web-wasm'
+        if: matrix.arch_name != 'web-wasm' && !startsWith('matrix.arch_name', 'manylinux1') && matrix.arch_name != 'linux-armv6' && matrix.arch_name != 'manylinux2014-aarch64'
         run: ./builder/makefile.sh ${{ matrix.arch_name }}
       - name: "🛠️ docker"
         run: make docker
