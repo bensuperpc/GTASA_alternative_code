@@ -37,7 +37,7 @@ jobs:
       - name: "💾 save binaries"
         uses: actions/upload-artifact@v2
         with:
-          name: docker-artifact
+          name: bin-artifact
           path: gta-${{ matrix.arch_name }}.tar.xz
           retention-days: 1        
   release:
@@ -53,7 +53,7 @@ jobs:
       - name: get artifact
         uses: actions/download-artifact@v2
         with:
-          name: get artifact
+          name: bin-artifact
           path: .
       - name: "✅ checksum"
         run: find . -maxdepth 1 -name "*.tar.xz" | xargs sha256sum > checksum_all.sha256
