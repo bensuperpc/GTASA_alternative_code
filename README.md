@@ -17,15 +17,15 @@
 #### Usage
 
 ```sh
-./gta 0 60000000 (searches for codes from index 0 to 60000000)
+./gta 0 60000000 (searches codes from index 0 to 60000000)
 ```
 
 ```sh
-./gta 50 58800000 (searches for codes from index 50 to 58800000)
+./gta 50 58800000 (searches codes from index 50 to 58800000)
 ```
 
 ```sh
-./gta 58800000 (searches for codes from index 0 to 58800000)
+./gta 58800000 (searches codes from index 0 to 58800000)
 ```
 
 #### info
