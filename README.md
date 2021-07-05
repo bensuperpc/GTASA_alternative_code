@@ -28,7 +28,34 @@
 ./gta 58800000 (searches codes from index 0 to 58800000)
 ```
 
-#### info
+#### Exemple
+```sh
+./gta 0 600000000
+```
+**You should get this result:**
+```
+Number of calculations: 600000000
+
+From: A to: BYKYLXA Alphabetic sequence
+
+20810792      ASNAEB      0x555fc201    
+75396850      FHYSTV      0x44b34866    
+147491485     LJSPQK      0xfeda77f7    
+181355281     OFVIAC      0x6c0fa650    
+181961057     OHDUDE      0xe958788a    
+198489210     PRIEBJ      0xf2aa0c1d    
+241414872     THGLOJ      0xcaec94ee    
+289334426     XICWMD      0x1a9aa3d6    
+299376767     YECGAA      0x40cf761     
+311365503     ZEIIVG      0x74d4fcb1    
+370535590     AEDUWNV     0x9a629401    
+380229391     AEZAKMI     0xe1b33eb9    
+535721682     ASBHGRB     0xa7613f99    
+Time: 5.15269 sec
+This program execute: 116.443926 MOps/sec
+```
+
+#### Information
 
 [![GTA SA - Alternative Cheats - Feat. Badger Goodger](https://yt-embed.herokuapp.com/embed?v=W_eFZ4HzU7Q)](https://youtu.be/W_eFZ4HzU7Q "GTA SA - Alternative Cheats - Feat. Badger Goodger")
 
