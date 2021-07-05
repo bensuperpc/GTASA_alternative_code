@@ -28,8 +28,6 @@ jobs:
         run: ./builder/makefile.sh ${{ matrix.arch_name }}
       - name: "🛠️ docker"
         run: make docker
-      - name: "🛠️ docker"
-        run: make docker
       - name: "✅ checksum"
         run: cd build-${{ matrix.arch_name }} && find . -maxdepth 1 -name "gta*" | xargs sha256sum > checksum.sha256
       - name: "🗜️ compress"
