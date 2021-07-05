@@ -49,8 +49,10 @@
 #include <vector>  // std::vector
 typedef std::chrono::high_resolution_clock Clock;
 
+#if ((defined(_MSVC_LANG) && _MSVC_LANG >= 201703L) || __cplusplus >= 201703L)
 #if __has_include("omp.h")
 #include <omp.h>
+#endif
 #endif
 
 #if !defined(_OPENMP)
