@@ -22,7 +22,7 @@ CXX=g++
 TARGET=gta
 SOURCES=src/GTA_SA_cheat_finder.cpp
 HEADERS=src/GTA_SA_cheat_finder.hpp
-CFLAGS=-O3 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -fopenmp -std=c++17
+CFLAGS=-O3 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -fopenmp
 LFLAGS=-fopenmp
 
 OBJS=$(SOURCES:.cpp=.o)
