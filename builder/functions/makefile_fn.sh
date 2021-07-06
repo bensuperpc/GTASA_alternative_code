@@ -10,6 +10,6 @@ makefile_build () {
     echo "Make script dockcross-$image"
     docker run --rm dockcross/$image > ./dockcross-$image
     chmod +x ./dockcross-$image
-    echo "Build build-$image"
+    echo "Build..."
     ./dockcross-$image bash -c 'make CXX=$CXX CC=$CC AR=$AR AS=$AS CPP=$CPP FC=$FC'
 }
