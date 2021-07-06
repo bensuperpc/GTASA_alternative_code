@@ -14,7 +14,7 @@
 
 # New Features !
 
-  - Multi-plateform build (ARM64, ARMv7, PPC64le, AMD64, I386...)
+  - Multi-plateform build: AMD64, I386, ARM64, ARMv7, ARMv6, ARMv5, RISC-V 32/64, PPC64le, Mips, Windows 32/64, Android (Exec only)...
 
 #### Usage
 
