@@ -22,10 +22,10 @@ jobs:
           submodules: 'recursive'
           fetch-depth: 0
       - name: "🛠️ cmake"
-        run: ./builder/cmake.sh ${{ matrix.arch_name }}:latest -DCMAKE_BUILD_TYPE=Release
+        run: ./builder/cmake.sh ${{ matrix.arch_name }} -DCMAKE_BUILD_TYPE=Release
       - name: "🛠️ make"
         if: matrix.arch_name != 'web-wasm' && matrix.arch_name != 'linux-armv6' && matrix.arch_name != 'manylinux2014-aarch64' && matrix.arch_name != 'manylinux1-x64' && matrix.arch_name != 'manylinux1-x86'
-        run: ./builder/makefile.sh ${{ matrix.arch_name }}:latest
+        run: ./builder/makefile.sh ${{ matrix.arch_name }}
       - name: "🛠️ docker"
         run: make docker
       - name: "✅ checksum"
