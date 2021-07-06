@@ -57,6 +57,21 @@ Time: 5.15269 sec
 This program execute: 116.443926 MOps/sec
 ```
 
+##### Perfs
+```
+141167095653376 = ~17 days on I7 9750H
+5429503678976 = ~14h on I7 9750H
+208827064576 = ~28 min on I7 9750H
+8031810176 = ~1 min on I7 9750H
+1544578880 = ~11 sec on I7 9750H
+308915776 = 2 sec on I7 9750H
+```
+
+#### How does it work ?
+- The algorithm will generate sequences of characters (A, B, C ... AA, BA, CA)
+- It will then calculate the hash (**JAMCRC**) from the series of characters
+- It will compare the hashes, if they are equal to one of the hashes of one of the official cheat codes, this will save the sequence of characters
+
 #### Information
 
 [![GTA SA - Alternative Cheats - Feat. Badger Goodger](https://yt-embed.herokuapp.com/embed?v=W_eFZ4HzU7Q)](https://youtu.be/W_eFZ4HzU7Q "GTA SA - Alternative Cheats - Feat. Badger Goodger")
