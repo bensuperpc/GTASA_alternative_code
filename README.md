@@ -14,7 +14,7 @@
 
 # New Features !
 
-  - Multi-plateform build: AMD64, I386, ARM64, ARMv7, ARMv6, ARMv5, RISC-V 32/64, PPC64le, Mips, Windows 32/64, Android (Exec only)...
+  - Multi-plateform build: AMD64, I386, ARM64, ARMv7, ARMv6, ARMv5, RISC-V 32/64, PPC64le, Mips, Windows 32/64, Android (Exec only)... Thanks [dockcross](https://github.com/dockcross/dockcross)
 
 #### Usage
 
@@ -93,6 +93,7 @@ make
 
 ### More info : 
 - https://youtu.be/W_eFZ4HzU7Q
+- https://github.com/dockcross/dockcross
 
 License
 ----
