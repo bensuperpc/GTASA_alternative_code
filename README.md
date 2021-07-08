@@ -2,7 +2,7 @@
 
 # GTA_SA_cheat_finder
 
-### _Find all cheat code in Grand Theft Auto San Andreas by brutefoce_
+### _Find alternate cheat codes in Grand Theft Auto San Andreas by brute foce_
  [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/powered-by-jeffs-keyboard.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/contains-cat-gifs.svg)](https://forthebadge.com)
  
  [![Twitter](https://img.shields.io/twitter/follow/Bensuperpc?style=social)](https://img.shields.io/twitter/follow/Bensuperpc?style=social) [![Youtube](https://img.shields.io/youtube/channel/subscribers/UCJsQFFL7QW4LSX9eskq-9Yg?style=social)](https://img.shields.io/youtube/channel/subscribers/UCJsQFFL7QW4LSX9eskq-9Yg?style=social) 
@@ -14,7 +14,7 @@
 
 # New Features !
 
-  - Multi-plateform build: AMD64, I386, ARM64, ARMv7, ARMv6, ARMv5, RISC-V 32/64, PPC64le, Mips, Windows 32/64, Android (Exec only), linux-m68k-uclibc... Thanks [dockcross](https://github.com/dockcross/dockcross)
+  - Multi-plateform build: AMD64, I386, ARM64, ARMv7, ARMv7a, ARMv6, ARMv5, RISC-V 32/64, PPC64le, Mips, Windows 32/64, Android (Exec only), m68k... Thanks [dockcross](https://github.com/dockcross/dockcross) and [crosstool-ng](https://github.com/crosstool-ng/crosstool-ng)
 
 #### Usage
 
@@ -78,6 +78,8 @@ This program execute: 116.443926 MOps/sec
 
 
 #### Build
+You needs Docker and Linux OS (Not tested with windows)
+
 ```sh
 ./builder/cmake.sh linux-x64 (To build for x86 64)
 ```
