@@ -22,18 +22,46 @@
 project(gta LANGUAGES CXX)
 cmake_minimum_required(VERSION 3.9)
 
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+
+#=== C++ VERSION CHECK ===
+#set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CXX_EXTENSIONS OFF)
 
+if(NOT CMAKE_CXX_STANDARD)
+    include(CheckCXXCompilerFlag)
+    CHECK_CXX_COMPILER_FLAG("-std=c++20" COMPILER_SUPPORTS_CXX20)
+    CHECK_CXX_COMPILER_FLAG("-std=c++17" COMPILER_SUPPORTS_CXX17)
+    CHECK_CXX_COMPILER_FLAG("-std=c++14" COMPILER_SUPPORTS_CXX14)
+    CHECK_CXX_COMPILER_FLAG("-std=c++11" COMPILER_SUPPORTS_CXX11)
 
-find_package(OpenMP)
+    if(COMPILER_SUPPORTS_CXX20)
+        set(CMAKE_CXX_STANDARD 20)
+        message(STATUS "C++20: OK")
+    elseif(COMPILER_SUPPORTS_CXX17)
+        set(CMAKE_CXX_STANDARD 17)
+        message(STATUS "C++17: OK")
+    elseif(COMPILER_SUPPORTS_CXX14)
+        set(CMAKE_CXX_STANDARD 14)
+        message(STATUS "C++14: OK")
+        message(WARNING "C++14 is old, please use newer compiler.")
+    elseif(COMPILER_SUPPORTS_CXX11)
+        set(CMAKE_CXX_STANDARD 11)
+        message(STATUS "C++11: OK")
+        message(WARNING "C++11 is old, please use newer compiler.")
+    else()
+        message(FATAL_ERROR "The compiler ${CMAKE_CXX_COMPILER} has no C++11 or above support. Please use a different C++ compiler.")
+    endif()
+endif()
+
+set(CMAKE_CXX_FLAGS                "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -Wconversion -Wshadow")
+
+#target_compile_options(gta PRIVATE -Wall -Wextra -Wpedantic -Wconversion -Wshadow)
+#set_target_properties(gta PROPERTIES CXX_STANDARD 17 CMAKE_CXX_STANDARD_REQUIRED OFF)
 
 add_executable(gta src/GTA_SA_cheat_finder.hpp src/GTA_SA_cheat_finder.cpp)
 
-target_compile_options(gta PRIVATE -Wall -Wextra -Wpedantic -Wconversion -Wshadow)
-set_target_properties(gta PROPERTIES CXX_STANDARD 17 CMAKE_CXX_STANDARD_REQUIRED OFF)
-
+find_package(OpenMP)
 if(OpenMP_CXX_FOUND)
     target_link_libraries(gta PUBLIC OpenMP::OpenMP_CXX)
 endif()
@@ -47,5 +75,5 @@ if( supported )
     message(STATUS "IPO / LTO enabled")
     set_property(TARGET gta PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
 else()
-    message(STATUS "IPO / LTO not supported: <${error}>")
+    message(WARNING "IPO / LTO not supported: <${error}>")
 endif()
