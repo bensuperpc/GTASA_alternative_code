@@ -128,7 +128,7 @@ int main(int arc, char *argv[]) {
     crc = jamcrc(tmp);             // JAMCRC
 #if ((defined(_MSVC_LANG) && _MSVC_LANG == 201703L) || __cplusplus == 201703L)
     if (std::find(std::execution::seq, std::begin(cheat_list), std::end(cheat_list), crc) !=
-##elif ((defined(_MSVC_LANG) && _MSVC_LANG >= 202002L) || __cplusplus >= 202002L)
+#elif ((defined(_MSVC_LANG) && _MSVC_LANG >= 202002L) || __cplusplus >= 202002L)
     if (std::find(std::execution::unseq, std::begin(cheat_list), std::end(cheat_list), crc) !=
 #else
     if (std::find(std::begin(cheat_list), std::end(cheat_list), crc) !=
