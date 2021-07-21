@@ -126,7 +126,13 @@ int main(int arc, char *argv[]) {
     findStringInv<size_t>(i, tmp); // Generate Alphabetic sequence from size_t
                                    // value, A=1, Z=27, AA = 28, AB = 29
     crc = jamcrc(tmp);             // JAMCRC
+#if ((defined(_MSVC_LANG) && _MSVC_LANG == 201703L) || __cplusplus == 201703L)
+    if (std::find(std::execution::seq, std::begin(cheat_list), std::end(cheat_list), crc) !=
+#elseif ((defined(_MSVC_LANG) && _MSVC_LANG >= 202002L) || __cplusplus >= 202002L)
+    if (std::find(std::execution::unseq, std::begin(cheat_list), std::end(cheat_list), crc) !=
+#else
     if (std::find(std::begin(cheat_list), std::end(cheat_list), crc) !=
+#endif
         std::end(cheat_list)) {             // If crc is present in Array
       std::reverse(tmp, tmp + strlen(tmp)); // Invert char array
       results.emplace_back(std::make_tuple(
