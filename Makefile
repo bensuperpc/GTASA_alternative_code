@@ -36,13 +36,15 @@ $(TARGET): $(OBJS) $(HEADERS)
 	$(CXX) $(LFLAGS) $(OBJS) -o $(TARGET)
 
 cmake:
-	cmake -Bbuild -H. -GNinja -DCMAKE_BUILD_TYPE=Release && ninja -Cbuild
+	cmake -Bbuild-local -H. -GNinja -DCMAKE_BUILD_TYPE=Release && ninja -Cbuild-local
 
 docker:
 	docker build . -t bensuperpc/gta:latest
 
 purge: clean
 	@rm -f $(TARGET)
+	@rm -rf build-*
+	@rm -rf dockcross-*
 
 clean:
 	@rm -f $(OBJS)
