@@ -35,6 +35,9 @@ all: $(TARGET)
 $(TARGET): $(OBJS) $(HEADERS)
 	$(CXX) $(LFLAGS) $(OBJS) -o $(TARGET)
 
+cmake:
+	cmake -Bbuild -H. -GNinja -DCMAKE_BUILD_TYPE=Release && ninja -Cbuild
+
 docker:
 	docker build . -t bensuperpc/gta:latest
 
