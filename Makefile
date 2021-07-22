@@ -41,6 +41,9 @@ cmake:
 docker:
 	docker build . -t bensuperpc/gta:latest
 
+push: docker
+	docker push bensuperpc/gta:latest
+
 purge: clean
 	@rm -f $(TARGET)
 	@rm -rf build-*
@@ -48,3 +51,5 @@ purge: clean
 
 clean:
 	@rm -f $(OBJS)
+
+.PHONY: clean purge docker cmake
