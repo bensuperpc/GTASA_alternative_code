@@ -37,7 +37,6 @@ if(NOT CMAKE_CXX_STANDARD)
 
     if(COMPILER_SUPPORTS_CXX20)
         set(CMAKE_CXX_STANDARD 20)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ltbb")
         message(STATUS "C++20: OK")
     elseif(COMPILER_SUPPORTS_CXX17)
         set(CMAKE_CXX_STANDARD 17)
