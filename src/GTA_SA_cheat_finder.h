@@ -36,6 +36,8 @@
 #include <stdio.h>
 //#include <string.h>
 #include <assert.h>
+#include <stddef.h>
+#include <stdbool.h>
 
 #if __has_include("omp.h")
 #include <omp.h>
@@ -175,4 +177,6 @@ unsigned int jamcrc(const unsigned char * my_string);
  * \brief Generate Alphabetic sequence from size_t value, A=1, Z=27, AA = 28, AB
  * = 29 \tparam T \param n index in base 26 \param array return array
  */
-template <class T> void findStringInv(T n, char *array);
+void findStringInv(size_t n, char *array);
+
+bool search_for_number(const unsigned int *a, unsigned int search);

@@ -36,6 +36,20 @@
 #include "GTA_SA_cheat_finder.h"
 #include <stddef.h>
 
+bool search_for_number(const unsigned int *a, unsigned int search)
+{
+  const size_t array_size = sizeof(*a)/sizeof(a[0]);
+  for(size_t i = 0; i < array_size; i++)
+  {
+      if(a[i] == search)      // or if(*(a + i) == search)
+      {
+          return true;
+      }
+  }
+  return false;
+}
+
+
 unsigned int jamcrc(const unsigned char* my_string) {
   uint32_t crc = ~0;
   unsigned char *current = (unsigned char *)my_string;
@@ -56,13 +70,12 @@ unsigned int jamcrc(const unsigned char* my_string) {
  * \brief Generate Alphabetic sequence from size_t value, A=0, Z=26, AA = 27, BA = 28
  * = 29 \tparam size_t \param n index in base 26 \param array return array
  */
-size_t findStringInv(size_t n, char *array) {
-  unsigned int stringSizeAlphabet = sizeof(alphabetSize)/sizeof(alphabetSize[0]) + 1;
-  char alpha[stringSizeAlphabet] = {alphabetUp};
+void findStringInv(size_t n, char *array) {
+  const unsigned int stringSizeAlphabet = sizeof(alphabetSize)/sizeof(alphabetSize[0]) + 1;
+  const char alpha[stringSizeAlphabet] = {alphabetUp};
   // If n < 27
   if (n < stringSizeAlphabet - 1) {
     array[0] = alpha[n];
-    return 0;
   }
   // If n > 27
   size_t i = 0;
@@ -106,9 +119,13 @@ int main(int arc, char *argv[]) {
   char tmp2[29] = {0};
   findStringInv(from_range, tmp1);
   findStringInv(to_range, tmp2);
-  std::cout << "From: " << tmp1 << " to: " << tmp2 << " Alphabetic sequence"
-            << std::endl;
-  std::cout << "" << std::endl;
+
+  printf("From: ");
+  printf("%s", tmp1);
+  printf(" to: ");
+  printf("%s", tmp2);
+  printf(" Alphabetic sequence\n");
+  printf("\n");
 
   char tmp[29] = {0}; // Temp array
   uint32_t crc = 0;   // CRC value
@@ -120,6 +137,11 @@ int main(int arc, char *argv[]) {
     findStringInv(i, tmp); // Generate Alphabetic sequence from size_t
                                    // value, A=1, Z=27, AA = 28, AB = 29
     crc = jamcrc(tmp);             // JAMCRC
+
+    if(search_for_number(cheat_list, crc) == true) 
+    {
+
+    }
 
     if (std::find(std::begin(cheat_list), std::end(cheat_list), crc) !=
         std::end(cheat_list)) {             // If crc is present in Array
