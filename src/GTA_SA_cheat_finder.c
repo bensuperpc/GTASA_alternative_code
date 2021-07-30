@@ -9,8 +9,8 @@
 //                                                          //
 //  BenLib, 2021                                            //
 //  Created: 26, February, 2021                             //
-//  Modified: 14, June, 2021                                //
-//  file: crypto.cpp                                        //
+//  Modified: 30, July, 2021                                //
+//  file: crypto.c                                          //
 //  Crypto                                                  //
 //  Source:
 //          http://stackoverflow.com/questions/8710719/generating-an-alphabetic-sequence-in-java
@@ -33,17 +33,13 @@
 //                                                          //
 //////////////////////////////////////////////////////////////
 
-#include "GTA_SA_cheat_finder.hpp"
+#include "GTA_SA_cheat_finder.h"
+#include <stddef.h>
 
-#if ((defined(_MSVC_LANG) && _MSVC_LANG >= 201703L) || __cplusplus >= 201703L)
-unsigned int jamcrc(const std::string_view my_string) {
-#else
-#warning C++17 is not enabled, the program will be less efficient with previous standards.
-unsigned int jamcrc(const std::string my_string) {
-#endif
+unsigned int jamcrc(const unsigned char* my_string) {
   uint32_t crc = ~0;
-  unsigned char *current = (unsigned char *)my_string.data();
-  size_t length = my_string.length();
+  unsigned char *current = (unsigned char *)my_string;
+  size_t length = sizeof(*my_string)/sizeof(my_string[0]);
   static uint32_t lut[16] = {0x00000000, 0x1DB71064, 0x3B6E20C8, 0x26D930AC,
                              0x76DC4190, 0x6B6B51F4, 0x4DB26158, 0x5005713C,
                              0xEDB88320, 0xF00F9344, 0xD6D6A3E8, 0xCB61B38C,
@@ -58,31 +54,29 @@ unsigned int jamcrc(const std::string my_string) {
 
 /**
  * \brief Generate Alphabetic sequence from size_t value, A=0, Z=26, AA = 27, BA = 28
- * = 29 \tparam T \param n index in base 26 \param array return array
+ * = 29 \tparam size_t \param n index in base 26 \param array return array
  */
-template <class T> void findStringInv(T n, char *array) {
-  constexpr std::uint32_t stringSizeAlphabet{alphabetSize + 1};
-  constexpr std::array<char, stringSizeAlphabet> alpha{alphabetUp};
+size_t findStringInv(size_t n, char *array) {
+  unsigned int stringSizeAlphabet = sizeof(alphabetSize)/sizeof(alphabetSize[0]) + 1;
+  char alpha[stringSizeAlphabet] = {alphabetUp};
   // If n < 27
   if (n < stringSizeAlphabet - 1) {
     array[0] = alpha[n];
-    return;
+    return 0;
   }
   // If n > 27
-  std::size_t i = 0;
+  size_t i = 0;
   while (n > 0) {
-    array[i] = alpha[(--n) % alphabetSize];
-    n /= alphabetSize;
+    array[i] = alpha[(--n) % (size_t)alphabetSize];
+    n /= (size_t)alphabetSize;
     ++i;
   }
 }
 
 int main(int arc, char *argv[]) {
-  std::ios_base::sync_with_stdio(false);
-
   size_t from_range = 0; // Alphabetic sequence range min
   if (arc >= 3) {
-    from_range = std::stoll(argv[1]);
+    from_range = atoi(argv[1]);
   }
   // if you want begin on higer range, 1 = A
   // 141167095653376 = ~17 days on I7 9750H
@@ -95,23 +89,23 @@ int main(int arc, char *argv[]) {
   size_t to_range =
       600000000; // Alphabetic sequence range max, must be > from_range !
   if (arc == 2) {
-    to_range = std::stoll(argv[1]);
+    to_range = atoi(argv[1]);
   }
   if (arc >= 3) {
-    to_range = std::stoll(argv[2]);
+    to_range = atoi(argv[2]);
   }
   assert(from_range <
          to_range);       // Test if begining value is highter than end value
   //assert(from_range > 0); // Test forbiden value
+  printf("Number of calculations:");
+  printf("%zu\n", (to_range - from_range));
+  printf("\n");
 
-  std::cout << "Number of calculations: " << (to_range - from_range)
-            << std::endl;
-  std::cout << "" << std::endl;
   // Display Alphabetic sequence range
   char tmp1[29] = {0};
   char tmp2[29] = {0};
-  findStringInv<size_t>(from_range, tmp1);
-  findStringInv<size_t>(to_range, tmp2);
+  findStringInv(from_range, tmp1);
+  findStringInv(to_range, tmp2);
   std::cout << "From: " << tmp1 << " to: " << tmp2 << " Alphabetic sequence"
             << std::endl;
   std::cout << "" << std::endl;
@@ -122,15 +116,12 @@ int main(int arc, char *argv[]) {
 #if defined(_OPENMP)
 #pragma omp parallel for schedule(auto) shared(results) firstprivate(tmp, crc)
 #endif
-  for (std::size_t i = from_range; i < to_range; i++) {
-    findStringInv<size_t>(i, tmp); // Generate Alphabetic sequence from size_t
+  for (size_t i = from_range; i < to_range; i++) {
+    findStringInv(i, tmp); // Generate Alphabetic sequence from size_t
                                    // value, A=1, Z=27, AA = 28, AB = 29
     crc = jamcrc(tmp);             // JAMCRC
-#if ((defined(_MSVC_LANG) && _MSVC_LANG >= 202002L) || __cplusplus >= 202002L && !defined (ANDROID) && !defined(__ANDROID__) && !defined(__EMSCRIPTEN__))
-    if (std::find(std::execution::unseq, std::begin(cheat_list), std::end(cheat_list), crc) !=
-#else
+
     if (std::find(std::begin(cheat_list), std::end(cheat_list), crc) !=
-#endif
         std::end(cheat_list)) {             // If crc is present in Array
       std::reverse(tmp, tmp + strlen(tmp)); // Invert char array
       results.emplace_back(std::make_tuple(

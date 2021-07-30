@@ -19,7 +19,7 @@
 #                                                            #
 ##############################################################
 
-project(gta LANGUAGES CXX)
+project(gta LANGUAGES C CXX)
 cmake_minimum_required(VERSION 3.9)
 
 
@@ -59,7 +59,8 @@ set(CMAKE_CXX_FLAGS                "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic 
 #target_compile_options(gta PRIVATE -Wall -Wextra -Wpedantic -Wconversion -Wshadow)
 #set_target_properties(gta PROPERTIES CXX_STANDARD 17 CMAKE_CXX_STANDARD_REQUIRED OFF)
 
-add_executable(gta src/GTA_SA_cheat_finder.hpp src/GTA_SA_cheat_finder.cpp)
+add_executable(gta src/GTA_SA_cheat_finder.hxx src/GTA_SA_cheat_finder.cxx)
+add_executable(gtaC src/GTA_SA_cheat_finder.h src/GTA_SA_cheat_finder.c)
 
 find_package(OpenMP)
 if(OpenMP_CXX_FOUND)

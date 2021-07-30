@@ -20,8 +20,8 @@
 
 CXX=g++
 TARGET=gta
-SOURCES=src/GTA_SA_cheat_finder.cpp
-HEADERS=src/GTA_SA_cheat_finder.hpp
+SOURCES=src/GTA_SA_cheat_finder.cxx
+HEADERS=src/GTA_SA_cheat_finder.hxx
 CFLAGS=-O3 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -fopenmp
 LFLAGS=-fopenmp
 
