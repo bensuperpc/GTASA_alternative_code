@@ -81,7 +81,7 @@ This program execute: 116.443926 MOps/sec
 You needs Docker and Linux OS (Not tested with windows)
 
 ```sh
-./builder/dockcross-builder.sh linux-x64 (To build for x86 64)
+make linux-x64 (To build for x86 64)
 ```
 
 You can build without docker (Less tested)
