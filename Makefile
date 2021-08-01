@@ -9,7 +9,7 @@
 #//                                                          //
 #//  Script, 2021                                            //
 #//  Created: 14, June, 2021                                 //
-#//  Modified: 31, June, 2021                                //
+#//  Modified: 1, August, 2021                               //
 #//  file: -                                                 //
 #//  -                                                       //
 #//  Source:                                                 //
@@ -18,24 +18,18 @@
 #//                                                          //
 #//////////////////////////////////////////////////////////////
 
-CXX=g++
-TARGET=gta
-SOURCES=src/GTA_SA_cheat_finder.cpp
-HEADERS=src/GTA_SA_cheat_finder.hpp
-CFLAGS=-O3 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -fopenmp
-LFLAGS=-fopenmp
+DOCKER_IMAGE = linux-s390x android-arm android-arm64 linux-x86 linux-x64 linux-mips linux-x64-clang manylinux1-x64 manylinux1-x86 manylinux2010-x64 manylinux2010-x86 manylinux2014-x64 manylinux2014-x86 manylinux2014-aarch64 web-wasm linux-arm64 linux-arm64-musl windows-static-x86 windows-static-x64 windows-static-x64-posix windows-shared-x86 windows-shared-x64 windows-shared-x64-posix linux-armv7 linux-armv7a linux-armv7l-musl linux-armv6 linux-armv6-musl linux-armv5 linux-armv5-musl linux-ppc64le linux-riscv64 linux-riscv32 linux-m68k-uclibc
 
-OBJS=$(SOURCES:.cpp=.o)
+default: linux-x64
 
-all: $(TARGET)
 
-%.o: %.cpp Makefile
-	$(CXX) $(CFLAGS) -c -o $@ $<
+all: $(DOCKER_IMAGE)
 
-$(TARGET): $(OBJS) $(HEADERS)
-	$(CXX) $(LFLAGS) $(OBJS) -o $(TARGET)
 
-cmake:
+$(DOCKER_IMAGE):
+	./builder/dockcross-builder.sh $@
+
+ninja:
 	cmake -Bbuild-local -H. -GNinja -DCMAKE_BUILD_TYPE=Release && ninja -Cbuild-local
 
 docker:
@@ -44,12 +38,8 @@ docker:
 push: docker
 	docker push bensuperpc/gta:latest
 
-purge: clean
-	@rm -f $(TARGET)
+clean:
 	@rm -rf build-*
 	@rm -rf dockcross-*
 
-clean:
-	@rm -f $(OBJS)
-
-.PHONY: clean purge docker cmake
+.PHONY: clean purge docker ninja $(DOCKER_IMAGE)
