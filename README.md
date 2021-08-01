@@ -88,6 +88,16 @@ Or with make:
 make
 ```
 
+#### Build docker
+```sh
+make docker
+```
+And run:
+
+```sh
+docker run --rm bensuperpc/gta:latest 0 150000000
+```
+
 ### Todos
 
  - Write Tests
