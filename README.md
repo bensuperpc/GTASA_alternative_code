@@ -81,12 +81,22 @@ This program execute: 116.443926 MOps/sec
 You needs Docker and Linux OS (Not tested with windows)
 
 ```sh
-./builder/cmake.sh linux-x64 (To build for x86 64)
+./builder/dockcross-builder.sh linux-x64 (To build for x86 64)
 ```
-Or with make:
+
+You can build without docker (Less tested)
+
+With ninja:
 ```sh
-make
+./builder/ninja-builder.sh -DCMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS} -ltbb"
 ```
+
+CMake only:
+```sh
+./builder/cmake-builder.sh -DCMAKE_CXX_FLAGS="${CMAKE_CXX_FLAGS} -ltbb"
+```
+
+
 
 #### Build docker
 ```sh
