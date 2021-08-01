@@ -97,7 +97,6 @@ CMake only:
 ```
 
 
-
 #### Build docker
 ```sh
 make docker

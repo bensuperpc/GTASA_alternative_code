@@ -31,6 +31,6 @@
 *.out
 *.app
 gta
-build*
+build/*
 dockcross-*
 *.xz
