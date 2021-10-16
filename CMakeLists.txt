@@ -54,7 +54,7 @@ if(NOT CMAKE_CXX_STANDARD)
     endif()
 endif()
 
-set(CMAKE_CXX_FLAGS                "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -Wconversion -Wshadow")
+set(CMAKE_CXX_FLAGS                "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -Wconversion -Wshadow -fno-exceptions")
 
 #target_compile_options(gta PRIVATE -Wall -Wextra -Wpedantic -Wconversion -Wshadow)
 #set_target_properties(gta PROPERTIES CXX_STANDARD 17 CMAKE_CXX_STANDARD_REQUIRED OFF)
