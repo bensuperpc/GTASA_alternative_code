@@ -64,11 +64,6 @@ jobs:
             linux-m68k-uclibc,
           ]
     steps:
-      - name: "📥 Checkout Code"
-        uses: actions/checkout@v2
-        with:
-          submodules: "recursive"
-          fetch-depth: 0
       - name: "🛠️ cmake"
         run: |
             chmod +x ./tools/dockcross-cmake-builder.sh

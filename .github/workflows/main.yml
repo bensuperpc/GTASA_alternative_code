@@ -69,8 +69,8 @@ jobs:
             linux-riscv32,
             linux-m68k-uclibc,
           ]
-        # Disable MinSizeRel RelWithDebInfo
-        build_type: [Release, Debug]
+        # Disable MinSizeRel RelWithDebInfo, Release
+        build_type: [Debug]
     steps:
       - name: "📥 Checkout Code"
         uses: actions/checkout@v2
