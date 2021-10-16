@@ -56,7 +56,7 @@ jobs:
             manylinux2010-x86,
             manylinux2014-x64,
             manylinux2014-x86,
-            manylinux2014-aarch64,
+#            manylinux2014-aarch64,
             windows-static-x64,
             windows-static-x64-posix,
             windows-static-x86,
