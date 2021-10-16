@@ -32,5 +32,5 @@
 *.app
 gta
 build-*
-dockcross-*
+/dockcross-*
 *.xz
