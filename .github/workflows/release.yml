@@ -13,16 +13,64 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-      # Disable linux-armv6
-        arch_name: [android-arm, android-arm64, android-x86, android-x86_64, web-wasm, linux-arm64, linux-arm64-musl, linux-armv5, linux-armv5-musl, linux-armv6, linux-armv6-musl, linux-armv7, linux-armv7a, linux-armv7l-musl, linux-x64-clang, linux-s390x, linux-x64, linux-x86, linux-mips, linux-ppc64le, manylinux1-x64, manylinux1-x86, manylinux2010-x64, manylinux2010-x86, manylinux2014-x64, manylinux2014-x86, manylinux2014-aarch64, windows-static-x64, windows-static-x64-posix, windows-static-x86, windows-shared-x64, windows-shared-x64-posix, windows-shared-x86, linux-riscv64, linux-riscv32, linux-m68k-uclibc]
+        # Disable linux-armv6
+        arch_name:
+          [
+            android-arm,
+            android-arm64,
+            android-x86,
+            android-x86_64,
+            web-wasm,
+            web-wasi,
+            linux-arm64,
+            linux-arm64-lts,
+            linux-arm64-full,
+            linux-arm64-musl,
+            linux-armv5,
+            linux-armv5-musl,
+            linux-armv6,
+            linux-armv6-lts,
+            linux-armv6-musl,
+            linux-armv7,
+#            linux-armv7-lts,
+            linux-armv7a,
+            linux-armv7l-musl,
+            linux-x64-clang,
+            linux-x64-tinycc,
+            linux-s390x,
+            linux-x64,
+            linux-x64-full,
+            linux-x86,
+            linux-mips,
+            linux-ppc64le,
+            linux-xtensa-uclibc,
+            manylinux1-x64,
+            manylinux1-x86,
+            manylinux2010-x64,
+            manylinux2010-x86,
+            manylinux2014-x64,
+            manylinux2014-x86,
+            manylinux2014-aarch64,
+            windows-static-x64,
+            windows-static-x64-posix,
+            windows-static-x86,
+            windows-shared-x64,
+            windows-shared-x64-posix,
+            windows-shared-x86,
+            windows-armv7,
+            windows-arm64,
+            linux-riscv64,
+            linux-riscv32,
+            linux-m68k-uclibc,
+          ]
     steps:
       - name: "📥 Checkout Code"
         uses: actions/checkout@v2
         with:
-          submodules: 'recursive'
+          submodules: "recursive"
           fetch-depth: 0
       - name: "🛠️ cmake"
-        run: ./builder/dockcross-builder.sh ${{ matrix.arch_name }}:latest -DCMAKE_BUILD_TYPE=Release
+        run: ./tools/dockcross-cmake-builder.sh ${{ matrix.arch_name }}:latest -DCMAKE_BUILD_TYPE=Release
       - name: "🛠️ docker"
         run: make docker
       - name: "✅ checksum"
@@ -34,7 +82,7 @@ jobs:
         with:
           name: bin-artifact
           path: gta-${{ matrix.arch_name }}.tar.xz
-          retention-days: 1        
+          retention-days: 1
   release:
     name: release
     runs-on: ubuntu-latest
@@ -43,7 +91,7 @@ jobs:
       - name: "📥 Checkout Code"
         uses: actions/checkout@v2
         with:
-          submodules: 'recursive'
+          submodules: "recursive"
           fetch-depth: 0
       - name: get artifact
         uses: actions/download-artifact@v2
