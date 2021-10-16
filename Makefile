@@ -19,7 +19,7 @@
 #//////////////////////////////////////////////////////////////
 
 DOCKER_IMAGE = linux-s390x android-arm android-arm64 \
-	linux-x86 linux-x64 linux-x64-full linux-x64-clang linux-x64-tinycc \
+	linux-x86 linux-x64 linux-x86_64-full linux-x64-clang linux-x64-tinycc \
 	linux-mips linux-ppc64le linux-xtensa-uclibc \
 	linux-armv7 linux-armv7-lts linux-armv7a linux-armv7l-musl \
 	linux-armv6 linux-armv6-lts linux-armv6-musl \

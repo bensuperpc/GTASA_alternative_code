@@ -45,7 +45,7 @@ jobs:
             linux-x64-tinycc,
             linux-s390x,
             linux-x64,
-            linux-x64-full,
+            linux-x86_64-full,
             linux-x86,
             linux-mips,
             linux-ppc64le,
