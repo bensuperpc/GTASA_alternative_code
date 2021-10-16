@@ -18,16 +18,28 @@
 #//                                                          //
 #//////////////////////////////////////////////////////////////
 
-DOCKER_IMAGE = linux-s390x android-arm android-arm64 linux-x86 linux-x64 linux-mips linux-x64-clang manylinux1-x64 manylinux1-x86 manylinux2010-x64 manylinux2010-x86 manylinux2014-x64 manylinux2014-x86 manylinux2014-aarch64 web-wasm linux-arm64 linux-arm64-musl windows-static-x86 windows-static-x64 windows-static-x64-posix windows-shared-x86 windows-shared-x64 windows-shared-x64-posix linux-armv7 linux-armv7a linux-armv7l-musl linux-armv6 linux-armv6-musl linux-armv5 linux-armv5-musl linux-ppc64le linux-riscv64 linux-riscv32 linux-m68k-uclibc
+DOCKER_IMAGE = linux-s390x android-arm android-arm64 \
+	linux-x86 linux-x64 linux-x64-full linux-x64-clang linux-x64-tinycc \
+	linux-mips linux-ppc64le linux-xtensa-uclibc \
+	linux-armv7 linux-armv7-lts linux-armv7a linux-armv7l-musl \
+	linux-armv6 linux-armv6-lts linux-armv6-musl \
+	linux-armv5 linux-armv5-musl \
+	 linux-riscv64 linux-riscv32 linux-m68k-uclibc linux-m68k-uclibc \
+	manylinux1-x64 manylinux1-x86 manylinux2010-x64 manylinux2010-x86 \
+	manylinux2014-x64 manylinux2014-x86 manylinux2014-aarch64 \
+	linux-arm64 linux-arm64-lts linux-arm64-full linux-arm64-musl \
+	windows-static-x86 windows-static-x64 windows-static-x64-posix windows-shared-x86 \
+	windows-shared-x64 windows-shared-x64-posix windows-armv7 windows-arm64 \
+	web-wasm web-wasi 
 
-default: linux-x64
+default: ninja
 
 
 all: $(DOCKER_IMAGE)
 
 
 $(DOCKER_IMAGE):
-	./builder/dockcross-builder.sh $@
+	./tools/dockcross-cmake-builder.sh $@
 
 ninja:
 	cmake -Bbuild-local -H. -GNinja -DCMAKE_BUILD_TYPE=Release && ninja -Cbuild-local
