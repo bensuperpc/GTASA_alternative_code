@@ -78,7 +78,9 @@ jobs:
           submodules: "recursive"
           fetch-depth: 0
       - name: "🛠️ cmake"
-        run: ./tools/dockcross-cmake-builder.sh ${{ matrix.arch_name }}:latest -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+        run: |
+            ls
+            ./tools/dockcross-cmake-builder.sh ${{ matrix.arch_name }}:latest -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
       - name: "🛠️ docker"
         run: make docker
       - name: "✅ checksum"
