@@ -49,7 +49,6 @@
 #include <execution> // std::execution
 #endif
 #endif
-#include <tuple>
 #include <utility> // std::make_pair
 #include <vector>  // std::vector
 typedef std::chrono::high_resolution_clock Clock;
@@ -63,12 +62,6 @@ typedef std::chrono::high_resolution_clock Clock;
 #if !defined(_OPENMP)
 #warning No openMP ! Only use 1 thread.
 #endif
-
-/** @brief If you want display less informations, comment it */
-#define MORE_INFO
-
-/** @brief For debug mode */
-#define DNDEBUG
 
 /** @brief Define alphabetic seq with upercase */
 #define alphabetUp "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -94,7 +87,6 @@ const std::array<unsigned int, 87> cheat_list{
     0xF01286E9, 0xA841CC0A, 0x31EA09CF, 0xE958788A, 0x02C83A7C, 0xE49C3ED4,
     0x171BA8CC, 0x86988DAE, 0x2BDD2FA1};
 
-#ifdef MORE_INFO
 /// List of cheats codes names
 const std::array<const std::string, 87> cheat_list_name{
     "Weapon Set 1",
@@ -182,9 +174,8 @@ const std::array<const std::string, 87> cheat_list_name{
     "Spawn Dozer",
     "pawn Stunt Plane",
     "Spawn Monster"};
-#endif
 
-std::vector<std::tuple<std::size_t, std::string, unsigned int>> results =
+std::vector<std::pair<std::size_t, unsigned int>> results =
     {}; // Stock results after calculations
 
 /**
