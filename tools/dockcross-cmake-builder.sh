@@ -10,6 +10,13 @@ if (($# >= 1)); then
     cmake_arg=$*
     echo "cmake arg: $cmake_arg"
 
+    echo "Pulling dockcross/$image"
+    if [ -z "${tag}" ]; then
+        docker pull "dockcross/$image:latest"
+    else
+        docker pull "dockcross/$image:$tag"
+    fi
+
     echo "Make script dockcross-$image"
     docker run --rm dockcross/"$image" >./dockcross-"$image"
     chmod +x ./dockcross-"$image"

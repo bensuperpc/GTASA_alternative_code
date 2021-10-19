@@ -118,7 +118,6 @@ int main(int arc, char *argv[]) {
 
   char tmp[29] = {0}; // Temp array
   uint32_t crc = 0;   // CRC value
-
   auto &&t1 = Clock::now();
 #if defined(_OPENMP)
 #pragma omp parallel for schedule(auto) shared(results) firstprivate(tmp, crc)
@@ -137,25 +136,19 @@ int main(int arc, char *argv[]) {
         std::end(cheat_list)) {
 #endif                                      // If crc is present in Array
       std::reverse(tmp, tmp + strlen(tmp)); // Invert char array
-      results.emplace_back(std::make_pair(
-          i,
+      results.emplace_back(std::make_tuple(
+          i, std::string(tmp),
           crc)); // Save result: calculation position, Alphabetic sequence, CRC
     }
   }
   auto &&t2 = Clock::now();
-
-  // Sort results
   sort(results.begin(), results.end());
-
-  // Display bruteforce results
   for (auto &&result : results) {
     std::cout << std::left << std::setw(14) << std::dec << std::get<0>(result)
               << std::left << std::setw(12) << std::get<1>(result) << "0x"
-              << std::hex << std::left << std::setw(12) << std::get<1>(result);
+              << std::hex << std::left << std::setw(12) << std::get<2>(result);
     std::cout << std::endl;
   }
-
-  // Display bruteforce info
   std::cout << "Time: "
             << std::chrono::duration_cast<std::chrono::duration<double>>(t2 -
                                                                          t1)
