@@ -57,8 +57,8 @@ unsigned int jamcrc(const std::string my_string) {
 }
 
 /**
- * \brief Generate Alphabetic sequence from size_t value, A=0, Z=26, AA = 27, BA = 28
- * = 29 \tparam T \param n index in base 26 \param array return array
+ * \brief Generate Alphabetic sequence from size_t value, A=0, Z=26, AA = 27, BA
+ * = 28 = 29 \tparam T \param n index in base 26 \param array return array
  */
 template <class T> void findStringInv(T n, char *array) {
   constexpr std::uint32_t stringSizeAlphabet{alphabetSize + 1};
@@ -101,8 +101,8 @@ int main(int arc, char *argv[]) {
     to_range = std::stoll(argv[2]);
   }
   assert(from_range <
-         to_range);       // Test if begining value is highter than end value
-  //assert(from_range > 0); // Test forbiden value
+         to_range); // Test if begining value is highter than end value
+  // assert(from_range > 0); // Test forbiden value
 
   std::cout << "Number of calculations: " << (to_range - from_range)
             << std::endl;
@@ -126,11 +126,15 @@ int main(int arc, char *argv[]) {
     findStringInv<size_t>(i, tmp); // Generate Alphabetic sequence from size_t
                                    // value, A=1, Z=27, AA = 28, AB = 29
     crc = jamcrc(tmp);             // JAMCRC
-#if ((defined(_MSVC_LANG) && _MSVC_LANG >= 202002L) || __cplusplus >= 202002L && !defined (ANDROID) && !defined(__ANDROID__) && !defined(__EMSCRIPTEN__) && !defined(__clang__))
-    if (std::find(std::execution::unseq, std::begin(cheat_list), std::end(cheat_list), crc) != std::end(cheat_list)) {  
+#if ((defined(_MSVC_LANG) && _MSVC_LANG >= 202002L) ||                         \
+     __cplusplus >= 202002L && !defined(ANDROID) && !defined(__ANDROID__) &&   \
+         !defined(__EMSCRIPTEN__) && !defined(__clang__))
+    if (std::find(std::execution::unseq, std::begin(cheat_list),
+                  std::end(cheat_list), crc) != std::end(cheat_list)) {
 #else
-    if (std::find(std::begin(cheat_list), std::end(cheat_list), crc) != std::end(cheat_list)) {  
-#endif           // If crc is present in Array
+    if (std::find(std::begin(cheat_list), std::end(cheat_list), crc) !=
+        std::end(cheat_list)) {
+#endif                                      // If crc is present in Array
       std::reverse(tmp, tmp + strlen(tmp)); // Invert char array
       results.emplace_back(std::make_tuple(
           i, std::string(tmp),

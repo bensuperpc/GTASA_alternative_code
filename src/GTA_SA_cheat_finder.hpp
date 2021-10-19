@@ -34,17 +34,19 @@
 //////////////////////////////////////////////////////////////
 
 #include <algorithm> // std::find
+#include <array>     // std::array
 #include <cassert>
 #include <chrono>
 #include <cstring>  // strlen
 #include <iomanip>  // std::setw
 #include <iostream> // std::cout
 #include <string>   // std::string
-#include <array> // std::array
 #if ((defined(_MSVC_LANG) && _MSVC_LANG >= 201703L) || __cplusplus >= 201703L)
 #include <string_view> // std::string_view
-#if ((defined(_MSVC_LANG) && _MSVC_LANG >= 202002L) || __cplusplus >= 202002L && !defined (ANDROID) && !defined(__ANDROID__) && !defined(__EMSCRIPTEN__) && !defined(__clang__))
-#include <execution>  // std::execution
+#if ((defined(_MSVC_LANG) && _MSVC_LANG >= 202002L) ||                         \
+     __cplusplus >= 202002L && !defined(ANDROID) && !defined(__ANDROID__) &&   \
+         !defined(__EMSCRIPTEN__) && !defined(__clang__))
+#include <execution> // std::execution
 #endif
 #endif
 #include <tuple>
