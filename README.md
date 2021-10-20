@@ -40,31 +40,43 @@ Number of calculations: 600000000
 
 From: A to: BYKYLXA Alphabetic sequence
 
-20810792      ASNAEB      0x555fc201    
-75396850      FHYSTV      0x44b34866    
-147491485     LJSPQK      0xfeda77f7    
-181355281     OFVIAC      0x6c0fa650    
-181961057     OHDUDE      0xe958788a    
-198489210     PRIEBJ      0xf2aa0c1d    
-241414872     THGLOJ      0xcaec94ee    
-289334426     XICWMD      0x1a9aa3d6    
-299376767     YECGAA      0x40cf761     
-311365503     ZEIIVG      0x74d4fcb1    
-370535590     AEDUWNV     0x9a629401    
-380229391     AEZAKMI     0xe1b33eb9    
-535721682     ASBHGRB     0xa7613f99    
-Time: 5.15269 sec
-This program execute: 116.443926 MOps/sec
+Iter. N°         Code           JAMCRC value   
+20810792         ASNAEB         0x555fc201       
+75396850         FHYSTV         0x44b34866       
+147491485        LJSPQK         0xfeda77f7       
+181355281        OFVIAC         0x6c0fa650       
+181961057        OHDUDE         0xe958788a       
+198489210        PRIEBJ         0xf2aa0c1d       
+241414872        THGLOJ         0xcaec94ee       
+289334426        XICWMD         0x1a9aa3d6       
+299376767        YECGAA         0x40cf761        
+311365503        ZEIIVG         0x74d4fcb1       
+370535590        AEDUWNV        0x9a629401       
+380229391        AEZAKMI        0xe1b33eb9       
+535721682        ASBHGRB        0xa7613f99       
+Time: 1.62249 sec
+This program execute: 369.803086 MOps/sec
 ```
 
 ##### Perfs
+On Intel I7 9750H:
 ```
-141167095653376 = ~17 days on I7 9750H
-5429503678976 = ~14h on I7 9750H
-208827064576 = ~28 min on I7 9750H
-8031810176 = ~1 min on I7 9750H
-1544578880 = ~11 sec on I7 9750H
-308915776 = 2 sec on I7 9750H
+141167095653376 = ~17 days
+5429503678976 = ~14h
+208827064576 = ~28 min
+8031810176 = ~1 min
+1544578880 = ~11 sec
+308915776 = 2 sec
+```
+
+On AMD R7 5800H:
+```
+141167095653376 = ~6 days
+5429503678976 = ~5h
+208827064576 = ~10 min
+8031810176 = ~22 min
+1544578880 = ~4 sec
+308915776 = 0.8 sec
 ```
 
 #### How does it work ?

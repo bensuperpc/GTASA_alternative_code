@@ -142,25 +142,32 @@ int main(int arc, char *argv[]) {
     }
   }
   auto &&t2 = Clock::now();
-  sort(results.begin(), results.end());
+
+  sort(results.begin(), results.end()); // Sort results
+
+  std::cout << std::left << std::setw(18) << "Iter. N°" << std::left
+            << std::setw(15) << "Code" << std::left << std::setw(15)
+            << "JAMCRC value" << std::endl;
+
   for (auto &&result : results) {
-    std::cout << std::left << std::setw(14) << std::dec << std::get<0>(result)
-              << std::left << std::setw(12) << std::get<1>(result) << "0x"
-              << std::hex << std::left << std::setw(12) << std::get<2>(result);
-    std::cout << std::endl;
+    std::cout << std::left << std::setw(17) << std::dec << std::get<0>(result)
+              << std::left << std::setw(15) << std::get<1>(result) << "0x"
+              << std::hex << std::left << std::setw(15) << std::get<2>(result)
+              << std::endl;
   }
+
   std::cout << "Time: "
             << std::chrono::duration_cast<std::chrono::duration<double>>(t2 -
                                                                          t1)
                    .count()
-            << " sec" << std::endl;
+            << " sec" << std::endl; // Display time
   std::cout << "This program execute: " << std::fixed
             << ((double)(to_range - from_range) /
                 std::chrono::duration_cast<std::chrono::duration<double>>(t2 -
                                                                           t1)
                     .count()) /
                    1000000
-            << " MOps/sec" << std::endl;
+            << " MOps/sec" << std::endl; // Display perf
 
   return EXIT_SUCCESS;
 }
