@@ -82,6 +82,7 @@ jobs:
           chmod +x ./tools/dockcross-cmake-builder.sh
           ./tools/dockcross-cmake-builder.sh ${{ matrix.arch_name }}:latest -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
       - name: "🛠️ docker"
+        if: matrix.arch_name == 'linux-x64'
         run: make docker
       - name: "✅ checksum"
         run: cd build-${{ matrix.arch_name }} && find . -maxdepth 1 -name "gta*" | xargs sha256sum > checksum.sha256
