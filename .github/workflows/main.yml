@@ -85,6 +85,8 @@ jobs:
         if: matrix.arch_name == 'linux-x64'
         run: make docker
       - name: "✅ checksum"
+        if: matrix.arch_name == 'linux-x64'
         run: cd build-${{ matrix.arch_name }} && find . -maxdepth 1 -name "gta*" | xargs sha256sum > checksum.sha256
       - name: "🗜️ compress"
+        if: matrix.arch_name == 'linux-x64'
         run: cd build-${{ matrix.arch_name }} && find . -maxdepth 1 -name "gta*" -o -name "*.sha256" | XZ_OPT=-e9 tar -cJf gta-${{ matrix.arch_name }}.tar.xz -T - && mv gta-${{ matrix.arch_name }}.tar.xz ..

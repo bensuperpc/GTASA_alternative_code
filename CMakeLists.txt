@@ -40,4 +40,10 @@ set(CMAKE_CXX_FLAGS                "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic 
 add_executable(gta src/GTA_SA_cheat_finder.hpp src/GTA_SA_cheat_finder.cpp)
 
 include(ConfigureOpenMP)
-include(ConfigureLTO)
+
+# Fix long build time with emscripten
+if(EMSCRIPTEN)
+    message(STATUS "Using emscripten: disable LTO")
+else()
+    include(ConfigureLTO)
+endif()
