@@ -85,10 +85,7 @@ template <class T> void findStringInv(T n, char *array) {
   }
 }
 
-int main(int arc, char *argv[]) {
-  std::ios_base::sync_with_stdio(false); // Improve std::cout speed
-
-  // same as before
+void precompute_crc() {
   for (unsigned int i = 0; i <= 0xFF; i++) {
     uint32_t crc = i;
     for (unsigned int j = 0; j < 8; j++)
@@ -113,6 +110,11 @@ int main(int arc, char *argv[]) {
     Crc32Lookup[7][i] =
         (Crc32Lookup[6][i] >> 8) ^ Crc32Lookup[0][Crc32Lookup[6][i] & 0xFF];
   }
+}
+
+int main(int arc, char *argv[]) {
+  std::ios_base::sync_with_stdio(false); // Improve std::cout speed
+  precompute_crc(); // Fill Crc32Lookup
 
   size_t min_range = 0; // Alphabetic sequence range min
   if (arc >= 3) {

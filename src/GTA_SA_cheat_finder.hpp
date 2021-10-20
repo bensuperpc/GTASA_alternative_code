@@ -204,3 +204,5 @@ template <class T> void findStringInv(T n, char *array);
 uint32_t Crc32Lookup[16][256];
 
 const uint32_t Polynomial = 0xEDB88320;
+
+void precompute_crc();
