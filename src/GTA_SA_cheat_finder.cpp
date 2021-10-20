@@ -36,7 +36,7 @@
 #include "GTA_SA_cheat_finder.hpp"
 
 #if ((defined(_MSVC_LANG) && _MSVC_LANG >= 201703L) || __cplusplus >= 201703L)
-unsigned int jamcrc(const std::string_view my_string) {
+unsigned int jamcrc(std::string_view my_string) {
 #else
 #warning C++17 is not enabled, the program will be less efficient with previous standards.
 unsigned int jamcrc(const std::string my_string) {
@@ -44,17 +44,30 @@ unsigned int jamcrc(const std::string my_string) {
   uint32_t crc = ~0;
   unsigned char *current = (unsigned char *)my_string.data();
   size_t length = my_string.length();
-  static uint32_t lut[16] = {0x00000000, 0x1DB71064, 0x3B6E20C8, 0x26D930AC,
-                             0x76DC4190, 0x6B6B51F4, 0x4DB26158, 0x5005713C,
-                             0xEDB88320, 0xF00F9344, 0xD6D6A3E8, 0xCB61B38C,
-                             0x9B64C2B0, 0x86D3D2D4, 0xA00AE278, 0xBDBDF21C};
-  while (length--) {
-    crc = lut[(crc ^ *current) & 0x0F] ^ (crc >> 4);
-    crc = lut[(crc ^ (*current >> 4)) & 0x0F] ^ (crc >> 4);
-    current++;
+  // process eight bytes at once
+  while (length >= 8)
+  {
+    uint32_t one = *current++ ^ crc;
+    uint32_t two = *current++;
+    crc = Crc32Lookup[7][ one      & 0xFF] ^
+          Crc32Lookup[6][(one>> 8) & 0xFF] ^
+          Crc32Lookup[5][(one>>16) & 0xFF] ^
+          Crc32Lookup[4][ one>>24        ] ^
+          Crc32Lookup[3][ two      & 0xFF] ^
+          Crc32Lookup[2][(two>> 8) & 0xFF] ^
+          Crc32Lookup[1][(two>>16) & 0xFF] ^
+          Crc32Lookup[0][ two>>24        ];
+    length -= 8;
   }
+  unsigned char* currentChar = (unsigned char*) current;
+  // remaining 1 to 7 bytes
+  while (length--)
+    crc = (crc >> 8) ^ Crc32Lookup[0][(crc & 0xFF) ^ *currentChar++];
   return crc;
 }
+
+
+
 
 /**
  * \brief Generate Alphabetic sequence from size_t value, A=0, Z=26, AA = 27, BA
