@@ -35,13 +35,16 @@
 
 #include "GTA_SA_cheat_finder.hpp"
 
+/**
+ * \brief Source: https://create.stephan-brumme.com/crc32/#slicing-by-8-overview
+ */
 #if ((defined(_MSVC_LANG) && _MSVC_LANG >= 201703L) || __cplusplus >= 201703L)
 unsigned int jamcrc(std::string_view my_string) {
 #else
 #warning C++17 is not enabled, the program will be less efficient with previous standards.
 unsigned int jamcrc(const std::string my_string) {
 #endif
-  uint32_t crc = ~0;
+  uint32_t crc = static_cast<uint32_t>(~0);
   unsigned char *current = (unsigned char *)my_string.data();
   size_t length = my_string.length();
   // process eight bytes at once
@@ -66,9 +69,6 @@ unsigned int jamcrc(const std::string my_string) {
   return crc;
 }
 
-
-
-
 /**
  * \brief Generate Alphabetic sequence from size_t value, A=0, Z=26, AA = 27, BA
  * = 28 = 29 \tparam T \param n index in base 26 \param array return array
@@ -91,40 +91,33 @@ template <class T> void findStringInv(T n, char *array) {
 }
 
 int main(int arc, char *argv[]) {
-  std::ios_base::sync_with_stdio(false);
+  std::ios_base::sync_with_stdio(false); // Improve std::cout speed
 
-  size_t from_range = 0; // Alphabetic sequence range min
+  size_t min_range = 0; // Alphabetic sequence range min
   if (arc >= 3) {
-    from_range = std::stoll(argv[1]);
+    min_range = static_cast<size_t>(std::stoll(argv[1]));
   }
-  // if you want begin on higer range, 1 = A
-  // 141167095653376 = ~17 days on I7 9750H
-  // 5429503678976 = ~14h on I7 9750H
-  // 208827064576 = ~28 min on I7 9750H
-  // 8031810176 = ~1 min on I7 9750H
-  // 1544578880 = ~11 sec on I7 9750H
-  // 308915776 = 2 sec on I7 9750H
 
-  size_t to_range =
-      600000000; // Alphabetic sequence range max, must be > from_range !
+  size_t max_range =
+      600000000; // Alphabetic sequence range max, must be > min_range !
   if (arc == 2) {
-    to_range = std::stoll(argv[1]);
+    max_range = static_cast<size_t>(std::stoll(argv[1]));
   }
   if (arc >= 3) {
-    to_range = std::stoll(argv[2]);
+    max_range = static_cast<size_t>(std::stoll(argv[2]));
   }
-  assert(from_range <
-         to_range); // Test if begining value is highter than end value
-  // assert(from_range > 0); // Test forbiden value
+  assert(min_range <
+         max_range); // Test if begining value is highter than end value
+  // assert(min_range > 0); // Test forbiden value
 
-  std::cout << "Number of calculations: " << (to_range - from_range)
+  std::cout << "Number of calculations: " << (max_range - min_range)
             << std::endl;
   std::cout << "" << std::endl;
   // Display Alphabetic sequence range
   char tmp1[29] = {0};
   char tmp2[29] = {0};
-  findStringInv<size_t>(from_range, tmp1);
-  findStringInv<size_t>(to_range, tmp2);
+  findStringInv<size_t>(min_range, tmp1);
+  findStringInv<size_t>(max_range, tmp2);
   std::cout << "From: " << tmp1 << " to: " << tmp2 << " Alphabetic sequence"
             << std::endl;
   std::cout << "" << std::endl;
@@ -135,7 +128,7 @@ int main(int arc, char *argv[]) {
 #if defined(_OPENMP)
 #pragma omp parallel for schedule(auto) shared(results) firstprivate(tmp, crc)
 #endif
-  for (std::size_t i = from_range; i < to_range; i++) {
+  for (std::size_t i = min_range; i < max_range; i++) {
     findStringInv<size_t>(i, tmp); // Generate Alphabetic sequence from size_t
                                    // value, A=1, Z=27, AA = 28, AB = 29
     crc = jamcrc(tmp);             // JAMCRC
@@ -175,7 +168,7 @@ int main(int arc, char *argv[]) {
                    .count()
             << " sec" << std::endl; // Display time
   std::cout << "This program execute: " << std::fixed
-            << ((double)(to_range - from_range) /
+            << ((double)(max_range - min_range) /
                 std::chrono::duration_cast<std::chrono::duration<double>>(t2 -
                                                                           t1)
                     .count()) /
