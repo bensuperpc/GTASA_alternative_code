@@ -201,8 +201,6 @@ template <class T> void findStringInv(T n, char *array);
 /**
  * \brief Source: https://create.stephan-brumme.com/crc32/#slicing-by-8-overview
  */
-uint32_t Crc32Lookup[256];
+uint32_t Crc32Lookup[16][256];
 
 const uint32_t Polynomial = 0xEDB88320;
-
-void precompute_crc();

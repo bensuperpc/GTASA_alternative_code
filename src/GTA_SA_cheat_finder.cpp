@@ -48,8 +48,19 @@ unsigned int jamcrc(const std::string my_string) {
   unsigned char *current = (unsigned char *)my_string.data();
   size_t length = my_string.length();
   // process eight bytes at once
+  while (length >= 8) {
+    uint32_t one = *current++ ^ crc;
+    uint32_t two = *current++;
+    crc = Crc32Lookup[7][one & 0xFF] ^ Crc32Lookup[6][(one >> 8) & 0xFF] ^
+          Crc32Lookup[5][(one >> 16) & 0xFF] ^ Crc32Lookup[4][one >> 24] ^
+          Crc32Lookup[3][two & 0xFF] ^ Crc32Lookup[2][(two >> 8) & 0xFF] ^
+          Crc32Lookup[1][(two >> 16) & 0xFF] ^ Crc32Lookup[0][two >> 24];
+    length -= 8;
+  }
+  unsigned char *currentChar = (unsigned char *)current;
+  // remaining 1 to 7 bytes
   while (length--)
-    crc = (crc >> 8) ^ Crc32Lookup[(crc & 0xFF) ^ *current++];
+    crc = (crc >> 8) ^ Crc32Lookup[0][(crc & 0xFF) ^ *currentChar++];
   return crc;
 }
 
@@ -74,29 +85,34 @@ template <class T> void findStringInv(T n, char *array) {
   }
 }
 
-/**
- * \brief Source: https://create.stephan-brumme.com/crc32/#slicing-by-8-overview
- */
-void precompute_crc() {
-  Crc32Lookup[0] = 0;
-  // compute each power of two (all numbers with exactly one bit set)
-  uint32_t crc = Crc32Lookup[0x80] = Polynomial;
-  for (unsigned int next = 0x40; next != 0; next >>= 1) {
-    crc = (crc >> 1) ^ ((crc & 1) * Polynomial);
-    Crc32Lookup[next] = crc;
-  }
-
-  for (unsigned int powerOfTwo = 2; powerOfTwo <= 0x80; powerOfTwo <<= 1) {
-    uint32_t crcExtraBit = Crc32Lookup[powerOfTwo];
-    for (unsigned int i = 1; i < powerOfTwo; i++)
-      Crc32Lookup[i + powerOfTwo] = Crc32Lookup[i] ^ crcExtraBit;
-  }
-}
-
 int main(int arc, char *argv[]) {
   std::ios_base::sync_with_stdio(false); // Improve std::cout speed
 
-  precompute_crc(); // Fill Crc32Lookup table
+  // same as before
+  for (unsigned int i = 0; i <= 0xFF; i++) {
+    uint32_t crc = i;
+    for (unsigned int j = 0; j < 8; j++)
+      crc = (crc >> 1) ^ ((crc & 1) * Polynomial);
+    Crc32Lookup[0][i] = crc;
+  }
+  for (unsigned int i = 0; i <= 0xFF; i++) {
+    // for Slicing-by-4 and Slicing-by-8
+    Crc32Lookup[1][i] =
+        (Crc32Lookup[0][i] >> 8) ^ Crc32Lookup[0][Crc32Lookup[0][i] & 0xFF];
+    Crc32Lookup[2][i] =
+        (Crc32Lookup[1][i] >> 8) ^ Crc32Lookup[0][Crc32Lookup[1][i] & 0xFF];
+    Crc32Lookup[3][i] =
+        (Crc32Lookup[2][i] >> 8) ^ Crc32Lookup[0][Crc32Lookup[2][i] & 0xFF];
+    // only Slicing-by-8
+    Crc32Lookup[4][i] =
+        (Crc32Lookup[3][i] >> 8) ^ Crc32Lookup[0][Crc32Lookup[3][i] & 0xFF];
+    Crc32Lookup[5][i] =
+        (Crc32Lookup[4][i] >> 8) ^ Crc32Lookup[0][Crc32Lookup[4][i] & 0xFF];
+    Crc32Lookup[6][i] =
+        (Crc32Lookup[5][i] >> 8) ^ Crc32Lookup[0][Crc32Lookup[5][i] & 0xFF];
+    Crc32Lookup[7][i] =
+        (Crc32Lookup[6][i] >> 8) ^ Crc32Lookup[0][Crc32Lookup[6][i] & 0xFF];
+  }
 
   size_t min_range = 0; // Alphabetic sequence range min
   if (arc >= 3) {
