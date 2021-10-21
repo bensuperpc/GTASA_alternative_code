@@ -34,6 +34,7 @@
 //////////////////////////////////////////////////////////////
 
 #include "GTA_SA_cheat_finder.hpp"
+#include <cstdlib>
 
 /**
  * \brief Source: https://create.stephan-brumme.com/crc32/#slicing-by-8-overview
@@ -112,9 +113,13 @@ int main(int arc, char *argv[]) {
   if (arc >= 3) {
     max_range = static_cast<size_t>(std::stoll(argv[2]));
   }
-  assert(min_range <
-         max_range); // Test if begining value is highter than end value
-  // assert(min_range > 0); // Test forbiden value
+
+  if (min_range > max_range) {
+    std::cout << "Min range value: '" << min_range
+              << "' can't be greater than Max range value: '" << max_range
+              << "'" << std::endl;
+    return EXIT_FAILURE;
+  }
 
   std::cout << "Number of calculations: " << (max_range - min_range)
             << std::endl;
@@ -134,7 +139,7 @@ int main(int arc, char *argv[]) {
 #if defined(_OPENMP)
 #pragma omp parallel for schedule(auto) shared(results) firstprivate(tmp, crc)
 #endif
-  for (std::size_t i = min_range; i < max_range; i++) {
+  for (std::size_t i = min_range; i <= max_range; i++) {
     findStringInv<size_t>(i, tmp); // Generate Alphabetic sequence from size_t
                                    // value, A=1, Z=27, AA = 28, AB = 29
     crc = jamcrc(tmp);             // JAMCRC
@@ -183,4 +188,3 @@ int main(int arc, char *argv[]) {
 
   return EXIT_SUCCESS;
 }
-/** @} */ // end of group2
