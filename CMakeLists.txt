@@ -45,7 +45,7 @@ target_compile_features(GTA_SA_cheat_finder_GTA_SA_cheat_finder PRIVATE cxx_std_
 
 find_package(OpenMP)
 if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
-  target_link_libraries(GTA_SA_cheat_finder_GTA_SA_cheat_finder PUBLIC OpenMP::OpenMP_CXX)
+  target_link_libraries(GTA_SA_cheat_finder_GTA_SA_cheat_finder PRIVATE OpenMP::OpenMP_CXX)
 endif()
 
 target_link_libraries(GTA_SA_cheat_finder_GTA_SA_cheat_finder PRIVATE GTA_SA_cheat_finder_lib)

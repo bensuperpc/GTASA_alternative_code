@@ -1,43 +1,42 @@
-#include <algorithm> // std::find
-#include <array>     // std::array
-#include <chrono>    // std::chrono
-#include <cstring>   // strlen
-#include <iomanip>   // std::setw
+#include <algorithm>  // std::find
+#include <array>  // std::array
+#include <chrono>  // std::chrono
+#include <cstring>  // strlen
+#include <iomanip>  // std::setw
 #include <iostream>  // std::cout
-#include <string>    // std::string
+#include <string>  // std::string
 #if ((defined(_MSVC_LANG) && _MSVC_LANG >= 201703L) || __cplusplus >= 201703L)
-#include <string_view> // std::string_view
-#if ((defined(_MSVC_LANG) && _MSVC_LANG >= 202002L) ||                         \
-     __cplusplus >= 202002L && !defined(ANDROID) && !defined(__ANDROID__) &&   \
-         !defined(__EMSCRIPTEN__) && !defined(__clang__))
-#include <execution> // std::execution
+#  include <string_view>  // std::string_view
+#  if ((defined(_MSVC_LANG) && _MSVC_LANG >= 202002L) \
+       || __cplusplus >= 202002L && !defined(ANDROID) && !defined(__ANDROID__) \
+           && !defined(__EMSCRIPTEN__) && !defined(__clang__))
+#    include <execution>  // std::execution
+#  endif
 #endif
-#endif
-#include <tuple>   // std::pair
-#include <utility> // std::make_pair
+#include <tuple>  // std::pair
+#include <utility>  // std::make_pair
 #include <vector>  // std::vector
 
 typedef std::chrono::high_resolution_clock Clock;
 
 #if ((defined(_MSVC_LANG) && _MSVC_LANG >= 201703L) || __cplusplus >= 201703L)
-#if __has_include("omp.h")
-#include <omp.h>
+#  if __has_include("omp.h")
+#    include <omp.h>
+#  endif
 #endif
-#endif
-
 
 #if !defined(_OPENMP)
-#warning No openMP ! Only use 1 thread.
+#  warning No openMP ! Only use 1 thread.
 #endif
 
 /** @brief Define alphabetic seq with upercase */
 #define alphabetUp "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 /** @brief Size of alphabet */
-const std::uint32_t alphabetSize{26};
+const std::uint32_t alphabetSize {26};
 
 /** @brief List of CRC32/JAMCRC hash of cheats codes */
-const std::array<std::uint32_t, 87> cheat_list{
+const std::array<std::uint32_t, 87> cheat_list {
     0xDE4B237D, 0xB22A28D1, 0x5A783FAE, 0xEECCEA2B, 0x42AF1E28, 0x555FC201,
     0x2A845345, 0xE1EF01EA, 0x771B83FC, 0x5BF12848, 0x44453A17, 0xFCFF1D08,
     0xB69E8532, 0x8B828076, 0xDD6ED9E9, 0xA290FD8C, 0x3484B5A7, 0x43DB914E,
@@ -152,14 +151,14 @@ const std::array<const std::string, 87> cheat_list_name{
 std::uint32_t jamcrc(std::string_view my_string);
 #else
 #warning C++17 is not enabled, the program will be less efficient with previous standards.
-auto jamcrc(const std::string &my_string) -> std::uint32_t;
+auto jamcrc(const std::string& my_string) -> std::uint32_t;
 #endif
 
 /**
  * \brief Generate Alphabetic sequence from size_t value, A=1, Z=27, AA = 28, AB
  * = 29 \param n index in base 26 \param array return array
  */
-void findStringInv(uint64_t n, char *array);
+void findStringInv(uint64_t n, char* array);
 
 const uint32_t Polynomial = 0xEDB88320;
 
