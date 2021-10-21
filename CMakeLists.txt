@@ -1,50 +1,65 @@
-##############################################################
-#   ____                                                     #
-#  | __ )  ___ _ __  ___ _   _ _ __   ___ _ __ _ __   ___    #
-#  |  _ \ / _ \ '_ \/ __| | | | '_ \ / _ \ '__| '_ \ / __|   #
-#  | |_) |  __/ | | \__ \ |_| | |_) |  __/ |  | |_) | (__    #
-#  |____/ \___|_| |_|___/\__,_| .__/ \___|_|  | .__/ \___|   #
-#                             |_|             |_|            #
-##############################################################
-#                                                            #
-#  BenLib, 2020                                              #
-#  Created: 05, February, 2020                               #
-#  Modified: 06, June, 2021                                  #
-#  file: CMakeLists.txt                                      #
-#  CMake                                                     #
-#  Source:                                                   #
-#                                                            #
-#  OS: ALL                                                   #
-#  CPU: ALL                                                  #
-#                                                            #
-##############################################################
+cmake_minimum_required(VERSION 3.14)
 
-project(gta LANGUAGES CXX)
-cmake_minimum_required(VERSION 3.9)
+include(cmake/prelude.cmake)
 
-set(CMAKE_MODULE_PATH
-    ${CMAKE_MODULE_PATH}
-    ${PROJECT_SOURCE_DIR}/cmake)
+project(
+    GTA_SA_cheat_finder
+    VERSION 1.2.0
+    DESCRIPTION "Find alternative cheat code in Grand Theft Auto San Andreas (2004) by bruteforce"
+    HOMEPAGE_URL "https://github.com/bensuperpc"
+    LANGUAGES CXX
+)
 
-include(ConfigureNinja)
+docs_early_return()
 
-#=== C++ VERSION CHECK ===
-set(CMAKE_CXX_STANDARD_REQUIRED OFF)
-set(CMAKE_CXX_STANDARD 17)
-set(CXX_EXTENSIONS OFF)
+include(cmake/project-is-top-level.cmake)
+include(cmake/variables.cmake)
 
-set(CMAKE_CXX_FLAGS                "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -Wconversion -Wshadow -fno-exceptions")
+# ---- Declare library ----
 
-#target_compile_options(gta PRIVATE -Wall -Wextra -Wpedantic -Wconversion -Wshadow)
-#set_target_properties(gta PROPERTIES CXX_STANDARD 17 CMAKE_CXX_STANDARD_REQUIRED OFF)
+add_library(
+    GTA_SA_cheat_finder_lib OBJECT
+    source/lib.cpp
+)
 
-add_executable(gta src/GTA_SA_cheat_finder.hpp src/GTA_SA_cheat_finder.cpp)
+target_include_directories(
+    GTA_SA_cheat_finder_lib ${GTA_SA_cheat_finder_warning_guard}
+    PUBLIC
+    "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/source>"
+)
 
-include(ConfigureOpenMP)
+target_compile_features(GTA_SA_cheat_finder_lib PUBLIC cxx_std_17)
 
-# Fix long build time with emscripten
-if(EMSCRIPTEN)
-    message(STATUS "Using emscripten: disable LTO")
-else()
-    include(ConfigureLTO)
+# ---- Declare executable ----
+
+add_executable(GTA_SA_cheat_finder_GTA_SA_cheat_finder source/main.cpp)
+add_executable(GTA_SA_cheat_finder::GTA_SA_cheat_finder ALIAS GTA_SA_cheat_finder_GTA_SA_cheat_finder)
+
+set_target_properties(
+    GTA_SA_cheat_finder_GTA_SA_cheat_finder PROPERTIES
+    OUTPUT_NAME GTA_SA_cheat_finder
+    EXPORT_NAME GTA_SA_cheat_finder
+)
+
+target_compile_features(GTA_SA_cheat_finder_GTA_SA_cheat_finder PRIVATE cxx_std_17)
+
+target_link_libraries(GTA_SA_cheat_finder_GTA_SA_cheat_finder PRIVATE GTA_SA_cheat_finder_lib)
+
+# ---- Install rules ----
+
+if(NOT CMAKE_SKIP_INSTALL_RULES)
+  include(cmake/install-rules.cmake)
 endif()
+
+# ---- Developer mode ----
+
+if(NOT GTA_SA_cheat_finder_DEVELOPER_MODE)
+  return()
+elseif(NOT PROJECT_IS_TOP_LEVEL)
+  message(
+      AUTHOR_WARNING
+      "Developer mode is intended for developers of GTA_SA_cheat_finder"
+  )
+endif()
+
+include(cmake/dev-mode.cmake)
