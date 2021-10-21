@@ -101,12 +101,12 @@ You can build without docker (Less tested)
 
 With ninja:
 ```sh
-./builder/ninja-builder.sh -D CMAKE_BUILD_TYPE=Release
+./tools/ninja-builder.sh -D CMAKE_BUILD_TYPE=Release
 ```
 
 CMake only:
 ```sh
-./builder/cmake-builder.sh -D CMAKE_BUILD_TYPE=Release
+./tools/cmake-builder.sh -D CMAKE_BUILD_TYPE=Release
 ```
 
 
