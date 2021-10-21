@@ -9,7 +9,7 @@
 //                                                          //
 //  BenLib, 2021                                            //
 //  Created: 26, February, 2021                             //
-//  Modified: 14, June, 2021                                //
+//  Modified: 14, October, 2021                             //
 //  file: crypto.cpp                                        //
 //  Crypto                                                  //
 //  Source:
@@ -75,7 +75,8 @@ template <class T> void findStringInv(T n, char *array) {
 }
 
 /**
- * \brief Source: https://create.stephan-brumme.com/crc32/#slicing-by-8-overview
+ * \brief Fill Crc32Lookup table
+ * Source: https://create.stephan-brumme.com/crc32/#slicing-by-8-overview
  */
 void precompute_crc() {
   Crc32Lookup[0] = 0;

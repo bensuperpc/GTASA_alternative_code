@@ -54,8 +54,8 @@ Iter. N°         Code           JAMCRC value
 370535590        AEDUWNV        0x9a629401       
 380229391        AEZAKMI        0xe1b33eb9       
 535721682        ASBHGRB        0xa7613f99       
-Time: 1.21633 sec
-This program execute: 493.288175 MOps/sec
+Time: 1.20819 sec
+This program execute: 496.611779 MOps/sec
 ```
 
 ##### Perfs
