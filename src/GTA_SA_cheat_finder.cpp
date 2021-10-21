@@ -39,10 +39,10 @@
  * \brief Source: https://create.stephan-brumme.com/crc32/#slicing-by-8-overview
  */
 #if ((defined(_MSVC_LANG) && _MSVC_LANG >= 201703L) || __cplusplus >= 201703L)
-unsigned int jamcrc(std::string_view my_string) {
+std::uint32_t jamcrc(std::string_view my_string) {
 #else
 #warning C++17 is not enabled, the program will be less efficient with previous standards.
-unsigned int jamcrc(const std::string my_string) {
+std::uint32_t jamcrc(const std::string &my_string) {
 #endif
   uint32_t crc = static_cast<uint32_t>(~0);
   unsigned char *current = (unsigned char *)my_string.data();
@@ -81,14 +81,14 @@ void precompute_crc() {
   Crc32Lookup[0] = 0;
   // compute each power of two (all numbers with exactly one bit set)
   uint32_t crc = Crc32Lookup[0x80] = Polynomial;
-  for (unsigned int next = 0x40; next != 0; next >>= 1) {
+  for (std::uint32_t next = 0x40; next != 0; next >>= 1) {
     crc = (crc >> 1) ^ ((crc & 1) * Polynomial);
     Crc32Lookup[next] = crc;
   }
 
-  for (unsigned int powerOfTwo = 2; powerOfTwo <= 0x80; powerOfTwo <<= 1) {
+  for (std::uint32_t powerOfTwo = 2; powerOfTwo <= 0x80; powerOfTwo <<= 1) {
     uint32_t crcExtraBit = Crc32Lookup[powerOfTwo];
-    for (unsigned int i = 1; i < powerOfTwo; i++)
+    for (std::uint32_t i = 1; i < powerOfTwo; i++)
       Crc32Lookup[i + powerOfTwo] = Crc32Lookup[i] ^ crcExtraBit;
   }
 }

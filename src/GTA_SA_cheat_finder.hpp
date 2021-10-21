@@ -71,7 +71,7 @@ typedef std::chrono::high_resolution_clock Clock;
 constexpr std::uint32_t alphabetSize{26};
 
 /** @brief List of CRC32/JAMCRC hash of cheats codes */
-const std::array<unsigned int, 87> cheat_list{
+const std::array<std::uint32_t, 87> cheat_list{
     0xDE4B237D, 0xB22A28D1, 0x5A783FAE, 0xEECCEA2B, 0x42AF1E28, 0x555FC201,
     0x2A845345, 0xE1EF01EA, 0x771B83FC, 0x5BF12848, 0x44453A17, 0xFCFF1D08,
     0xB69E8532, 0x8B828076, 0xDD6ED9E9, 0xA290FD8C, 0x3484B5A7, 0x43DB914E,
@@ -177,7 +177,7 @@ const std::array<const std::string, 87> cheat_list_name{
     "Spawn Monster"};
 */
 
-std::vector<std::tuple<std::size_t, std::string, unsigned int>> results =
+std::vector<std::tuple<std::size_t, std::string, std::uint32_t>> results =
     {}; // Stock results after calculations
 
 /**
@@ -186,10 +186,10 @@ std::vector<std::tuple<std::size_t, std::string, unsigned int>> results =
  * @return uint32_t with JAMCRC value
  */
 #if ((defined(_MSVC_LANG) && _MSVC_LANG >= 201703L) || __cplusplus >= 201703L)
-unsigned int jamcrc(std::string_view my_string);
+std::uint32_t jamcrc(std::string_view my_string);
 #else
 #warning C++17 is not enabled, the program will be less efficient with previous standards.
-unsigned int jamcrc(const std::string my_string);
+std::uint32_t jamcrc(const std::string &my_string);
 #endif
 
 /**
