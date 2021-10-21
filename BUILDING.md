@@ -21,6 +21,12 @@ cmake -S . -B build
 cmake --build build --config Release
 ```
 
+#### Build docker
+
+```sh
+docker build . -t bensuperpc/gta:latest
+```
+
 ## Install
 
 This project doesn't require any special command-line flags to install to keep
