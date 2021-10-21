@@ -19,8 +19,6 @@ set -euo pipefail
 #//  CPU: ALL                                                //
 #//                                                          //
 #//////////////////////////////////////////////////////////////
-export CC=/usr/bin/clang
-export CXX=/usr/bin/clang++
 mkdir -p build
 
 cmake -S . -B build -G Ninja "$*"
