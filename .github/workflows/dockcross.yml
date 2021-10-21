@@ -27,7 +27,7 @@ jobs:
             android-x86,
             android-x86_64,
             web-wasm,
-            web-wasi,
+#            web-wasi,
             linux-arm64,
             linux-arm64-lts,
             linux-arm64-full,
@@ -77,10 +77,10 @@ jobs:
         with:
           submodules: "recursive"
           fetch-depth: 0
-      - name: "🛠️ cmake"
+      - name: "🛠️ dockcross"
         run: |
-          chmod +x ./tools/dockcross-cmake-builder.sh
-          ./tools/dockcross-cmake-builder.sh ${{ matrix.arch_name }}:latest -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-      - name: "🛠️ docker"
-        if: matrix.arch_name == 'linux-x64' && false
-        run: make docker
+          docker pull dockcross/${{ matrix.arch_name }}:latest
+          docker run --rm dockcross/${{ matrix.arch_name }} >./dockcross-build
+          chmod +x ./dockcross-build
+          ./dockcross-local cmake -B build -S . -G Ninja -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+          ./dockcross-local ninja -C build
