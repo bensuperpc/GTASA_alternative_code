@@ -68,7 +68,7 @@ typedef std::chrono::high_resolution_clock Clock;
 #define alphabetUp "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 /** @brief Size of alphabet */
-constexpr std::uint32_t alphabetSize{26};
+const std::uint32_t alphabetSize{26};
 
 /** @brief List of CRC32/JAMCRC hash of cheats codes */
 const std::array<std::uint32_t, 87> cheat_list{
@@ -201,7 +201,7 @@ template <class T> void findStringInv(T n, char *array);
 /**
  * \brief Source: https://create.stephan-brumme.com/crc32/#slicing-by-8-overview
  */
-uint32_t Crc32Lookup[256];
+uint32_t Crc32Lookup[256] = {0};
 
 const uint32_t Polynomial = 0xEDB88320;
 

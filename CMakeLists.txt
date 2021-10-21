@@ -30,7 +30,9 @@ include(ConfigureCCache)
 include(ConfigureNinja)
 
 #=== C++ VERSION CHECK ===
-include(ConfigureCXX_Version)
+set(CMAKE_CXX_STANDARD_REQUIRED OFF)
+set(CMAKE_CXX_STANDARD 17)
+set(CXX_EXTENSIONS OFF)
 
 set(CMAKE_CXX_FLAGS                "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -Wconversion -Wshadow -fno-exceptions")
 

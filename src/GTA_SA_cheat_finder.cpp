@@ -58,8 +58,8 @@ std::uint32_t jamcrc(const std::string &my_string) {
  * = 28 = 29 \tparam T \param n index in base 26 \param array return array
  */
 template <class T> void findStringInv(T n, char *array) {
-  constexpr std::uint32_t stringSizeAlphabet{alphabetSize + 1};
-  constexpr std::array<char, stringSizeAlphabet> alpha{alphabetUp};
+  const std::uint32_t stringSizeAlphabet{alphabetSize + 1};
+  const std::array<char, stringSizeAlphabet> alpha{alphabetUp};
   // If n < 27
   if (n < stringSizeAlphabet - 1) {
     array[0] = alpha[n];
