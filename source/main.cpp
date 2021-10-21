@@ -1,7 +1,11 @@
 //#include <iostream>
 //#include <string>
 
+#include <chrono>    // std::chrono
+
 #include "gta_sa_lib.hpp"
+
+using Clock = std::chrono::high_resolution_clock;
 
 auto main(int arc, char* argv[]) -> int
 {
