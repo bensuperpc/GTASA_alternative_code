@@ -19,7 +19,7 @@ include(cmake/variables.cmake)
 
 add_library(
     GTA_SA_cheat_finder_lib OBJECT
-    source/lib.cpp
+    source/gta_sa_lib.cpp
 )
 
 target_include_directories(
@@ -42,6 +42,11 @@ set_target_properties(
 )
 
 target_compile_features(GTA_SA_cheat_finder_GTA_SA_cheat_finder PRIVATE cxx_std_17)
+
+find_package(OpenMP)
+if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
+  target_link_libraries(GTA_SA_cheat_finder_GTA_SA_cheat_finder PUBLIC OpenMP::OpenMP_CXX)
+endif()
 
 target_link_libraries(GTA_SA_cheat_finder_GTA_SA_cheat_finder PRIVATE GTA_SA_cheat_finder_lib)
 
