@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+
 #//////////////////////////////////////////////////////////////
 #//   ____                                                   //
 #//  | __ )  ___ _ __  ___ _   _ _ __   ___ _ __ _ __   ___  //
@@ -11,7 +11,7 @@ set -euo pipefail
 #//                                                          //
 #//  Script, 2020                                            //
 #//  Created: 06, October, 2020                              //
-#//  Modified: 30, July, 2021                                //
+#//  Modified: 21, October, 2021                             //
 #//  file: -                                                 //
 #//  -                                                       //
 #//  Source: https://github.com/bensuperpc/scripts                                                //
@@ -19,7 +19,6 @@ set -euo pipefail
 #//  CPU: ALL                                                //
 #//                                                          //
 #//////////////////////////////////////////////////////////////
-mkdir -p build
 
 cmake -S . -B build -G Ninja "$*"
 
