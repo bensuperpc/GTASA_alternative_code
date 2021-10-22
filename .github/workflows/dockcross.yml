@@ -5,17 +5,15 @@ on:
     branches:
       - "*"
     paths-ignore:
-      - "**/README.md"
+      - "**.md"
   pull_request:
     branches:
       - "*"
-  schedule:
-    - cron: "0 0 */7 * *" # https://crontab.guru/#0_7_*_*_1
   workflow_dispatch:
 
 jobs:
   image:
-    name: build ${{ matrix.dockcross }} ${{ matrix.build_type }}
+    name: dockcross ${{ matrix.dockcross.image_name }} ${{ matrix.build_type }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -62,8 +60,14 @@ jobs:
           - { image_name: windows-shared-x64, cmake_arg: "" }
           - { image_name: windows-shared-x64-posix, cmake_arg: "" }
           - { image_name: windows-shared-x86, cmake_arg: "" }
-          - { image_name: windows-armv7, cmake_arg: "" }
-          - { image_name: windows-arm64, cmake_arg: "" }
+          - {
+              image_name: windows-armv7,
+              cmake_arg: "-DCMAKE_BUILD_WITH_INSTALL_RPATH=ON",
+            }
+          - {
+              image_name: windows-arm64,
+              cmake_arg: "-DCMAKE_BUILD_WITH_INSTALL_RPATH=ON",
+            }
           - { image_name: linux-riscv32, cmake_arg: "" }
           - { image_name: linux-riscv64, cmake_arg: "" }
           - { image_name: linux-m68k-uclibc, cmake_arg: "" }
@@ -71,15 +75,22 @@ jobs:
         # Disable MinSizeRel RelWithDebInfo, Release
         build_type: [Debug]
     steps:
-      - name: "📥 Checkout Code"
+      - name: "Checkout Code"
         uses: actions/checkout@v2
         with:
           submodules: "recursive"
           fetch-depth: 0
-      - name: "🛠️ dockcross"
+
+      - name: "Pull docker image: ${{ matrix.dockcross.image_name }}"
+        run: docker pull dockcross/${{ matrix.dockcross.image_name }}:latest
+
+      - name: "Make dockcross script: dockcross-${{ matrix.dockcross.image_name }}"
         run: |
-          docker pull dockcross/${{ matrix.dockcross.image_name }}:latest
           docker run --rm dockcross/${{ matrix.dockcross.image_name }} > ./dockcross-${{ matrix.dockcross.image_name }}
           chmod +x ./dockcross-${{ matrix.dockcross.image_name }}
-          ./dockcross-${{ matrix.dockcross.image_name }} cmake -B build -S . -G Ninja -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} ${{ matrix.dockcross.cmake_arg }}
-          ./dockcross-${{ matrix.dockcross.image_name }} ninja -C build
+
+      - name: "Config CMake build"
+        run: ./dockcross-${{ matrix.dockcross.image_name }} cmake -B build -S . -G Ninja -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} ${{ matrix.dockcross.cmake_arg }}
+
+      - name: "Building"
+        run: ./dockcross-${{ matrix.dockcross.image_name }} ninja -C build
