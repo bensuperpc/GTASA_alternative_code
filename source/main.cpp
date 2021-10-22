@@ -1,6 +1,5 @@
 //#include <iostream>
 //#include <string>
-
 #include <chrono>    // std::chrono
 
 #include "gta_sa_lib.hpp"
@@ -14,7 +13,7 @@ auto main(int arc, char* argv[]) -> int
   std::vector<std::tuple<std::size_t, std::string, std::uint32_t>> results =
       {};  // Stock results after calculations
 
-  precompute_crc();  // Fill Crc32Lookup table
+  gta::precompute_crc();  // Fill Crc32Lookup table
 
   size_t min_range = 0;  // Alphabetic sequence range min
   if (arc >= 3) {
@@ -40,10 +39,11 @@ auto main(int arc, char* argv[]) -> int
             << std::endl;
   std::cout << "" << std::endl;
   // Display Alphabetic sequence range
+  // std::array<char, 29>tmp1 = {0};
   char tmp1[29] = {0};
   char tmp2[29] = {0};
-  findStringInv(min_range, tmp1);
-  findStringInv(max_range, tmp2);
+  gta::findStringInv(min_range, tmp1);
+  gta::findStringInv(max_range, tmp2);
   std::cout << "From: " << tmp1 << " to: " << tmp2 << " Alphabetic sequence"
             << std::endl;
   std::cout << "" << std::endl;
@@ -55,9 +55,9 @@ auto main(int arc, char* argv[]) -> int
 #  pragma omp parallel for schedule(auto) shared(results) firstprivate(tmp, crc)
 #endif
   for (std::size_t i = min_range; i <= max_range; i++) {
-    findStringInv(i, tmp);  // Generate Alphabetic sequence from size_t
+    gta::findStringInv(i, tmp);  // Generate Alphabetic sequence from size_t
                             // value, A=1, Z=27, AA = 28, AB = 29
-    crc = jamcrc(tmp);  // JAMCRC
+    crc = gta::jamcrc(tmp);  // JAMCRC
 #if ((defined(_MSVC_LANG) && _MSVC_LANG >= 202002L) \
      || __cplusplus >= 202002L && !defined(ANDROID) && !defined(__ANDROID__) \
          && !defined(__EMSCRIPTEN__) && !defined(__clang__))
@@ -68,8 +68,8 @@ auto main(int arc, char* argv[]) -> int
         != std::end(cheat_list))
     {
 #else
-    if (std::find(std::begin(cheat_list), std::end(cheat_list), crc)
-        != std::end(cheat_list))
+    if (std::find(std::begin(gta::cheat_list), std::end(gta::cheat_list), crc)
+        != std::end(gta::cheat_list))
     {
 #endif  // If crc is present in Array
       std::reverse(tmp, tmp + strlen(tmp));  // Invert char array
