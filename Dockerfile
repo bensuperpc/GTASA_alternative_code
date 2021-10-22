@@ -6,7 +6,7 @@ RUN cmake -Bbuild -H. -GNinja -DCMAKE_BUILD_TYPE=Release && ninja -Cbuild
 
 FROM alpine:latest as runtime
 RUN apk add --no-cache libstdc++ libgomp libgcc
-COPY --from=builder app/build/gta .
+COPY --from=builder app/build/GTA_SA_cheat_finder .
 # Test exec
-RUN ./gta 0 52
-ENTRYPOINT ["./gta"] 
+RUN ./GTA_SA_cheat_finder 0 52
+ENTRYPOINT ["./GTA_SA_cheat_finder"] 
