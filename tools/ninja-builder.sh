@@ -20,9 +20,11 @@
 #//                                                          //
 #//////////////////////////////////////////////////////////////
 
-export CC=/usr/bin/clang
-export CXX=/usr/bin/clang++
+#export CC=/usr/bin/clang
+#export CXX=/usr/bin/clang++
 
-cmake -S . -B build -G Ninja "$*" --preset=ci-ubuntu
+#--preset=dev
+
+cmake -S . -B build -G Ninja "$*"
 
 ninja -C build
