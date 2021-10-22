@@ -24,7 +24,7 @@ jobs:
           - { image_name: android-x86, cmake_arg: "" }
           - { image_name: android-x86_64, cmake_arg: "" }
           - { image_name: web-wasm, cmake_arg: "" }
-          - { image_name: web-wasi, cmake_arg: "" }
+          - { image_name: web-wasi, cmake_arg: "-DCMAKE_CXX_FLAGS='${CMAKE_CXX_FLAGS} -fno-exceptions'" }
           - { image_name: linux-arm64, cmake_arg: "" }
           - { image_name: linux-arm64-lts, cmake_arg: "" }
           - { image_name: linux-arm64-full, cmake_arg: "" }
