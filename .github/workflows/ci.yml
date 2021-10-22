@@ -167,6 +167,8 @@ jobs:
           publish_dir: build/docs/html
 
   docker:
+    needs: [lint]
+
     runs-on: ubuntu-latest
 
     steps:
