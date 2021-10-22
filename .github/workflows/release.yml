@@ -95,8 +95,8 @@ jobs:
 
       - name: "Checksum and Compress"
         run: |
-            chmod +x ./tools/make-release-build.sh
-            ./tools/make-release-build.sh && mv gta-local.tar.xz gta-${{ matrix.dockcross.image_name }}.tar.xz
+          chmod +x ./tools/make-release-build.sh
+          ./tools/make-release-build.sh && mv gta-local.tar.xz gta-${{ matrix.dockcross.image_name }}.tar.xz
 
       - name: "Save binaries"
         uses: actions/upload-artifact@v2
