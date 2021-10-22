@@ -17,20 +17,20 @@
 #### Usage
 
 ```sh
-./gta 0 60000000 (searches codes from index 0 to 60000000)
+./GTA_SA_cheat_finder 0 60000000 (searches codes from index 0 to 60000000)
 ```
 
 ```sh
-./gta 50 58800000 (searches codes from index 50 to 58800000)
+./GTA_SA_cheat_finder 50 58800000 (searches codes from index 50 to 58800000)
 ```
 
 ```sh
-./gta 58800000 (searches codes from index 0 to 58800000)
+./GTA_SA_cheat_finder 58800000 (searches codes from index 0 to 58800000)
 ```
 
 #### Example
 ```sh
-./gta 0 600000000
+./GTA_SA_cheat_finder 0 600000000
 ```
 **You should get this result:**
 ```
@@ -106,7 +106,7 @@ See the [CONTRIBUTING](CONTRIBUTING.md) document.
 
 # Licensing
 
-MIT License
+[MIT License](LICENSE)
 
 
 **Free Software forever !**

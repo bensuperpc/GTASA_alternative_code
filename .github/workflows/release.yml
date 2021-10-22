@@ -90,7 +90,7 @@ jobs:
       - name: "Config CMake build"
         run: ./dockcross-${{ matrix.dockcross.image_name }} cmake -B build -S . -G Ninja -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} ${{ matrix.dockcross.cmake_arg }}
 
-      - name: "Building"
+      - name: "Build"
         run: ./dockcross-${{ matrix.dockcross.image_name }} ninja -C build
 
       - name: "Checksum"

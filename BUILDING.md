@@ -24,7 +24,7 @@ cmake --build build --config Release
 #### Build docker
 
 ```sh
-docker build . -t bensuperpc/gta:latest
+docker build . -f Dockerfile -t bensuperpc/gta:latest
 ```
 
 ## Install
