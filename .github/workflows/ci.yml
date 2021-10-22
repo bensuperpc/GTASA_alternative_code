@@ -146,7 +146,7 @@ jobs:
 
   docs:
     # Deploy docs only when builds succeed
-    needs: [sanitize, test, shellcheck]
+    needs: [sanitize, test]
 
     runs-on: ubuntu-latest
 
