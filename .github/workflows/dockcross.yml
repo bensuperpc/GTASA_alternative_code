@@ -47,12 +47,12 @@ jobs:
           - { image_name: linux-mips, cmake_arg: "" }
           - { image_name: linux-ppc64le, cmake_arg: "" }
           - { image_name: linux-xtensa-uclibc, cmake_arg: "" }
-          - { image_name: manylinux1-x64, cmake_arg: "" }
-          - { image_name: manylinux1-x86, cmake_arg: "" }
+#          - { image_name: manylinux1-x64, cmake_arg: "" }
+#          - { image_name: manylinux1-x86, cmake_arg: "" }
           - { image_name: manylinux2010-x64, cmake_arg: "" }
           - { image_name: manylinux2010-x86, cmake_arg: "" }
           - { image_name: manylinux2014-x64, cmake_arg: "" }
-          - { image_name: manylinux2014-aarch64, cmake_arg: "" }
+#          - { image_name: manylinux2014-aarch64, cmake_arg: "" }
           - { image_name: manylinux2010-x86, cmake_arg: "" }
           - { image_name: windows-static-x64, cmake_arg: "" }
           - { image_name: windows-static-x64-posix, cmake_arg: "" }
