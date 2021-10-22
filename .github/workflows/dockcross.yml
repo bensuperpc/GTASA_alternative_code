@@ -12,7 +12,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  image:
+  build:
     name: dockcross ${{ matrix.dockcross.image_name }} ${{ matrix.build_type }}
     runs-on: ubuntu-latest
     strategy:
