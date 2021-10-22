@@ -28,7 +28,7 @@
 #endif
 
 /** @brief Define alphabetic seq with upercase */
-#define alphabetUp "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+#define ALPHABET_UP "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 namespace gta
 {
@@ -148,7 +148,7 @@ const std::array<const std::string, 87> cheat_list_name{
  * @return uint32_t with JAMCRC value
  */
 #if ((defined(_MSVC_LANG) && _MSVC_LANG >= 201703L) || __cplusplus >= 201703L)
-std::uint32_t jamcrc(std::string_view my_string);
+auto jamcrc(std::string_view my_string) -> std::uint32_t;
 #else
 #warning C++17 is not enabled, the program will be less efficient with previous standards.
 auto jamcrc(const std::string& my_string) -> std::uint32_t;
@@ -160,7 +160,7 @@ auto jamcrc(const std::string& my_string) -> std::uint32_t;
  */
 void findStringInv(uint64_t n, char* array);
 
-static const uint32_t Polynomial = 0xEDB88320;
+static const uint32_t polynomial = 0xEDB88320;
 
 /**
  * \brief Source: https://create.stephan-brumme.com/crc32/#slicing-by-8-overview

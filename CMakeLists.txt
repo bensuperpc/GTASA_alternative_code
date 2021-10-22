@@ -30,7 +30,7 @@ target_include_directories(
 
 target_compile_features(GTA_SA_cheat_finder_lib PUBLIC cxx_std_17)
 
-find_package(OpenMP)
+find_package(OpenMP 4.0)
 if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
   target_link_libraries(GTA_SA_cheat_finder_lib PUBLIC OpenMP::OpenMP_CXX)
 endif()
