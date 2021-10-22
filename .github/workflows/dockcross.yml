@@ -80,7 +80,7 @@ jobs:
       - name: "🛠️ dockcross"
         run: |
           docker pull dockcross/${{ matrix.arch_name }}:latest
-          docker run --rm dockcross/${{ matrix.arch_name }} >./dockcross-build
+          docker run --rm dockcross/${{ matrix.arch_name }} > ./dockcross-${{ matrix.arch_name }}
           chmod +x ./dockcross-build
-          ./dockcross-local cmake -B build -S . -G Ninja -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-          ./dockcross-local ninja -C build
+          ./dockcross-${{ matrix.arch_name }} cmake -B build -S . -G Ninja -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+          ./dockcross-${{ matrix.arch_name }} ninja -C build
