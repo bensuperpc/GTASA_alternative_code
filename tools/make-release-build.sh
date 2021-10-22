@@ -9,9 +9,9 @@
 #//                             |_|             |_|          //
 #//////////////////////////////////////////////////////////////
 #//                                                          //
-#//  Script, 2020                                            //
-#//  Created: 06, October, 2020                              //
-#//  Modified: 21, October, 2021                             //
+#//  Script, 2021                                            //
+#//  Modified: 22, October, 2021                             //
+#//  Modified: 22, October, 2021                             //
 #//  file: -                                                 //
 #//  -                                                       //
 #//  Source: https://github.com/bensuperpc/scripts                                                //
@@ -20,9 +20,6 @@
 #//                                                          //
 #//////////////////////////////////////////////////////////////
 
-export CC=/usr/bin/clang
-export CXX=/usr/bin/clang++
-
-cmake -S . -B build -G Ninja "$*" --preset=ci-ubuntu
-
-ninja -C build
+cd build
+find . -maxdepth 1 -type f -name 'GTA_SA_cheat_finder*' ! -name '*.cmake' | xargs sha256sum > checksum.sha256 && echo "checksum: OK"
+{ find . -maxdepth 1 ! -name . \( -name 'GTA_SA_cheat_finder*' -o -name '*.sha256' \)  ! \( -name '*.cmake' -o -name '*.o' \) && find .. -maxdepth 1 -type f -name '*.md' ; } | XZ_OPT=-e9 tar -cJf ../gta-local.tar.xz -T -
