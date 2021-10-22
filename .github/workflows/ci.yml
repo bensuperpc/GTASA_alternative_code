@@ -14,20 +14,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - uses: actions/setup-python@v2
-      with: { python-version: "3.8" }
+      - uses: actions/setup-python@v2
+        with: { python-version: "3.8" }
 
-    - name: Install codespell
-      run: pip3 install codespell
+      - name: Install codespell
+        run: pip3 install codespell
 
-    - name: Lint
-      run: cmake -D FORMAT_COMMAND=clang-format-11 -P cmake/lint.cmake
+      - name: Lint
+        run: cmake -D FORMAT_COMMAND=clang-format-11 -P cmake/lint.cmake
 
-    - name: Spell check
-      if: always()
-      run: cmake -P cmake/spell.cmake
+      - name: Spell check
+        if: always()
+        run: cmake -P cmake/spell.cmake
 
   coverage:
     needs: [lint]
@@ -44,29 +44,29 @@ jobs:
       && false
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Install LCov
-      run: sudo apt-get update -q
-        && sudo apt-get install lcov -q -y
+      - name: Install LCov
+        run: sudo apt-get update -q
+          && sudo apt-get install lcov -q -y
 
-    - name: Configure
-      run: cmake --preset=ci-coverage
+      - name: Configure
+        run: cmake --preset=ci-coverage
 
-    - name: Build
-      run: cmake --build build/coverage -j 2
+      - name: Build
+        run: cmake --build build/coverage -j 2
 
-    - name: Test
-      working-directory: build/coverage
-      run: ctest --output-on-failure -j 2
+      - name: Test
+        working-directory: build/coverage
+        run: ctest --output-on-failure -j 2
 
-    - name: Process coverage info
-      run: cmake --build build/coverage -t coverage
+      - name: Process coverage info
+        run: cmake --build build/coverage -t coverage
 
-    - name: Submit to codecov.io
-      uses: codecov/codecov-action@v1
-      with:
-        file: build/coverage/coverage.info
+      - name: Submit to codecov.io
+        uses: codecov/codecov-action@v1
+        with:
+          file: build/coverage/coverage.info
 
   sanitize:
     needs: [lint]
@@ -74,25 +74,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Configure
-      env: { CXX: clang++-11 }
-      run: cmake --preset=ci-sanitize
+      - name: Configure
+        env: { CXX: clang++-11 }
+        run: cmake --preset=ci-sanitize
 
-    - name: Build
-      run: cmake --build build/sanitize -j 2
+      - name: Build
+        run: cmake --build build/sanitize -j 2
 
-    - name: Test
-      working-directory: build/sanitize
-      env:
-        ASAN_OPTIONS: "strict_string_checks=1:\
-          detect_stack_use_after_return=1:\
-          check_initialization_order=1:\
-          strict_init_order=1:\
-          detect_leaks=1"
-        UBSAN_OPTIONS: print_stacktrace=1
-      run: ctest --output-on-failure -j 2
+      - name: Test
+        working-directory: build/sanitize
+        env:
+          ASAN_OPTIONS: "strict_string_checks=1:\
+            detect_stack_use_after_return=1:\
+            check_initialization_order=1:\
+            strict_init_order=1:\
+            detect_leaks=1"
+          UBSAN_OPTIONS: print_stacktrace=1
+        run: ctest --output-on-failure -j 2
 
   test:
     needs: [lint]
@@ -104,24 +104,24 @@ jobs:
     runs-on: ${{ matrix.os }}-latest
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Install static analyzers
-      if: matrix.os == 'ubuntu'
-      run: sudo apt-get install clang-tidy cppcheck -y -q
+      - name: Install static analyzers
+        if: matrix.os == 'ubuntu'
+        run: sudo apt-get install clang-tidy cppcheck -y -q
 
-    - name: Configure
-      run: cmake --preset=ci-${{ matrix.os }}
+      - name: Configure
+        run: cmake --preset=ci-${{ matrix.os }}
 
-    - name: Build
-      run: cmake --build build --config Release -j 2
+      - name: Build
+        run: cmake --build build --config Release -j 2
 
-    - name: Install
-      run: cmake --install build --config Release --prefix prefix
+      - name: Install
+        run: cmake --install build --config Release --prefix prefix
 
-    - name: Test
-      working-directory: build
-      run: ctest --output-on-failure -C Release -j 2
+      - name: Test
+        working-directory: build
+        run: ctest --output-on-failure -C Release -j 2
 
   docs:
     # Deploy docs only when builds succeed
@@ -145,24 +145,24 @@ jobs:
       && github.repository_owner == 'bensuperpc'
 
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - uses: actions/setup-python@v2
-      with: { python-version: "3.8" }
+      - uses: actions/setup-python@v2
+        with: { python-version: "3.8" }
 
-    - name: Install m.css dependencies
-      run: pip3 install jinja2 Pygments
+      - name: Install m.css dependencies
+        run: pip3 install jinja2 Pygments
 
-    - name: Install Doxygen
-      run: sudo apt-get update -q
-        && sudo apt-get install doxygen -q -y
+      - name: Install Doxygen
+        run: sudo apt-get update -q
+          && sudo apt-get install doxygen -q -y
 
-    - name: Build docs
-      run: cmake -B build -D "CMAKE_PROJECT_INCLUDE=$PWD/cmake/docs.cmake"
-        && cmake --build build --target docs
+      - name: Build docs
+        run: cmake -B build -D "CMAKE_PROJECT_INCLUDE=$PWD/cmake/docs.cmake"
+          && cmake --build build --target docs
 
-    - name: Deploy docs
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: build/docs/html
+      - name: Deploy docs
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: build/docs/html
