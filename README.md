@@ -98,11 +98,16 @@ See the [CONTRIBUTING](CONTRIBUTING.md) document.
 ### Todos
 
  - Write Tests
- - Continue dev. :D
+ - Use intrinsics
 
-### More info : 
-- https://youtu.be/W_eFZ4HzU7Q
-- https://github.com/dockcross/dockcross
+### Open source projects used : 
+- [dockcross](https://github.com/dockcross/dockcross)
+- [crosstool-ng](https://github.com/crosstool-ng/crosstool-ng)
+- [cmake-init](https://github.com/friendlyanon/cmake-init)
+- [buildroot](https://github.com/buildroot/buildroot)
+- [CMake](https://github.com/Kitware/CMake)
+- [llvm-project](https://github.com/llvm/llvm-project)
+- [gcc](https://github.com/gcc-mirror/gcc)
 
 # Licensing
 
