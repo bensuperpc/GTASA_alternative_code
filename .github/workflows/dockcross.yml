@@ -81,6 +81,6 @@ jobs:
         run: |
           docker pull dockcross/${{ matrix.arch_name }}:latest
           docker run --rm dockcross/${{ matrix.arch_name }} > ./dockcross-${{ matrix.arch_name }}
-          chmod +x ./dockcross-build
+          chmod +x ./dockcross-${{ matrix.arch_name }}
           ./dockcross-${{ matrix.arch_name }} cmake -B build -S . -G Ninja -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
           ./dockcross-${{ matrix.arch_name }} ninja -C build
