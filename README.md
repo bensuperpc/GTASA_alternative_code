@@ -4,7 +4,7 @@
 
 [![Continuous Integration](https://github.com/bensuperpc/GTA_SA_cheat_finder/actions/workflows/ci.yml/badge.svg)](https://github.com/bensuperpc/GTA_SA_cheat_finder/actions/workflows/ci.yml) [![Dockcross CI](https://github.com/bensuperpc/GTA_SA_cheat_finder/actions/workflows/dockcross.yml/badge.svg)](https://github.com/bensuperpc/GTA_SA_cheat_finder/actions/workflows/dockcross.yml) [![tagged-release](https://github.com/bensuperpc/GTA_SA_cheat_finder/actions/workflows/release.yml/badge.svg)](https://github.com/bensuperpc/GTA_SA_cheat_finder/actions/workflows/release.yml) ![GitHub Release Date](https://img.shields.io/github/release-date/bensuperpc/GTA_SA_cheat_finder)
 
-![GitHub top language](https://img.shields.io/github/languages/top/bensuperpc/GTA_SA_cheat_finder) ![GitHub](https://img.shields.io/github/license/bensuperpc/GTA_SA_cheat_finder) ![GitHub all releases](https://img.shields.io/github/downloads/bensuperpc/GTA_SA_cheat_finder/total)
+![GitHub top language](https://img.shields.io/github/languages/top/bensuperpc/GTA_SA_cheat_finder) ![GitHub](https://img.shields.io/github/license/bensuperpc/GTA_SA_cheat_finder) ![GitHub all releases](https://img.shields.io/github/downloads/bensuperpc/GTA_SA_cheat_finder/total) <img alt="GitHub tag (latest by date)" src="https://img.shields.io/github/v/tag/bensuperpc/GTA_SA_cheat_finder">
 
  [![Twitter](https://img.shields.io/twitter/follow/Bensuperpc?style=social)](https://img.shields.io/twitter/follow/Bensuperpc?style=social) [![Youtube](https://img.shields.io/youtube/channel/subscribers/UCJsQFFL7QW4LSX9eskq-9Yg?style=social)](https://img.shields.io/youtube/channel/subscribers/UCJsQFFL7QW4LSX9eskq-9Yg?style=social) 
 
