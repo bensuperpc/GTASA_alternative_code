@@ -96,11 +96,15 @@ See the [CONTRIBUTING](CONTRIBUTING.md) document.
 ### Open source projects used : 
 - [dockcross](https://github.com/dockcross/dockcross)
 - [crosstool-ng](https://github.com/crosstool-ng/crosstool-ng)
+- [git](https://github.com/git/git)
 - [cmake-init](https://github.com/friendlyanon/cmake-init)
 - [buildroot](https://github.com/buildroot/buildroot)
 - [CMake](https://github.com/Kitware/CMake)
 - [llvm-project](https://github.com/llvm/llvm-project)
 - [gcc](https://github.com/gcc-mirror/gcc)
+- [docker](https://github.com/docker/docker)
+- [actions](https://github.com/actions/virtual-environments)
+
 
 # Licensing
 
