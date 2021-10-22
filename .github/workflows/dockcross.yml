@@ -1,4 +1,4 @@
-name: gta_sa
+name: dockcross gta_sa
 
 on:
   push:
@@ -81,7 +81,7 @@ jobs:
           submodules: "recursive"
           fetch-depth: 0
 
-      - name: "Pull docker image: ${{ matrix.dockcross.image_name }}"
+      - name: "Pull docker image: dockcross/${{ matrix.dockcross.image_name }}"
         run: docker pull dockcross/${{ matrix.dockcross.image_name }}:latest
 
       - name: "Make dockcross script: dockcross-${{ matrix.dockcross.image_name }}"
