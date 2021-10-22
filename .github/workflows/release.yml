@@ -70,8 +70,8 @@ jobs:
           - { image_name: linux-riscv64, cmake_arg: "" }
           - { image_name: linux-m68k-uclibc, cmake_arg: "" }
 
-        # Disable MinSizeRel RelWithDebInfo, Release
-        build_type: [Debug]
+        # Disable MinSizeRel RelWithDebInfo, Release, Debug
+        build_type: [Release]
     steps:
       - name: "Checkout Code"
         uses: actions/checkout@v2
