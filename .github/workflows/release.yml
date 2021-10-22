@@ -94,10 +94,10 @@ jobs:
         run: ./dockcross-${{ matrix.dockcross.image_name }} ninja -C build
 
       - name: "Checksum"
-        run: cd build && find . -maxdepth 1 -name "gta*" | xargs sha256sum > checksum.sha256
+        run: cd build && find . -maxdepth 1 -name "GTA_SA_cheat_finder" | xargs sha256sum > checksum.sha256
 
       - name: "Compress"
-        run: cd build && find . -maxdepth 1 -name "gta*" -o -name "*.sha256" | XZ_OPT=-e9 tar -cJf gta-${{ matrix.dockcross.image_name }}.tar.xz -T - && mv gta-${{ matrix.dockcross.image_name }}.tar.xz ..
+        run: cd build && find . -maxdepth 1 -name "GTA_SA_cheat_finder" -o -name "*.sha256" | XZ_OPT=-e9 tar -cJf gta-${{ matrix.dockcross.image_name }}.tar.xz -T - && mv gta-${{ matrix.dockcross.image_name }}.tar.xz ..
 
       - name: "Save binaries"
         uses: actions/upload-artifact@v2
