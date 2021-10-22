@@ -62,10 +62,10 @@ jobs:
       - name: Process coverage info
         run: cmake --build build/coverage -t coverage
 
-#      - name: Submit to codecov.io
-#        uses: codecov/codecov-action@v2.1.0
-#        with:
-#          file: build/coverage/coverage.info
+  #      - name: Submit to codecov.io
+  #        uses: codecov/codecov-action@v2.1.0
+  #        with:
+  #          file: build/coverage/coverage.info
 
   sanitize:
     needs: [lint]
@@ -122,9 +122,31 @@ jobs:
         working-directory: build
         run: ctest --output-on-failure -C Release -j 2
 
+      - name: Test Release script
+        if: matrix.os == 'ubuntu'
+        run: |
+          chmod +x ./tools/make-release-build.sh
+          ./tools/make-release-build.sh
+
+  shellcheck:
+    needs: [lint]
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Run ShellCheck
+        uses: ludeeus/action-shellcheck@master
+        with:
+          severity: error
+          format: gcc
+        env:
+          SHELLCHECK_OPTS: -s bash
+
   docs:
     # Deploy docs only when builds succeed
-    needs: [sanitize, test]
+    needs: [sanitize, test, shellcheck]
 
     runs-on: ubuntu-latest
 
