@@ -9,7 +9,7 @@ endmacro()
 default(SPELL_COMMAND codespell)
 default(FIX NO)
 
-set(flag "--ignore-words=codespell-ignore.txt")
+set(flag "--ignore-words codespell-ignore.txt")
 if(FIX)
   set(flag -w)
 endif()
