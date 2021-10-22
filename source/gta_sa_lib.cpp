@@ -9,7 +9,14 @@
 auto gta::jamcrc(std::string_view my_string) -> std::uint32_t
 {
 #else
+
+#  if _MSC_VER && !__INTEL_COMPILER
+#    pragma message( \
+        "C++17 is not enabled, the program will be less efficient with previous standards")
+#  else
 #warning C++17 is not enabled, the program will be less efficient with previous standards.
+#  endif
+
 auto gta::jamcrc(const std::string& my_string) -> std::uint32_t
 {
 #endif
