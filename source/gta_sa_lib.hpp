@@ -32,7 +32,6 @@
 
 namespace gta
 {
-
 /** @brief Size of alphabet */
 static const std::uint32_t alphabet_size {26};
 
@@ -170,4 +169,4 @@ void precompute_crc();
 
 static std::array<uint32_t, 256> crc32_lookup = {0};
 
-} // namespace gta
+}  // namespace gta

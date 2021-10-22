@@ -1,6 +1,6 @@
 //#include <iostream>
 //#include <string>
-#include <chrono>    // std::chrono
+#include <chrono>  // std::chrono
 
 #include "gta_sa_lib.hpp"
 
@@ -56,7 +56,7 @@ auto main(int arc, char* argv[]) -> int
 #endif
   for (std::size_t i = min_range; i <= max_range; i++) {
     gta::findStringInv(i, tmp);  // Generate Alphabetic sequence from size_t
-                            // value, A=1, Z=27, AA = 28, AB = 29
+                                 // value, A=1, Z=27, AA = 28, AB = 29
     crc = gta::jamcrc(tmp);  // JAMCRC
 #if ((defined(_MSVC_LANG) && _MSVC_LANG >= 202002L) \
      || __cplusplus >= 202002L && !defined(ANDROID) && !defined(__ANDROID__) \

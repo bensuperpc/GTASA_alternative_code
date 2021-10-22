@@ -58,10 +58,11 @@ void gta::precompute_crc()
     gta::crc32_lookup[next] = crc;
   }
 
-  for (std::uint32_t power_of_two = 2; power_of_two <= 0x80; power_of_two <<= 1) {
+  for (std::uint32_t power_of_two = 2; power_of_two <= 0x80; power_of_two <<= 1)
+  {
     uint32_t crcExtraBit = crc32_lookup[power_of_two];
     for (std::uint32_t i = 1; i < power_of_two; i++) {
       crc32_lookup[i + power_of_two] = crc32_lookup[i] ^ crcExtraBit;
-}
+    }
   }
 }
