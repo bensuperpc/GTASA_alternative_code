@@ -15,60 +15,59 @@ on:
 
 jobs:
   image:
-    name: build ${{ matrix.arch_name }} ${{ matrix.build_type }}
+    name: build ${{ matrix.dockcross }} ${{ matrix.build_type }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        arch_name:
-          [
-            android-arm,
-            android-arm64,
-            android-x86,
-            android-x86_64,
-            web-wasm,
-#            web-wasi,
-            linux-arm64,
-            linux-arm64-lts,
-            linux-arm64-full,
-            linux-arm64-musl,
-            linux-armv5,
-            linux-armv5-musl,
-            linux-armv6,
-            linux-armv6-lts,
-            linux-armv6-musl,
-            linux-armv7,
-            linux-armv7-lts,
-            linux-armv7a,
-            linux-armv7l-musl,
-            linux-x64-clang,
-            linux-x64-tinycc,
-            linux-s390x,
-            linux-x64,
-            linux-x86_64-full,
-            linux-x86,
-            linux-mips,
-            linux-ppc64le,
-            linux-xtensa-uclibc,
-            manylinux1-x64,
-            manylinux1-x86,
-            manylinux2010-x64,
-            manylinux2010-x86,
-            manylinux2014-x64,
-            manylinux2014-x86,
-#            manylinux2014-aarch64,
-            windows-static-x64,
-            windows-static-x64-posix,
-            windows-static-x86,
-            windows-shared-x64,
-            windows-shared-x64-posix,
-            windows-shared-x86,
-            windows-armv7,
-            windows-arm64,
-            linux-riscv64,
-            linux-riscv32,
-            linux-m68k-uclibc,
-          ]
+        dockcross:
+          - { image_name: android-arm, cmake_arg: "" }
+          - { image_name: android-arm64, cmake_arg: "" }
+          - { image_name: android-x86, cmake_arg: "" }
+          - { image_name: android-x86_64, cmake_arg: "" }
+          - { image_name: web-wasm, cmake_arg: "" }
+          - { image_name: web-wasi, cmake_arg: "" }
+          - { image_name: linux-arm64, cmake_arg: "" }
+          - { image_name: linux-arm64-lts, cmake_arg: "" }
+          - { image_name: linux-arm64-full, cmake_arg: "" }
+          - { image_name: linux-arm64-musl, cmake_arg: "" }
+          - { image_name: linux-armv5, cmake_arg: "" }
+          - { image_name: linux-armv5-musl, cmake_arg: "" }
+          - { image_name: linux-armv6, cmake_arg: "" }
+          - { image_name: linux-armv6-lts, cmake_arg: "" }
+          - { image_name: linux-armv6-musl, cmake_arg: "" }
+          - { image_name: linux-armv7, cmake_arg: "" }
+          - { image_name: linux-armv7-lts, cmake_arg: "" }
+          - { image_name: linux-armv7a, cmake_arg: "" }
+          - { image_name: linux-armv7l-musl, cmake_arg: "" }
+          - { image_name: linux-x64, cmake_arg: "" }
+          - { image_name: linux-x64-clang, cmake_arg: "" }
+          - { image_name: linux-x64-tinycc, cmake_arg: "" }
+          - { image_name: linux-x86_64-full, cmake_arg: "" }
+          - { image_name: linux-x86, cmake_arg: "" }
+          - { image_name: linux-s390x, cmake_arg: "" }
+          - { image_name: linux-mips, cmake_arg: "" }
+          - { image_name: linux-ppc64le, cmake_arg: "" }
+          - { image_name: linux-xtensa-uclibc, cmake_arg: "" }
+          - { image_name: manylinux1-x64, cmake_arg: "" }
+          - { image_name: manylinux1-x86, cmake_arg: "" }
+          - { image_name: manylinux2010-x64, cmake_arg: "" }
+          - { image_name: manylinux2010-x86, cmake_arg: "" }
+          - { image_name: manylinux2014-x64, cmake_arg: "" }
+          - { image_name: manylinux2014-aarch64, cmake_arg: "" }
+          - { image_name: manylinux2010-x86, cmake_arg: "" }
+          - { image_name: windows-static-x64, cmake_arg: "" }
+          - { image_name: windows-static-x64-posix, cmake_arg: "" }
+          - { image_name: windows-static-x86, cmake_arg: "" }
+          - { image_name: windows-shared-x64, cmake_arg: "" }
+          - { image_name: windows-shared-x64-posix, cmake_arg: "" }
+          - { image_name: windows-shared-x86, cmake_arg: "" }
+          - { image_name: windows-armv7, cmake_arg: "" }
+          - { image_name: windows-arm64, cmake_arg: "" }
+          - { image_name: linux-riscv32, cmake_arg: "" }
+          - { image_name: linux-riscv64, cmake_arg: "" }
+          - { image_name: linux-m68k-uclibc, cmake_arg: "" }
+
         # Disable MinSizeRel RelWithDebInfo, Release
         build_type: [Debug]
     steps:
@@ -79,8 +78,8 @@ jobs:
           fetch-depth: 0
       - name: "🛠️ dockcross"
         run: |
-          docker pull dockcross/${{ matrix.arch_name }}:latest
-          docker run --rm dockcross/${{ matrix.arch_name }} > ./dockcross-${{ matrix.arch_name }}
-          chmod +x ./dockcross-${{ matrix.arch_name }}
-          ./dockcross-${{ matrix.arch_name }} cmake -B build -S . -G Ninja -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-          ./dockcross-${{ matrix.arch_name }} ninja -C build
+          docker pull dockcross/${{ matrix.dockcross.image_name }}:latest
+          docker run --rm dockcross/${{ matrix.dockcross.image_name }} > ./dockcross-${{ matrix.dockcross.image_name }}
+          chmod +x ./dockcross-${{ matrix.dockcross.image_name }}
+          ./dockcross-${{ matrix.dockcross.image_name }} cmake -B build -S . -G Ninja -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} ${{ matrix.dockcross.cmake_arg }}
+          ./dockcross-${{ matrix.dockcross.image_name }} ninja -C build
