@@ -94,7 +94,9 @@ jobs:
         run: ./dockcross-${{ matrix.dockcross.image_name }} ninja -C build
 
       - name: "Checksum and Compress"
-        run: ./tools/make-release-build.sh && mv gta-local.tar.xz gta-${{ matrix.dockcross.image_name }}.tar.xz
+        run: |
+            chmod +x ./tools/make-release-build.sh
+            ./tools/make-release-build.sh && mv gta-local.tar.xz gta-${{ matrix.dockcross.image_name }}.tar.xz
 
       - name: "Save binaries"
         uses: actions/upload-artifact@v2
