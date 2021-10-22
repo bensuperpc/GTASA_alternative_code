@@ -1,4 +1,4 @@
-name: dockcross gta_sa
+name: Dockcross CI
 
 on:
   push:
