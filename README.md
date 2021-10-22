@@ -8,7 +8,6 @@
 
  [![Twitter](https://img.shields.io/twitter/follow/Bensuperpc?style=social)](https://img.shields.io/twitter/follow/Bensuperpc?style=social) [![Youtube](https://img.shields.io/youtube/channel/subscribers/UCJsQFFL7QW4LSX9eskq-9Yg?style=social)](https://img.shields.io/youtube/channel/subscribers/UCJsQFFL7QW4LSX9eskq-9Yg?style=social) 
 
-
 # New Features !
 
   - Multi-plateform build: AMD64, I386, ARM64, ARMv7, ARMv7a, ARMv6, ARMv5, RISC-V 32/64, PPC64le, Mips, Windows 32/64, Android (Exec only), m68k... Thanks [dockcross](https://github.com/dockcross/dockcross) and [crosstool-ng](https://github.com/crosstool-ng/crosstool-ng)
@@ -28,10 +27,13 @@
 ```
 
 #### Example
+
 ```sh
 ./GTA_SA_cheat_finder 0 600000000
 ```
+
 **You should get this result:**
+
 ```
 Number of calculations: 600000000
 
@@ -67,20 +69,12 @@ On AMD R7 5800H:
 308915776 = 0.6 sec
 ```
 
-On Intel I7 9750H:
-```
-141167095653376 = ~15 days
-5429503678976 = ~12h
-208827064576 = ~25 min
-8031810176 = ~1 min
-1544578880 = ~10 sec
-308915776 = 2 sec
-```
-
 #### How does it work ?
+
 - The algorithm will generate sequences of characters (A, B, C ... AA, BA, CA ...)
-- It will then calculate hash (**JAMCRC**) from the series of characters
+- It will then calculate hash (**JAMCRC**) from series of characters
 - It will compare hashes, if they are equal to one of the hashes of one of the official cheat codes, this will save the sequence of characters
+- When it is finished it displays the results
 
 #### Information
 
@@ -111,6 +105,5 @@ See the [CONTRIBUTING](CONTRIBUTING.md) document.
 # Licensing
 
 [MIT License](LICENSE)
-
 
 **Free Software forever !**
