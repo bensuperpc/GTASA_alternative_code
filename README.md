@@ -93,7 +93,7 @@ See the [CONTRIBUTING](CONTRIBUTING.md) document.
  - Write Tests
  - Use intrinsics
 
-### Open source projects used : 
+### Open source projects used
 - [dockcross](https://github.com/dockcross/dockcross)
 - [crosstool-ng](https://github.com/crosstool-ng/crosstool-ng)
 - [git](https://github.com/git/git)
