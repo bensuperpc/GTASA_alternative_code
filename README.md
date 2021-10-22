@@ -79,7 +79,7 @@ On Intel I7 9750H:
 ```
 
 #### How does it work ?
-- The algorithm will generate sequences of characters (A, B, C ... AA)
+- The algorithm will generate sequences of characters (A, B, C ... AA, BA, CA ...)
 - It will then calculate hash (**JAMCRC**) from the series of characters
 - It will compare hashes, if they are equal to one of the hashes of one of the official cheat codes, this will save the sequence of characters
 
