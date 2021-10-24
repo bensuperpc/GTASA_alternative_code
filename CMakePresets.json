@@ -33,7 +33,7 @@
       "hidden": true,
       "cacheVariables": {
         "CMAKE_CXX_EXTENSIONS": "OFF",
-        "CMAKE_CXX_STANDARD": "20",
+        "CMAKE_CXX_STANDARD": "17",
         "CMAKE_CXX_STANDARD_REQUIRED": "ON"
       }
     },
@@ -41,7 +41,7 @@
       "name": "flags-unix",
       "hidden": true,
       "cacheVariables": {
-        "CMAKE_CXX_FLAGS": "-Wall -Wextra -Wpedantic -Wconversion -Wshadow -Wdisabled-optimization -Wold-style-cast -Wstrict-overflow=5 -Wformat=2 -ansi -pedantic"
+        "CMAKE_CXX_FLAGS": "-Wall -Wextra -Wpedantic -Wconversion -Wshadow -Wundef -Wdisabled-optimization -Wold-style-cast -Wstrict-overflow=5 -Wformat=2 -Wabi"
       }
     },
     {

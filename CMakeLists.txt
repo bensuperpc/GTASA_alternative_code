@@ -28,7 +28,7 @@ target_include_directories(
     "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/source>"
 )
 
-target_compile_features(GTA_SA_cheat_finder_lib PUBLIC cxx_std_20)
+target_compile_features(GTA_SA_cheat_finder_lib PUBLIC cxx_std_17)
 
 find_package(OpenMP 4.0)
 if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
@@ -46,7 +46,7 @@ set_target_properties(
     EXPORT_NAME GTA_SA_cheat_finder
 )
 
-target_compile_features(GTA_SA_cheat_finder_GTA_SA_cheat_finder PRIVATE cxx_std_20)
+target_compile_features(GTA_SA_cheat_finder_GTA_SA_cheat_finder PRIVATE cxx_std_17)
 
 target_link_libraries(GTA_SA_cheat_finder_GTA_SA_cheat_finder PRIVATE GTA_SA_cheat_finder_lib)
 

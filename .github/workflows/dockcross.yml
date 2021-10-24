@@ -55,8 +55,8 @@ jobs:
           - { image_name: manylinux2010-x64, cmake_arg: "" }
           - { image_name: manylinux2010-x86, cmake_arg: "" }
           - { image_name: manylinux2014-x64, cmake_arg: "" }
-          - { image_name: manylinux2014-x86, cmake_arg: "" }
           #          - { image_name: manylinux2014-aarch64, cmake_arg: "" }
+          - { image_name: manylinux2010-x86, cmake_arg: "" }
           - { image_name: windows-static-x64, cmake_arg: "" }
           - { image_name: windows-static-x64-posix, cmake_arg: "" }
           - { image_name: windows-static-x86, cmake_arg: "" }
