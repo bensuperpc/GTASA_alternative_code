@@ -6,10 +6,12 @@
 #include <iostream>  // std::cout
 #include <string>  // std::string
 #include <string_view>  // std::string_view
+/*
 #if (!defined(ANDROID) && !defined(__ANDROID__) && !defined(__EMSCRIPTEN__) \
      && !defined(__clang__))
 #  include <execution>  // std::execution
 #endif
+*/
 #include <tuple>  // std::pair
 #include <utility>  // std::make_pair
 #include <vector>  // std::vector

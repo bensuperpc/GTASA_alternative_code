@@ -41,7 +41,7 @@
       "name": "flags-unix",
       "hidden": true,
       "cacheVariables": {
-        "CMAKE_CXX_FLAGS": "-Wall -Wextra -Wpedantic -Wconversion -Wshadow -Wdisabled-optimization -Wold-style-cast -Wstrict-overflow=5 -Wformat=2 -ansi -pedantic-errors"
+        "CMAKE_CXX_FLAGS": "-Wall -Wextra -Wpedantic -Wconversion -Wshadow -Wdisabled-optimization -Wold-style-cast -Wstrict-overflow=5 -Wformat=2 -ansi -pedantic"
       }
     },
     {

@@ -64,19 +64,16 @@ auto main(int argc, char** argv) -> int
     gta::find_string_inv(i, tmp);  // Generate Alphabetic sequence from size_t
                                    // value, A=1, Z=27, AA = 28, AB = 29
     crc = gta::jamcrc(tmp);  // JAMCRC
-#if (!defined(ANDROID) && !defined(__ANDROID__) && !defined(__EMSCRIPTEN__) \
-     && !defined(__clang__))
-    if (std::find(std::execution::unseq,
+    /*if (std::find(std::execution::unseq,
                   std::begin(gta::cheat_list),
                   std::end(gta::cheat_list),
                   crc)
-        != std::end(gta::cheat_list))
-    {
-#else
+        != std::end(gta::cheat_list))*/
+
     if (std::find(std::begin(gta::cheat_list), std::end(gta::cheat_list), crc)
         != std::end(gta::cheat_list))
     {
-#endif  // If crc is present in Array
+      // If crc is present in Array
       std::reverse(tmp, tmp + strlen(tmp));  // Invert char array
       results.emplace_back(std::make_tuple(
           i,
