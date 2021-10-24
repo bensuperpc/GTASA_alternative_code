@@ -62,10 +62,10 @@ auto main(int arc, char* argv[]) -> int
      || __cplusplus >= 202002L && !defined(ANDROID) && !defined(__ANDROID__) \
          && !defined(__EMSCRIPTEN__) && !defined(__clang__))
     if (std::find(std::execution::unseq,
-                  std::begin(cheat_list),
-                  std::end(cheat_list),
+                  std::begin(gta::cheat_list),
+                  std::end(gta::cheat_list),
                   crc)
-        != std::end(cheat_list))
+        != std::end(gta::cheat_list))
     {
 #else
     if (std::find(std::begin(gta::cheat_list), std::end(gta::cheat_list), crc)
