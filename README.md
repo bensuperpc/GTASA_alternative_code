@@ -59,7 +59,7 @@ This program execute: 501.684973 MOps/sec
 
 ##### Perfs
 
-On AMD R7 5800H:
+On AMD R7 5800H (clang 12):
 ```
 141167095653376 = ~5 days
 5429503678976 = ~4h
