@@ -154,7 +154,7 @@ auto jamcrc(std::string_view my_string) -> std::uint32_t;
  * \brief Generate Alphabetic sequence from size_t value, A=1, Z=27, AA = 28, AB
  * = 29 \param n index in base 26 \param array return array
  */
-void findStringInv(uint64_t n, char* array);
+void find_string_inv(char* array, uint64_t n);
 
 static const uint32_t polynomial = 0xEDB88320;
 

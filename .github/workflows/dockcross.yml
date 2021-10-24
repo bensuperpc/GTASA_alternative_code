@@ -28,10 +28,6 @@ jobs:
               image_name: web-wasi,
               cmake_arg: "-DCMAKE_CXX_FLAGS='${CMAKE_CXX_FLAGS} -fno-exceptions'",
             }
-          - { image_name: linux-arm64, cmake_arg: "" }
-          - { image_name: linux-arm64-lts, cmake_arg: "" }
-          - { image_name: linux-arm64-full, cmake_arg: "" }
-          - { image_name: linux-arm64-musl, cmake_arg: "" }
           - { image_name: linux-armv5, cmake_arg: "" }
           - { image_name: linux-armv5-musl, cmake_arg: "" }
           - { image_name: linux-armv6, cmake_arg: "" }
@@ -41,22 +37,26 @@ jobs:
           - { image_name: linux-armv7-lts, cmake_arg: "" }
           - { image_name: linux-armv7a, cmake_arg: "" }
           - { image_name: linux-armv7l-musl, cmake_arg: "" }
+          - { image_name: linux-arm64, cmake_arg: "" }
+          - { image_name: linux-arm64-lts, cmake_arg: "" }
+          - { image_name: linux-arm64-full, cmake_arg: "" }
+          - { image_name: linux-arm64-musl, cmake_arg: "" }
+          - { image_name: linux-x86, cmake_arg: "" }
           - { image_name: linux-x64, cmake_arg: "" }
           - { image_name: linux-x64-clang, cmake_arg: "" }
           - { image_name: linux-x64-tinycc, cmake_arg: "" }
           - { image_name: linux-x86_64-full, cmake_arg: "" }
-          - { image_name: linux-x86, cmake_arg: "" }
           - { image_name: linux-s390x, cmake_arg: "" }
           - { image_name: linux-mips, cmake_arg: "" }
           - { image_name: linux-ppc64le, cmake_arg: "" }
           - { image_name: linux-xtensa-uclibc, cmake_arg: "" }
           #          - { image_name: manylinux1-x64, cmake_arg: "" }
           #          - { image_name: manylinux1-x86, cmake_arg: "" }
-          - { image_name: manylinux2010-x64, cmake_arg: "" }
           - { image_name: manylinux2010-x86, cmake_arg: "" }
+          - { image_name: manylinux2010-x64, cmake_arg: "" }
+          - { image_name: manylinux2014-x86, cmake_arg: "" }
           - { image_name: manylinux2014-x64, cmake_arg: "" }
           #          - { image_name: manylinux2014-aarch64, cmake_arg: "" }
-          - { image_name: manylinux2010-x86, cmake_arg: "" }
           - { image_name: windows-static-x64, cmake_arg: "" }
           - { image_name: windows-static-x64-posix, cmake_arg: "" }
           - { image_name: windows-static-x86, cmake_arg: "" }

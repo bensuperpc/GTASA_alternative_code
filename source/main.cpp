@@ -39,25 +39,25 @@ auto main(int arc, char* argv[]) -> int
             << std::endl;
   std::cout << "" << std::endl;
   // Display Alphabetic sequence range
-  // std::array<char, 29>tmp1 = {0};
-  char tmp1[29] = {0};
-  char tmp2[29] = {0};
-  gta::findStringInv(min_range, tmp1);
-  gta::findStringInv(max_range, tmp2);
-  std::cout << "From: " << tmp1 << " to: " << tmp2 << " Alphabetic sequence"
+  std::array<char, 29> tmp1 = {0};
+  std::array<char, 29> tmp2 = {0};
+  
+  gta::find_string_inv(tmp1.data(), min_range);
+  gta::find_string_inv(tmp2.data(), max_range);
+  std::cout << "From: " << tmp1.data() << " to: " << tmp2.data() << " Alphabetic sequence"
             << std::endl;
   std::cout << "" << std::endl;
 
-  char tmp[29] = {0};  // Temp array
+  std::array<char, 29> tmp = {0};  // Temp array
   uint32_t crc = 0;  // CRC value
   auto&& t1 = Clock::now();
 #if defined(_OPENMP)
 #  pragma omp parallel for schedule(auto) shared(results) firstprivate(tmp, crc)
 #endif
   for (std::size_t i = min_range; i <= max_range; i++) {
-    gta::findStringInv(i, tmp);  // Generate Alphabetic sequence from size_t
+    gta::find_string_inv(tmp.data(), i);  // Generate Alphabetic sequence from size_t
                                  // value, A=1, Z=27, AA = 28, AB = 29
-    crc = gta::jamcrc(tmp);  // JAMCRC
+    crc = gta::jamcrc(tmp.data());  // JAMCRC
 #if ((defined(_MSVC_LANG) && _MSVC_LANG >= 202002L) \
      || __cplusplus >= 202002L && !defined(ANDROID) && !defined(__ANDROID__) \
          && !defined(__EMSCRIPTEN__) && !defined(__clang__))
@@ -73,10 +73,10 @@ auto main(int arc, char* argv[]) -> int
     {
 #endif
       // If crc is present in Array
-      std::reverse(tmp, tmp + strlen(tmp));  // Invert char array
+      std::reverse(tmp.data(), tmp.data() + strlen(tmp.data()));  // Invert char array
       results.emplace_back(std::make_tuple(
           i,
-          std::string(tmp),
+          std::string(tmp.data()),
           crc));  // Save result: calculation position, Alphabetic sequence, CRC
     }
   }

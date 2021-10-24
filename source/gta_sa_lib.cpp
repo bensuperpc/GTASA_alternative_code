@@ -21,7 +21,7 @@ auto gta::jamcrc(const std::string& my_string) -> std::uint32_t
 {
 #endif
   auto crc = static_cast<uint32_t>(-1);
-  auto* current = (unsigned char*)my_string.data();
+  auto* current = reinterpret_cast<const unsigned char*>(my_string.data());
   size_t length = my_string.length();
   // process eight bytes at once
   while (static_cast<bool>(length--)) {
@@ -34,7 +34,7 @@ auto gta::jamcrc(const std::string& my_string) -> std::uint32_t
  * \brief Generate Alphabetic sequence from size_t value, A=0, Z=26, AA = 27, BA
  * = 28 = 29 T \param n index in base 26 \param array return array
  */
-void gta::findStringInv(uint64_t n, char* array)
+void gta::find_string_inv(char* array, uint64_t n)
 {
   const std::uint32_t string_size_alphabet {alphabet_size + 1};
   const std::array<char, string_size_alphabet> alpha {ALPHABET_UP};
