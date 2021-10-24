@@ -64,8 +64,8 @@ auto main(int argc, char** argv) -> int
     gta::find_string_inv(i, tmp);  // Generate Alphabetic sequence from size_t
                                    // value, A=1, Z=27, AA = 28, AB = 29
     crc = gta::jamcrc(tmp);  // JAMCRC
-#if (!defined(ANDROID) && !defined(__ANDROID__) \
-         && !defined(__EMSCRIPTEN__) && !defined(__clang__))
+#if (!defined(ANDROID) && !defined(__ANDROID__) && !defined(__EMSCRIPTEN__) \
+     && !defined(__clang__))
     if (std::find(std::execution::unseq,
                   std::begin(gta::cheat_list),
                   std::end(gta::cheat_list),
