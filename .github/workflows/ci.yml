@@ -62,10 +62,10 @@ jobs:
       - name: Process coverage info
         run: cmake --build build/coverage -t coverage
 
-  #      - name: Submit to codecov.io
-  #        uses: codecov/codecov-action@v2.1.0
-  #        with:
-  #          file: build/coverage/coverage.info
+      - name: Submit to codecov.io
+        uses: codecov/codecov-action@v2.1.0
+        with:
+          file: build/coverage/coverage.info
 
   sanitize:
     needs: [lint]
