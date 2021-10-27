@@ -2,7 +2,7 @@
 
 auto main() -> int
 {
-  char tmp1[29] = {0};
-  gta::find_string_inv(tmp1, 0);
+  gta::precompute_crc();
+
   return 0;
 }
