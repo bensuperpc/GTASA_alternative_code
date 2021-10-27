@@ -12,5 +12,9 @@ auto main() -> int
   std::array<char, array_size> tmp2 = {0};
   gta::find_string_inv(tmp2.data(), 255);
 
-  return 0;
+  if (tmp1 == tmp2) {
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
 }
