@@ -168,11 +168,11 @@ jobs:
           # Windows ARM images
           - {
               image_name: windows-armv7,
-              cmake_arg: "-DCMAKE_BUILD_WITH_INSTALL_RPATH=ON",
+              cmake_arg: "-DCMAKE_BUILD_WITH_INSTALL_RPATH=ON -DCMAKE_CXX_STANDARD=17",
             }
           - {
               image_name: windows-arm64,
-              cmake_arg: "-DCMAKE_BUILD_WITH_INSTALL_RPATH=ON",
+              cmake_arg: "-DCMAKE_BUILD_WITH_INSTALL_RPATH=ON -DCMAKE_CXX_STANDARD=17",
             }
 
         # Disable MinSizeRel RelWithDebInfo, Release
