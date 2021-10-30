@@ -58,7 +58,6 @@ void gta::find_string_inv(char* array, uint64_t n)
  */
 auto gta::precompute_crc() -> std::array<uint32_t, 256>
 {
-  
   std::array<uint32_t, 256> crc32_lookup_table;
 
   crc32_lookup_table[0] = 0;
