@@ -6,18 +6,22 @@
 #include <iostream>  // std::cout
 #include <string>  // std::string
 #include <string_view>  // std::string_view
-#if ((defined(_MSVC_LANG) && _MSVC_LANG >= 202002L) \
-     || __cplusplus >= 202002L && !defined(ANDROID) && !defined(__ANDROID__) \
-         && !defined(__EMSCRIPTEN__) && !defined(__clang__))
-#  include <execution>  // std::execution
+#if ((defined(_MSVC_LANG) && _MSVC_LANG >= 201703L) || __cplusplus >= 201703L)
+#  include <string_view>  // std::string_view
+#  if ((defined(_MSVC_LANG) && _MSVC_LANG >= 202002L) \
+       || __cplusplus >= 202002L && !defined(ANDROID) && !defined(__ANDROID__) \
+           && !defined(__EMSCRIPTEN__) && !defined(__clang__))
+#    include <execution>  // std::execution
+#  endif
 #endif
-
 #include <tuple>  // std::pair
 #include <utility>  // std::make_pair
 #include <vector>  // std::vector
 
-#if __has_include("omp.h")
-#  include <omp.h>
+#if ((defined(_MSVC_LANG) && _MSVC_LANG >= 201703L) || __cplusplus >= 201703L)
+#  if __has_include("omp.h")
+#    include <omp.h>
+#  endif
 #endif
 
 #if !defined(_OPENMP)
@@ -148,7 +152,19 @@ const std::array<const std::string, 87> cheat_list_name{
  * @param my_string String input
  * @return uint32_t with JAMCRC value
  */
+#if ((defined(_MSVC_LANG) && _MSVC_LANG >= 201703L) || __cplusplus >= 201703L)
 auto jamcrc(std::string_view my_string) -> std::uint32_t;
+#else
+
+#  if _MSC_VER && !__INTEL_COMPILER
+#    pragma message( \
+        "NC++17 is not enabled, the program will be less efficient with previous standards")
+#  else
+#warning C++17 is not enabled, the program will be less efficient with previous standards.
+#  endif
+
+auto jamcrc(const std::string& my_string) -> std::uint32_t;
+#endif
 
 /**
  * \brief Generate Alphabetic sequence from size_t value, A=1, Z=27, AA = 28, AB
