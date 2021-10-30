@@ -177,8 +177,8 @@ static const uint32_t polynomial = 0xEDB88320;
 /**
  * \brief Source: https://create.stephan-brumme.com/crc32/#slicing-by-8-overview
  */
-void precompute_crc();
+auto precompute_crc() -> std::array<uint32_t, 256>;
 
-static std::array<uint32_t, 256> crc32_lookup = {0};
+static std::array<uint32_t, 256> crc32_lookup = gta::precompute_crc();
 
 }  // namespace gta

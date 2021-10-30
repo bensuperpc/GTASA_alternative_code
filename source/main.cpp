@@ -13,8 +13,6 @@ auto main(int arc, char* argv[]) -> int
   std::vector<std::tuple<std::size_t, std::string, std::uint32_t>> results =
       {};  // Stock results after calculations
 
-  gta::precompute_crc();  // Fill Crc32Lookup table
-
   size_t min_range = 0;  // Alphabetic sequence range min
   if (arc >= 3) {
     min_range = static_cast<size_t>(std::stoll(argv[1]));
