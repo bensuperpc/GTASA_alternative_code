@@ -1,17 +1,6 @@
 name: linux
 
-on:
-  push:
-    branches:
-      - "*"
-    paths-ignore:
-      - "**.md"
-  pull_request:
-    branches:
-      - "*"
-    paths-ignore:
-      - "**.md"
-  workflow_dispatch:
+on: [push, pull_request]
 
 jobs:
   build:
