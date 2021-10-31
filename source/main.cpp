@@ -10,6 +10,9 @@ auto main(int arc, char* argv[]) -> int
 {
   std::ios_base::sync_with_stdio(false);  // Improve std::cout speed
 
+  std::vector<std::tuple<std::size_t, std::string, std::uint32_t>> results =
+      {};  // Stock results after calculations
+
   gta::precompute_crc();  // Fill Crc32Lookup table
 
   size_t min_range = 0;  // Alphabetic sequence range min
@@ -43,17 +46,13 @@ auto main(int arc, char* argv[]) -> int
   gta::find_string_inv(tmp2.data(), max_range);
   std::cout << "From: " << tmp1.data() << " to: " << tmp2.data()
             << " Alphabetic sequence" << std::endl;
-  std::cout << std::endl;
-
-  std::cout << std::left << std::setw(18) << "Iter. N°" << std::left
-            << std::setw(15) << "Code" << std::left << std::setw(15)
-            << "JAMCRC value" << std::endl;
+  std::cout << "" << std::endl;
 
   std::array<char, 29> tmp = {0};  // Temp array
   uint32_t crc = 0;  // CRC value
   auto&& t1 = Clock::now();
 #if defined(_OPENMP)
-#  pragma omp parallel for schedule(auto) firstprivate(tmp, crc)
+#  pragma omp parallel for schedule(auto) shared(results) firstprivate(tmp, crc)
 #endif
   for (std::size_t i = min_range; i <= max_range; i++) {
     gta::find_string_inv(tmp.data(),
@@ -77,15 +76,26 @@ auto main(int arc, char* argv[]) -> int
       // If crc is present in Array
       std::reverse(tmp.data(),
                    tmp.data() + strlen(tmp.data()));  // Invert char array
-
-      std::cout << std::left << std::setw(17) << std::dec << i << std::left
-                << std::setw(15) << tmp.data() << "0x" << std::hex << std::left
-                << std::setw(15) << crc << "\n";
+      results.emplace_back(std::make_tuple(
+          i,
+          std::string(tmp.data()),
+          crc));  // Save result: calculation position, Alphabetic sequence, CRC
     }
   }
-  std::cout << std::endl;
-
   auto&& t2 = Clock::now();
+
+  sort(results.begin(), results.end());  // Sort results
+
+  std::cout << std::left << std::setw(18) << "Iter. N°" << std::left
+            << std::setw(15) << "Code" << std::left << std::setw(15)
+            << "JAMCRC value" << std::endl;
+
+  for (auto&& result : results) {
+    std::cout << std::left << std::setw(17) << std::dec << std::get<0>(result)
+              << std::left << std::setw(15) << std::get<1>(result) << "0x"
+              << std::hex << std::left << std::setw(15) << std::get<2>(result)
+              << std::endl;
+  }
 
   std::cout << "Time: "
             << std::chrono::duration_cast<std::chrono::duration<double>>(t2
