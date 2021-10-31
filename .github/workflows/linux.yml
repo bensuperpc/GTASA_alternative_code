@@ -15,16 +15,17 @@ jobs:
         include:
           - cxx: g++-4.8
             install: g++-4.8
-            os: ubuntu-18.04
           - cxx: g++-8
             build_type: Debug
             std: 14
             install: g++-8
-            os: ubuntu-18.04
+          - cxx: g++-9
+            build_type: Debug
+            std: 14
+            install: g++-9
           - cxx: g++-10
             build_type: Debug
             std: 17
-            os: ubuntu-18.04
           - cxx: g++-11
             build_type: Debug
             std: 20
