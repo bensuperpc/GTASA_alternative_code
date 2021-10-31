@@ -32,7 +32,7 @@
 ./GTA_SA_cheat_finder 0 600000000
 ```
 
-**You should get this result:**
+**You should get similar result:**
 
 ```
 Number of calculations: 600000000
