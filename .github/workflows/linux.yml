@@ -1,0 +1,65 @@
+name: linux
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        cxx: [g++-4.8, g++-10, clang++-9]
+        build_type: [Debug, Release]
+        std: [11]
+        os: [ubuntu-18.04]
+        include:
+          - cxx: g++-4.8
+            install: sudo apt install g++-4.8
+            os: ubuntu-18.04
+          - cxx: g++-8
+            build_type: Debug
+            std: 14
+            install: sudo apt install g++-8
+            os: ubuntu-18.04
+          - cxx: g++-10
+            build_type: Debug
+            std: 17
+            os: ubuntu-18.04
+          - cxx: g++-11
+            build_type: Debug
+            std: 20
+            os: ubuntu-20.04
+            install: sudo apt install g++-11
+          - cxx: clang++-9
+            build_type: Debug
+            std: 17
+            os: ubuntu-18.04
+          - cxx: clang++-11
+            build_type: Debug
+            std: 20
+            os: ubuntu-20.04
+          - cxx: clang++-11
+            build_type: Debug
+            std: 20
+            cxxflags: -stdlib=libc++
+            os: ubuntu-20.04
+            install: sudo apt install libc++-11-dev libc++abi-11-dev
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Configure
+        env:
+          CXX: ${{matrix.cxx}}
+          CXXFLAGS: ${{matrix.cxxflags}}
+        run: |
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=${{matrix.build_type}} \
+                -DCMAKE_CXX_STANDARD=${{matrix.std}} -G Ninja
+
+      - name: Build
+        run: ninja -C build
+
+      - name: Test
+        working-directory: ${{runner.workspace}}/build
+        run: ctest -C ${{matrix.build_type}}
+        env:
+          CTEST_OUTPUT_ON_FAILURE: True
