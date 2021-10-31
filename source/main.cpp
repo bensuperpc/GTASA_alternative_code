@@ -89,12 +89,12 @@ auto main(int arc, char* argv[]) -> int
 
   constexpr auto display_val = 15;
 
-  std::cout << std::setw(display_val + 3) << "Iter. N°"
+  std::cout << std::setw(display_val + 4) << "Iter. N°"
             << std::setw(display_val) << "Code" << std::setw(display_val)
             << "JAMCRC value" << std::endl;
 
-  for (auto&& result : results) {
-    std::cout << std::setw(display_val + 2) << std::dec << std::get<0>(result)
+  for (auto& result : results) {
+    std::cout << std::setw(display_val + 3) << std::dec << std::get<0>(result)
               << std::setw(display_val) << std::get<1>(result) << "0x"
               << std::hex << std::setw(display_val) << std::get<2>(result)
               << std::endl;
