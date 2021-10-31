@@ -9,6 +9,7 @@ using Clock = std::chrono::high_resolution_clock;
 auto main(int arc, char* argv[]) -> int
 {
   std::ios_base::sync_with_stdio(false);  // Improve std::cout speed
+  std::cout.setf(std::ios::left);
 
   std::vector<std::tuple<std::size_t, std::string, std::uint32_t>> results =
       {};  // Stock results after calculations
@@ -86,14 +87,16 @@ auto main(int arc, char* argv[]) -> int
 
   sort(results.begin(), results.end());  // Sort results
 
-  std::cout << std::left << std::setw(18) << "Iter. N°" << std::left
-            << std::setw(15) << "Code" << std::left << std::setw(15)
+  constexpr auto display_val = 15;
+
+  std::cout << std::setw(display_val + 3) << "Iter. N°"
+            << std::setw(display_val) << "Code" << std::setw(display_val)
             << "JAMCRC value" << std::endl;
 
   for (auto&& result : results) {
-    std::cout << std::left << std::setw(17) << std::dec << std::get<0>(result)
-              << std::left << std::setw(15) << std::get<1>(result) << "0x"
-              << std::hex << std::left << std::setw(15) << std::get<2>(result)
+    std::cout << std::setw(display_val + 2) << std::dec << std::get<0>(result)
+              << std::setw(display_val) << std::get<1>(result) << "0x"
+              << std::hex << std::setw(display_val) << std::get<2>(result)
               << std::endl;
   }
 

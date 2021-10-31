@@ -37,10 +37,10 @@
 namespace gta
 {
 /** @brief Size of alphabet */
-static const std::uint32_t alphabet_size {26};
+static constexpr std::uint32_t alphabet_size {26};
 
 /** @brief List of CRC32/JAMCRC hash of cheats codes */
-static const std::array<std::uint32_t, 87> cheat_list {
+static constexpr std::array<std::uint32_t, 87> cheat_list {
     0xDE4B237D, 0xB22A28D1, 0x5A783FAE, 0xEECCEA2B, 0x42AF1E28, 0x555FC201,
     0x2A845345, 0xE1EF01EA, 0x771B83FC, 0x5BF12848, 0x44453A17, 0xFCFF1D08,
     0xB69E8532, 0x8B828076, 0xDD6ED9E9, 0xA290FD8C, 0x3484B5A7, 0x43DB914E,
@@ -171,7 +171,7 @@ auto jamcrc(const std::string& my_string) -> std::uint32_t;
  */
 void find_string_inv(char* array, uint64_t n);
 
-static const uint32_t polynomial = 0xEDB88320;
+static constexpr uint32_t polynomial = 0xEDB88320;
 
 /**
  * \brief Source: https://create.stephan-brumme.com/crc32/#slicing-by-8-overview
