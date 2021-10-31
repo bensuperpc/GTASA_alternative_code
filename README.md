@@ -2,7 +2,7 @@
 
 ### _Find alternate cheat codes in Grand Theft Auto San Andreas by brute foce_
 
-[![Continuous Integration](https://github.com/bensuperpc/GTA_SA_cheat_finder/actions/workflows/ci.yml/badge.svg)](https://github.com/bensuperpc/GTA_SA_cheat_finder/actions/workflows/ci.yml) [![Dockcross CI](https://github.com/bensuperpc/GTA_SA_cheat_finder/actions/workflows/dockcross.yml/badge.svg)](https://github.com/bensuperpc/GTA_SA_cheat_finder/actions/workflows/dockcross.yml) [![tagged-release](https://github.com/bensuperpc/GTA_SA_cheat_finder/actions/workflows/release.yml/badge.svg)](https://github.com/bensuperpc/GTA_SA_cheat_finder/actions/workflows/release.yml)
+[![Continuous Integration](https://github.com/bensuperpc/GTA_SA_cheat_finder/actions/workflows/ci.yml/badge.svg)](https://github.com/bensuperpc/GTA_SA_cheat_finder/actions/workflows/ci.yml) [![Dockcross CI](https://github.com/bensuperpc/GTA_SA_cheat_finder/actions/workflows/dockcross.yml/badge.svg)](https://github.com/bensuperpc/GTA_SA_cheat_finder/actions/workflows/dockcross.yml) [![tagged-release](https://github.com/bensuperpc/GTA_SA_cheat_finder/actions/workflows/release.yml/badge.svg)](https://github.com/bensuperpc/GTA_SA_cheat_finder/actions/workflows/release.yml) [![linux](https://github.com/bensuperpc/GTA_SA_cheat_finder/actions/workflows/linux.yml/badge.svg)](https://github.com/bensuperpc/GTA_SA_cheat_finder/actions/workflows/linux.yml)
 
 ![GitHub top language](https://img.shields.io/github/languages/top/bensuperpc/GTA_SA_cheat_finder) ![GitHub](https://img.shields.io/github/license/bensuperpc/GTA_SA_cheat_finder) ![GitHub all releases](https://img.shields.io/github/downloads/bensuperpc/GTA_SA_cheat_finder/total) ![GitHub Release Date](https://img.shields.io/github/release-date/bensuperpc/GTA_SA_cheat_finder) ![GitHub release (latest by date)](https://img.shields.io/github/v/release/bensuperpc/GTA_SA_cheat_finder) [![codecov](https://codecov.io/gh/bensuperpc/GTA_SA_cheat_finder/branch/main/graph/badge.svg?token=34WAC5P9TR)](https://codecov.io/gh/bensuperpc/GTA_SA_cheat_finder)
 
@@ -42,15 +42,15 @@ From: A to: BYKYLXA Alphabetic sequence
 Iter. N°         Code           JAMCRC value   
 20810792         ASNAEB         0x555fc201       
 75396850         FHYSTV         0x44b34866       
-147491485        LJSPQK         0xfeda77f7       
 181355281        OFVIAC         0x6c0fa650       
 181961057        OHDUDE         0xe958788a       
 198489210        PRIEBJ         0xf2aa0c1d       
+147491485        LJSPQK         0xfeda77f7       
 241414872        THGLOJ         0xcaec94ee       
-289334426        XICWMD         0x1a9aa3d6       
-299376767        YECGAA         0x40cf761        
 311365503        ZEIIVG         0x74d4fcb1       
 370535590        AEDUWNV        0x9a629401       
+289334426        XICWMD         0x1a9aa3d6       
+299376767        YECGAA         0x40cf761        
 380229391        AEZAKMI        0xe1b33eb9       
 535721682        ASBHGRB        0xa7613f99       
 Time: 1.19597 sec
