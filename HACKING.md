@@ -75,5 +75,11 @@ cmake --build build/dev
 cd build/dev && ctest
 ```
 
+### Build docker image
+
+```sh
+docker build . -f Dockerfile -t bensuperpc/gta:latest
+```
+
 [1]: https://cmake.org/cmake/help/latest/manual/cmake-presets.7.html
 [2]: https://cmake.org/download/
