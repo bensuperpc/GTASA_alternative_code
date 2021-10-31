@@ -57,13 +57,13 @@ jobs:
           CXXFLAGS: ${{matrix.cxxflags}}
         run: |
           cmake -S . -B build -DCMAKE_BUILD_TYPE=${{matrix.build_type}} \
-                -DCMAKE_CXX_STANDARD=${{matrix.std}} -G Ninja
+                -DCMAKE_CXX_STANDARD=${{matrix.std}} -G Ninja --preset=ci-coverage
 
       - name: Build
         run: ninja -C build
 
-#      - name: Test
-#        working-directory: ${{runner.workspace}}/build
-#        run: ctest
-#        env:
-#          CTEST_OUTPUT_ON_FAILURE: True
+      - name: Test
+        working-directory: build
+        run: ctest --output-on-failure -j 2
+        env:
+          CTEST_OUTPUT_ON_FAILURE: True
