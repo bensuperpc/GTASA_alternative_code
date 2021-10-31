@@ -47,6 +47,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: dependencies
+        run: ${{matrix.install}} ninja-build
+
       - name: Configure
         env:
           CXX: ${{matrix.cxx}}
