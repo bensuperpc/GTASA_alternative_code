@@ -209,7 +209,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: "📥 Checkout Code"
+      - name: "Checkout Code"
         uses: actions/checkout@v2
         with:
           submodules: "recursive"
@@ -219,10 +219,10 @@ jobs:
         with:
           name: bin-artifact
           path: .
-      - name: "✅ checksum"
+      - name: "Checksum"
         run: find . -maxdepth 1 -name "*.tar.xz" | xargs sha256sum > checksum_all.sha256
       - uses: "marvinpinto/action-automatic-releases@latest"
-        name: "📤 upload to github"
+        name: "Upload to github"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: false

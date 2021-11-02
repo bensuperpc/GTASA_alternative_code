@@ -212,7 +212,11 @@ jobs:
             }
 
     steps:
-      - uses: actions/checkout@v2
+      - name: "Checkout Code"
+        uses: actions/checkout@v2
+        with:
+          submodules: "recursive"
+          fetch-depth: 0
 
       - name: dependencies
         run: sudo apt install ninja-build ${{matrix.builder.install}}

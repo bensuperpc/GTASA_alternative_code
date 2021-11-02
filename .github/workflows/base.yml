@@ -14,7 +14,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: "Checkout Code"
+        uses: actions/checkout@v2
+        with:
+          submodules: "recursive"
+          fetch-depth: 0
 
       - uses: actions/setup-python@v2
         with: { python-version: "3.8" }
@@ -43,7 +47,11 @@ jobs:
     if: github.repository_owner == 'bensuperpc'
 
     steps:
-      - uses: actions/checkout@v2
+      - name: "Checkout Code"
+        uses: actions/checkout@v2
+        with:
+          submodules: "recursive"
+          fetch-depth: 0
 
       - name: Install LCov
         run: sudo apt-get update -q
@@ -73,7 +81,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: "Checkout Code"
+        uses: actions/checkout@v2
+        with:
+          submodules: "recursive"
+          fetch-depth: 0
 
       - name: Configure
         env: { CXX: clang++-11 }
@@ -103,7 +115,11 @@ jobs:
     runs-on: ${{ matrix.os }}-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: "Checkout Code"
+        uses: actions/checkout@v2
+        with:
+          submodules: "recursive"
+          fetch-depth: 0
 
       - name: Install static analyzers
         if: matrix.os == 'ubuntu'
@@ -134,7 +150,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: "Checkout Code"
+        uses: actions/checkout@v2
+        with:
+          submodules: "recursive"
+          fetch-depth: 0
 
       - name: Run ShellCheck
         uses: ludeeus/action-shellcheck@master
@@ -166,7 +186,11 @@ jobs:
       && github.repository_owner == 'bensuperpc'
 
     steps:
-      - uses: actions/checkout@v2
+      - name: "Checkout Code"
+        uses: actions/checkout@v2
+        with:
+          submodules: "recursive"
+          fetch-depth: 0
 
       - uses: actions/setup-python@v2
         with: { python-version: "3.8" }
@@ -194,7 +218,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: "Checkout Code"
+        uses: actions/checkout@v2
+        with:
+          submodules: "recursive"
+          fetch-depth: 0
 
       - name: Build
         run: docker build . -f Dockerfile -t bensuperpc/gta:latest
