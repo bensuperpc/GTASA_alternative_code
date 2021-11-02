@@ -31,13 +31,8 @@
 #  endif
 #endif
 
-/** @brief Define alphabetic seq with upercase */
-#define ALPHABET_UP "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
 namespace gta
 {
-/** @brief Size of alphabet */
-static constexpr std::uint32_t alphabet_size {26};
 
 /** @brief List of CRC32/JAMCRC hash of cheats codes */
 static constexpr std::array<std::uint32_t, 87> cheat_list {
@@ -166,8 +161,8 @@ auto jamcrc(const std::string& my_string) -> std::uint32_t;
 #endif
 
 /**
- * \brief Generate Alphabetic sequence from size_t value, A=1, Z=27, AA = 28, AB
- * = 29 \param n index in base 26 \param array return array
+ * \brief Generate Alphabetic sequence from uint64_t value, A=1, Z=27, AA = 28,
+ * AB = 29 \param n index in base 26 \param array return array
  */
 void find_string_inv(char* array, uint64_t n);
 

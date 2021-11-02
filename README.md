@@ -15,21 +15,21 @@
 #### Usage
 
 ```sh
-./GTA_SA_cheat_finder 0 60000000 (searches codes from index 0 to 60000000)
+./GTA_SA_cheat_finder --min 0 --max 60000000 # (Searches codes from index 0 to 60000000, from A to: BYKYLXA alphabetic sequence)
 ```
 
 ```sh
-./GTA_SA_cheat_finder 50 58800000 (searches codes from index 50 to 58800000)
+./GTA_SA_cheat_finder --min 50 --max 58800000 # (Searches codes from index 50 to 58800000, from XA to: LFLQXD Alphabetic sequence)
 ```
 
 ```sh
-./GTA_SA_cheat_finder 58800000 (searches codes from index 0 to 58800000)
+./GTA_SA_cheat_finder -h # Get help (or with --help)
 ```
 
 #### Example
 
 ```sh
-./GTA_SA_cheat_finder 0 600000000
+./GTA_SA_cheat_finder --min 0 --max 600000000
 ```
 
 **You should get this result:**

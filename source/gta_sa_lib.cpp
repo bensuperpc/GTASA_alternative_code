@@ -22,7 +22,7 @@ auto gta::jamcrc(const std::string& my_string) -> std::uint32_t
 #endif
   auto crc = static_cast<uint32_t>(-1);
   auto* current = reinterpret_cast<const unsigned char*>(my_string.data());
-  size_t length = my_string.length();
+  uint64_t length = my_string.length();
   // process eight bytes at once
   while (static_cast<bool>(length--)) {
     crc = (crc >> 8) ^ crc32_lookup[(crc & 0xFF) ^ *current++];
@@ -31,23 +31,24 @@ auto gta::jamcrc(const std::string& my_string) -> std::uint32_t
 }
 
 /**
- * \brief Generate Alphabetic sequence from size_t value, A=0, Z=26, AA = 27, BA
- * = 28 = 29 T \param n index in base 26 \param array return array
+ * \brief Generate Alphabetic sequence from uint64_t value, A=0, Z=26, AA = 27,
+ * BA = 28 = 29 T \param n index in base 26 \param array return array
  */
 void gta::find_string_inv(char* array, uint64_t n)
 {
-  const std::uint32_t string_size_alphabet {alphabet_size + 1};
-  const std::array<char, string_size_alphabet> alpha {ALPHABET_UP};
+  constexpr std::uint32_t string_size_alphabet {27};
+  constexpr std::array<char, string_size_alphabet> alpha {
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
   // If n < 27
-  if (n < string_size_alphabet - 1) {
+  if (n < 26) {
     array[0] = alpha[n];
     return;
   }
   // If n > 27
-  std::size_t i = 0;
+  std::uint64_t i = 0;
   while (n > 0) {
-    array[i] = alpha[(--n) % alphabet_size];
-    n /= alphabet_size;
+    array[i] = alpha[(--n) % 26];
+    n /= 26;
     ++i;
   }
 }

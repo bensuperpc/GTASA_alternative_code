@@ -4,30 +4,43 @@
 
 #include "gta_sa_lib.hpp"
 
-using Clock = std::chrono::high_resolution_clock;
+using cpp_clock = std::chrono::high_resolution_clock;
 
 auto main(int argc, char* argv[]) -> int
 {
   std::ios_base::sync_with_stdio(false);  // Improve std::cout speed
   std::cout.setf(std::ios::left);
 
-  std::vector<std::tuple<std::size_t, std::string, std::uint32_t>> results =
+  std::vector<std::tuple<std::uint64_t, std::string, std::uint32_t>> results =
       {};  // Stock results after calculations
 
   gta::precompute_crc();  // Fill Crc32Lookup table
 
-  size_t min_range = 0;  // Alphabetic sequence range min
-  if (argc >= 3) {
-    min_range = static_cast<size_t>(std::stoll(argv[1]));
+  uint64_t min_range = 0;  // Alphabetic sequence range min
+  uint64_t max_range =
+      0;  // Alphabetic sequence range max, must be > min_range !
+
+  std::vector<std::string> args(argv + 1, argv + argc);
+  std::string infname;
+  std::string outfname;
+
+  // args[i] instead of *i -- don't tell anyone! ;)
+  for (auto i = args.begin(); i != args.end(); ++i) {
+    if (*i == "-h" || *i == "--help") {
+      std::cout << "Syntax: GTA_SA_cheat_finder --min <from (uint64_t)> --max "
+                   "<to (uint64_t)>"
+                << std::endl;
+      return EXIT_SUCCESS;
+    }
+    if (*i == "--min") {
+      min_range = static_cast<uint64_t>(std::stoll(*++i));
+    } else if (*i == "--max") {
+      max_range = static_cast<uint64_t>(std::stoll(*++i));
+    }
   }
 
-  size_t max_range = 0;  // Alphabetic sequence range max, must be > min_range !
-  if (argc == 2) {
-    max_range = static_cast<size_t>(std::stoll(argv[1]));
-  }
-  if (argc >= 3) {
-    max_range = static_cast<size_t>(std::stoll(argv[2]));
-  }
+  args.clear();  // Remove all element
+  args.shrink_to_fit();  // Free memory
 
   if (min_range > max_range) {
     std::cout << "Min range value: '" << min_range
@@ -51,13 +64,13 @@ auto main(int argc, char* argv[]) -> int
 
   std::array<char, 29> tmp = {0};  // Temp array
   uint32_t crc = 0;  // CRC value
-  auto&& t1 = Clock::now();
+  auto&& t1 = cpp_clock::now();
 #if defined(_OPENMP)
 #  pragma omp parallel for schedule(auto) shared(results) firstprivate(tmp, crc)
 #endif
-  for (std::size_t i = min_range; i <= max_range; i++) {
+  for (std::uint64_t i = min_range; i <= max_range; i++) {
     gta::find_string_inv(tmp.data(),
-                         i);  // Generate Alphabetic sequence from size_t
+                         i);  // Generate Alphabetic sequence from uint64_t
                               // value, A=1, Z=27, AA = 28, AB = 29
     crc = gta::jamcrc(tmp.data());  // JAMCRC
 #if ((defined(_MSVC_LANG) && _MSVC_LANG >= 202002L) \
@@ -83,7 +96,7 @@ auto main(int argc, char* argv[]) -> int
           crc));  // Save result: calculation position, Alphabetic sequence, CRC
     }
   }
-  auto&& t2 = Clock::now();
+  auto&& t2 = cpp_clock::now();
 
   sort(results.begin(), results.end());  // Sort results
 
@@ -99,7 +112,6 @@ auto main(int argc, char* argv[]) -> int
               << std::hex << std::setw(display_val) << std::get<2>(result)
               << std::endl;
   }
-
   std::cout << "Time: "
             << std::chrono::duration_cast<std::chrono::duration<double>>(t2
                                                                          - t1)

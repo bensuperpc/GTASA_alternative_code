@@ -10,5 +10,5 @@ FROM alpine:latest as runtime
 RUN apk add --no-cache libstdc++ libgomp libgcc
 COPY --from=builder app/build/GTA_SA_cheat_finder .
 # Test exec
-RUN ./GTA_SA_cheat_finder 0 600000001
+RUN ./GTA_SA_cheat_finder --min 0 --max 396
 ENTRYPOINT ["./GTA_SA_cheat_finder"] 
