@@ -21,13 +21,23 @@ jobs:
           - {
               cxx: g++-4.8,
               std: 11,
+              cxxflags: "",
               build_type: Debug,
               os: ubuntu-18.04,
               install: g++-4.8,
             }
           - {
               cxx: g++-7,
+              std: 11,
+              cxxflags: "",
+              build_type: Debug,
+              os: ubuntu-18.04,
+              install: g++-7,
+            }
+          - {
+              cxx: g++-7,
               std: 14,
+              cxxflags: "",
               build_type: Debug,
               os: ubuntu-18.04,
               install: g++-7,
@@ -35,6 +45,7 @@ jobs:
           - {
               cxx: g++-8,
               std: 11,
+              cxxflags: "",
               build_type: Debug,
               os: ubuntu-18.04,
               install: g++-8,
@@ -42,6 +53,7 @@ jobs:
           - {
               cxx: g++-8,
               std: 14,
+              cxxflags: "",
               build_type: Debug,
               os: ubuntu-18.04,
               install: g++-8,
@@ -49,6 +61,15 @@ jobs:
           - {
               cxx: g++-9,
               std: 14,
+              cxxflags: "",
+              build_type: Debug,
+              os: ubuntu-20.04,
+              install: g++-9,
+            }
+          - {
+              cxx: g++-9,
+              std: 17,
+              cxxflags: "",
               build_type: Debug,
               os: ubuntu-20.04,
               install: g++-9,
@@ -56,6 +77,15 @@ jobs:
           - {
               cxx: g++-10,
               std: 11,
+              cxxflags: "",
+              build_type: Debug,
+              os: ubuntu-20.04,
+              install: "",
+            }
+          - {
+              cxx: g++-10,
+              std: 14,
+              cxxflags: "",
               build_type: Debug,
               os: ubuntu-20.04,
               install: "",
@@ -63,6 +93,15 @@ jobs:
           - {
               cxx: g++-10,
               std: 17,
+              cxxflags: "",
+              build_type: Debug,
+              os: ubuntu-20.04,
+              install: "",
+            }
+          - {
+              cxx: g++-10,
+              std: 20,
+              cxxflags: "",
               build_type: Debug,
               os: ubuntu-20.04,
               install: "",
@@ -70,6 +109,15 @@ jobs:
           - {
               cxx: g++-11,
               std: 11,
+              cxxflags: "",
+              build_type: Debug,
+              os: ubuntu-20.04,
+              install: "",
+            }
+          - {
+              cxx: g++-11,
+              std: 14,
+              cxxflags: "",
               build_type: Debug,
               os: ubuntu-20.04,
               install: "",
@@ -77,6 +125,7 @@ jobs:
           - {
               cxx: g++-11,
               std: 17,
+              cxxflags: "",
               build_type: Debug,
               os: ubuntu-20.04,
               install: "",
@@ -84,6 +133,7 @@ jobs:
           - {
               cxx: g++-11,
               std: 20,
+              cxxflags: "",
               build_type: Debug,
               os: ubuntu-20.04,
               install: "",
@@ -91,6 +141,23 @@ jobs:
           - {
               cxx: clang++-9,
               std: 17,
+              cxxflags: "",
+              build_type: Debug,
+              os: ubuntu-20.04,
+              install: "",
+            }
+          - {
+              cxx: clang++-10,
+              std: 14,
+              cxxflags: "",
+              build_type: Debug,
+              os: ubuntu-20.04,
+              install: "",
+            }
+          - {
+              cxx: clang++-10,
+              std: 14,
+              cxxflags: "",
               build_type: Debug,
               os: ubuntu-20.04,
               install: "",
@@ -98,6 +165,7 @@ jobs:
           - {
               cxx: clang++-10,
               std: 17,
+              cxxflags: "",
               build_type: Debug,
               os: ubuntu-20.04,
               install: "",
@@ -105,17 +173,19 @@ jobs:
           - {
               cxx: clang++-11,
               std: 20,
+              cxxflags: "",
               build_type: Debug,
               os: ubuntu-20.04,
               install: "",
             }
-
-    #          - cxx: clang++-11
-    #            build_type: Debug
-    #            std: 20
-    #            cxxflags: -stdlib=libc++
-    #            os: ubuntu-20.04
-    #            install: libc++-11-dev libc++abi-11-dev
+          - {
+              cxx: clang++-11,
+              std: 20,
+              cxxflags: "-stdlib=libc++",
+              build_type: Debug,
+              os: ubuntu-20.04,
+              install: "libc++-11-dev libc++abi-11-dev",
+            }
 
     steps:
       - uses: actions/checkout@v2
@@ -126,7 +196,7 @@ jobs:
       - name: Configure
         env:
           CXX: ${{matrix.cxx}}
-        #          CXXFLAGS: ${{matrix.cxxflags}}
+          CXXFLAGS: ${{matrix.cxxflags}}
         run: |
           cmake -S . -B build -DCMAKE_BUILD_TYPE=${{matrix.builder.build_type}} \
                 -DCMAKE_CXX_STANDARD=${{matrix.builder.std}} -G Ninja --preset=ci-coverage
