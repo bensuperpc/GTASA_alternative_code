@@ -24,6 +24,6 @@
 
 #--preset=dev
 
-cmake -S . -B build -G Ninja "$*"
+cmake -S . -B build -G Ninja $*
 
 ninja -C build
