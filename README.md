@@ -104,7 +104,7 @@ See the [CONTRIBUTING](CONTRIBUTING.md) document.
 - [gcc](https://github.com/gcc-mirror/gcc)
 - [docker](https://github.com/docker/docker)
 - [actions](https://github.com/actions/virtual-environments)
-
+- [fmt](https://github.com/fmtlib/fmt)
 
 # Licensing
 
