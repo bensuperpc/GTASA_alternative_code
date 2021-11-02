@@ -33,7 +33,6 @@
 
 namespace gta
 {
-
 /** @brief List of CRC32/JAMCRC hash of cheats codes */
 static constexpr std::array<std::uint32_t, 87> cheat_list {
     0xDE4B237D, 0xB22A28D1, 0x5A783FAE, 0xEECCEA2B, 0x42AF1E28, 0x555FC201,
