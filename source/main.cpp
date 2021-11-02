@@ -6,7 +6,7 @@
 
 using Clock = std::chrono::high_resolution_clock;
 
-auto main(int arc, char* argv[]) -> int
+auto main(int argc, char* argv[]) -> int
 {
   std::ios_base::sync_with_stdio(false);  // Improve std::cout speed
   std::cout.setf(std::ios::left);
@@ -17,15 +17,15 @@ auto main(int arc, char* argv[]) -> int
   gta::precompute_crc();  // Fill Crc32Lookup table
 
   size_t min_range = 0;  // Alphabetic sequence range min
-  if (arc >= 3) {
+  if (argc >= 3) {
     min_range = static_cast<size_t>(std::stoll(argv[1]));
   }
 
   size_t max_range = 0;  // Alphabetic sequence range max, must be > min_range !
-  if (arc == 2) {
+  if (argc == 2) {
     max_range = static_cast<size_t>(std::stoll(argv[1]));
   }
-  if (arc >= 3) {
+  if (argc >= 3) {
     max_range = static_cast<size_t>(std::stoll(argv[2]));
   }
 
