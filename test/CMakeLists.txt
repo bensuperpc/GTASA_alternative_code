@@ -34,7 +34,7 @@ if(UNIX AND NOT APPLE)
   FetchContent_Declare(
     googlebenchmark
     GIT_REPOSITORY https://github.com/google/benchmark.git
-    GIT_TAG main-alt)
+    GIT_TAG main)
 
   FetchContent_MakeAvailable(googletest googlebenchmark)
 
