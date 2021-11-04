@@ -55,6 +55,62 @@ these correspond to in the [`CMakePresets.json`](CMakePresets.json) file.
 sorts of things that you would otherwise want to pass to the configure command
 in the terminal.
 
+Full example with Ubuntu (Linux):
+
+```json
+{
+  "version": 1,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 14,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "folders",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_PROJECT_INCLUDE": "${sourceDir}/project-include-after.cmake"
+      }
+    },
+    {
+      "name": "static-analyzers",
+      "hidden": true,
+      "inherits": ["clang-tidy", "cppcheck"]
+    },
+    {
+      "name": "dev-common",
+      "hidden": true,
+      "inherits": ["folders", "static-analyzers", "dev-mode"],
+      "cacheVariables": {
+        "BUILD_MCSS_DOCS": "ON"
+      }
+    },
+    {
+      "name": "dev-unix",
+      "binaryDir": "${sourceDir}/build/dev-unix",
+      "inherits": ["dev-common", "ci-unix"]
+    },
+    {
+      "name": "dev-win64",
+      "binaryDir": "${sourceDir}/build/dev-win64",
+      "inherits": ["dev-common", "ci-win64"]
+    },
+    {
+      "name": "dev",
+      "binaryDir": "${sourceDir}/build/dev",
+      "inherits": "dev-unix"
+    },
+    {
+      "name": "dev-coverage",
+      "binaryDir": "${sourceDir}/build/coverage",
+      "inherits": ["folders", "dev-mode", "coverage-unix"]
+    }
+  ]
+}
+```
+
+
 ### Configure, build and test
 
 If you followed the above instructions, then you can configure, build and test
