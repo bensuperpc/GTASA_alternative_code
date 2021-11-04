@@ -4,12 +4,6 @@
 
 project(GTA_SA_cheat_finderTests LANGUAGES CXX)
 
-add_executable(find_string_inv source/find_string_inv.cpp)
-target_link_libraries(find_string_inv PRIVATE GTA_SA_cheat_finder_lib)
-# target_compile_features(find_string_inv PRIVATE cxx_std_17)
-
-add_test(NAME find_string_inv COMMAND find_string_inv)
-
 add_executable(precompute_crc source/precompute_crc.cpp)
 target_link_libraries(precompute_crc PRIVATE GTA_SA_cheat_finder_lib)
 # target_compile_features(precompute_crc PRIVATE cxx_std_17)
@@ -30,6 +24,21 @@ if(UNIX AND NOT APPLE)
     GIT_REPOSITORY https://github.com/google/benchmark.git
     GIT_TAG main)
 
+  #set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+
+  #set(FOLDER_benchmark "gbenchmark" CACHE STRING "" FORCE)
+  #set(FOLDER_gtest "gtest" CACHE STRING "" FORCE)
+  #set(FOLDER_gmock "gmock" CACHE STRING "" FORCE)
+  #set(FOLDER_googletest-distribution "googletest-distribution" CACHE STRING "" FORCE)
+
+  # Disable tests on gtest
+  set(gtest_build_tests OFF CACHE BOOL "" FORCE)
+  set(gtest_build_samples OFF CACHE BOOL "" FORCE)
+
+  # Disable tests on google benchmark
+  set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "" FORCE)
+  set(BENCHMARK_ENABLE_WERROR OFF CACHE BOOL "" FORCE)
+
   FetchContent_MakeAvailable(googletest googlebenchmark)
 
   add_executable(jamcrc_bench source/jamcrc_bench.cpp)
@@ -42,12 +51,13 @@ if(UNIX AND NOT APPLE)
                                                       GTA_SA_cheat_finder_lib)
   # add_test(NAME find_string_inv_bench COMMAND find_string_inv_bench)
 
-
   add_executable(jamcrc_test source/jamcrc_test.cpp)
   target_link_libraries(jamcrc_test PRIVATE GTA_SA_cheat_finder_lib gtest_main)
-  # target_compile_features(jamcrc_test PRIVATE cxx_std_17)
-
   add_test(NAME jamcrc_test COMMAND jamcrc_test)
+
+  add_executable(find_string_inv_test source/find_string_inv_test.cpp)
+  target_link_libraries(find_string_inv_test PRIVATE GTA_SA_cheat_finder_lib gtest_main)
+  add_test(NAME find_string_inv_test COMMAND find_string_inv_test)
 
   #include(GoogleTest)
   #gtest_discover_tests(jamcrc_test)
