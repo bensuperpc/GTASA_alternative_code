@@ -10,4 +10,3 @@ TEST(jamcrc, basic)
   std::string str = "AAGCEY";
   EXPECT_EQ(0x40cf761, gta::jamcrc(str));
 }
-
