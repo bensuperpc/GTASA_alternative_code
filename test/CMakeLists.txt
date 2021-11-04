@@ -33,7 +33,7 @@ if(UNIX AND NOT APPLE)
 
   FetchContent_Declare(
     googlebenchmark
-    GIT_REPOSITORY https://github.com/bensuperpc/benchmark.git
+    GIT_REPOSITORY https://github.com/google/benchmark.git
     GIT_TAG main-alt)
 
   FetchContent_MakeAvailable(googletest googlebenchmark)
@@ -41,10 +41,10 @@ if(UNIX AND NOT APPLE)
   add_executable(jamcrc_bench source/jamcrc_bench.cpp)
   target_link_libraries(jamcrc_bench PRIVATE benchmark::benchmark
                                              GTA_SA_cheat_finder_lib)
-  add_test(NAME jamcrc_bench COMMAND jamcrc_bench)
+  # add_test(NAME jamcrc_bench COMMAND jamcrc_bench)
 
   add_executable(find_string_inv_bench source/find_string_inv_bench.cpp)
   target_link_libraries(find_string_inv_bench PRIVATE benchmark::benchmark
                                                       GTA_SA_cheat_finder_lib)
-  add_test(NAME find_string_inv_bench COMMAND find_string_inv_bench)
-endif(UNIX)
+  # add_test(NAME find_string_inv_bench COMMAND find_string_inv_bench)
+endif()
