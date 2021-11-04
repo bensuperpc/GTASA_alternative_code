@@ -10,12 +10,6 @@ target_link_libraries(find_string_inv PRIVATE GTA_SA_cheat_finder_lib)
 
 add_test(NAME find_string_inv COMMAND find_string_inv)
 
-add_executable(jamcrc source/jamcrc.cpp)
-target_link_libraries(jamcrc PRIVATE GTA_SA_cheat_finder_lib)
-# target_compile_features(jamcrc PRIVATE cxx_std_17)
-
-add_test(NAME jamcrc COMMAND jamcrc)
-
 add_executable(precompute_crc source/precompute_crc.cpp)
 target_link_libraries(precompute_crc PRIVATE GTA_SA_cheat_finder_lib)
 # target_compile_features(precompute_crc PRIVATE cxx_std_17)
@@ -47,4 +41,14 @@ if(UNIX AND NOT APPLE)
   target_link_libraries(find_string_inv_bench PRIVATE benchmark::benchmark
                                                       GTA_SA_cheat_finder_lib)
   # add_test(NAME find_string_inv_bench COMMAND find_string_inv_bench)
+
+
+  add_executable(jamcrc_test source/jamcrc_test.cpp)
+  target_link_libraries(jamcrc_test PRIVATE GTA_SA_cheat_finder_lib gtest_main)
+  # target_compile_features(jamcrc_test PRIVATE cxx_std_17)
+
+  add_test(NAME jamcrc_test COMMAND jamcrc_test)
+
+  #include(GoogleTest)
+  #gtest_discover_tests(jamcrc_test)
 endif()
