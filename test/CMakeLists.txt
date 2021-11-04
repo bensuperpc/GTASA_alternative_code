@@ -22,7 +22,7 @@ target_link_libraries(precompute_crc PRIVATE GTA_SA_cheat_finder_lib)
 
 add_test(NAME precompute_crc COMMAND precompute_crc)
 
-if(UNIX)
+if(UNIX AND NOT APPLE)
   include(FetchContent)
 
   # Externally provided libraries
