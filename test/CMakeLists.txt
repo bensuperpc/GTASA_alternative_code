@@ -37,5 +37,10 @@ FetchContent_MakeAvailable(
         googletest
         googlebenchmark)
 
-add_executable(g_benchmark source/main.cpp)
-target_link_libraries(g_benchmark benchmark::benchmark)
+add_executable(jamcrc_bench source/jamcrc_bench.cpp)
+target_link_libraries(jamcrc_bench PRIVATE benchmark::benchmark GTA_SA_cheat_finder_lib)
+add_test(NAME jamcrc_bench COMMAND jamcrc_bench)
+
+add_executable(find_string_inv_bench source/find_string_inv_bench.cpp)
+target_link_libraries(find_string_inv_bench PRIVATE benchmark::benchmark GTA_SA_cheat_finder_lib)
+add_test(NAME find_string_inv_bench COMMAND find_string_inv_bench)
