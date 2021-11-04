@@ -21,3 +21,21 @@ target_link_libraries(precompute_crc PRIVATE GTA_SA_cheat_finder_lib)
 #target_compile_features(precompute_crc PRIVATE cxx_std_17)
 
 add_test(NAME precompute_crc COMMAND precompute_crc)
+
+include(FetchContent)
+
+# Externally provided libraries
+FetchContent_Declare(googletest
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        GIT_TAG release-1.11.0 )
+
+FetchContent_Declare(googlebenchmark
+        GIT_REPOSITORY https://github.com/bensuperpc/benchmark.git
+        GIT_TAG main-alt)
+
+FetchContent_MakeAvailable(
+        googletest
+        googlebenchmark)
+
+add_executable(g_benchmark source/main.cpp)
+target_link_libraries(g_benchmark benchmark::benchmark)
