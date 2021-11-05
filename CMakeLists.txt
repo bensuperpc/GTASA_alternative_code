@@ -36,6 +36,11 @@ target_include_directories(
 
 #target_compile_features(GTA_SA_cheat_finder_lib PUBLIC cxx_range_for)
 
+find_package(OpenMP 4.0)
+if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
+  target_link_libraries(GTA_SA_cheat_finder_lib PUBLIC OpenMP::OpenMP_CXX)
+endif()
+
 # ---- Declare executable ----
 
 add_executable(GTA_SA_cheat_finder_GTA_SA_cheat_finder source/main.cpp)
@@ -46,11 +51,6 @@ set_target_properties(
     OUTPUT_NAME GTA_SA_cheat_finder
     EXPORT_NAME GTA_SA_cheat_finder
 )
-
-find_package(OpenMP 4.0)
-if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
-  target_link_libraries(GTA_SA_cheat_finder_GTA_SA_cheat_finder PRIVATE OpenMP::OpenMP_CXX)
-endif()
 
 #target_compile_features(GTA_SA_cheat_finder_GTA_SA_cheat_finder PRIVATE cxx_range_for)
 

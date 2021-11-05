@@ -1,20 +1,8 @@
+//#include <iostream>
+//#include <string>
 #include <chrono>  // std::chrono
 
 #include "gta_sa_lib.hpp"
-
-#if ((defined(_MSVC_LANG) && _MSVC_LANG >= 201703L) || __cplusplus >= 201703L)
-#  if __has_include("omp.h")
-#    include <omp.h>
-#  endif
-#endif
-
-#if !defined(_OPENMP)
-#  if _MSC_VER && !__INTEL_COMPILER
-#    pragma message("No openMP ! Only use 1 thread.")
-#  else
-#    warning No openMP ! Only use 1 thread.
-#  endif
-#endif
 
 using cpp_clock = std::chrono::high_resolution_clock;
 
@@ -25,6 +13,8 @@ auto main(int argc, char* argv[]) -> int
 
   std::vector<std::tuple<std::uint64_t, std::string, std::uint32_t>> results =
       {};  // Stock results after calculations
+
+  gta::precompute_crc();  // Fill Crc32Lookup table
 
   uint64_t min_range = 0;  // Alphabetic sequence range min
   uint64_t max_range =

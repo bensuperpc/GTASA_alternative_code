@@ -5,6 +5,8 @@
 
 TEST(jamcrc, basic1)
 {
+  gta::precompute_crc();
+
   std::string str = "";
   std::reverse(str.begin(), str.end());
 
@@ -16,6 +18,8 @@ TEST(jamcrc, basic1)
 
 TEST(jamcrc, basic2)
 {
+  gta::precompute_crc();
+
   std::string str = "ASNAEB";
   std::reverse(str.begin(), str.end());
 
@@ -27,6 +31,8 @@ TEST(jamcrc, basic2)
 
 TEST(jamcrc, basic3)
 {
+  gta::precompute_crc();
+
   std::string str = "ASBHGRB";
   std::reverse(str.begin(), str.end());
 
@@ -38,6 +44,8 @@ TEST(jamcrc, basic3)
 
 TEST(jamcrc, basic4)
 {
+  gta::precompute_crc();
+
   std::string str = "XICWMD";
   std::reverse(str.begin(), str.end());
 
@@ -49,6 +57,8 @@ TEST(jamcrc, basic4)
 
 TEST(jamcrc, basic5)
 {
+  gta::precompute_crc();
+
   std::string str = "LGBTQIA+";
   std::reverse(str.begin(), str.end());
 
@@ -60,6 +70,8 @@ TEST(jamcrc, basic5)
 
 TEST(jamcrc, basic6)
 {
+  gta::precompute_crc();
+
   std::string str = "intergouvernementalisations";
   std::reverse(str.begin(), str.end());
 

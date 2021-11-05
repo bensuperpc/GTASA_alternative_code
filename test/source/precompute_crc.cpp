@@ -2,5 +2,7 @@
 
 auto main() -> int
 {
+  gta::precompute_crc();
+
   return 0;
 }
