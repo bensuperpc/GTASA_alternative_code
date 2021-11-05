@@ -1,5 +1,5 @@
 #include <chrono>  // std::chrono
-#include <iostream> // std::cout
+#include <iostream>  // std::cout
 
 #include "gta_sa_lib.hpp"
 
@@ -26,8 +26,6 @@ auto main(int argc, char* argv[]) -> int
 
   std::vector<std::tuple<std::uint64_t, std::string, std::uint32_t>> results =
       {};  // Stock results after calculations
-
-  gta::precompute_crc();  // Fill Crc32Lookup table
 
   uint64_t min_range = 0;  // Alphabetic sequence range min
   uint64_t max_range =

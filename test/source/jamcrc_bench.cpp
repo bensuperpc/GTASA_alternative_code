@@ -11,7 +11,6 @@ static void jamcrc_bench(benchmark::State& state)
 {
   // Code inside this loop is measured repeatedly
   std::string created_string("01234567890123456789");
-  gta::precompute_crc();
 
   for (auto _ : state) {
     gta::jamcrc(created_string);

@@ -52,26 +52,3 @@ void gta::find_string_inv(char* array, uint64_t n)
     ++i;
   }
 }
-
-/**
- * \brief Fill crc32_lookup table
- * Source: https://create.stephan-brumme.com/crc32/#slicing-by-8-overview
- */
-void gta::precompute_crc()
-{
-  crc32_lookup[0] = 0;
-  // compute each power of two (all numbers with exactly one bit set)
-  uint32_t crc = crc32_lookup[0x80] = polynomial;
-  for (std::uint32_t next = 0x40; next != 0; next >>= 1) {
-    crc = (crc >> 1) ^ ((crc & 1) * polynomial);
-    crc32_lookup[next] = crc;
-  }
-
-  for (std::uint32_t power_of_two = 2; power_of_two <= 0x80; power_of_two <<= 1)
-  {
-    uint32_t crc_extra_bit = crc32_lookup[power_of_two];
-    for (std::uint32_t i = 1; i < power_of_two; i++) {
-      crc32_lookup[i + power_of_two] = crc32_lookup[i] ^ crc_extra_bit;
-    }
-  }
-}

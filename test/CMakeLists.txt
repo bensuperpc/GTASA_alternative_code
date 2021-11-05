@@ -4,11 +4,11 @@
 
 project(GTA_SA_cheat_finderTests LANGUAGES CXX)
 
-add_executable(precompute_crc source/precompute_crc.cpp)
-target_link_libraries(precompute_crc PRIVATE GTA_SA_cheat_finder_lib)
+#add_executable(precompute_crc source/precompute_crc.cpp)
+#target_link_libraries(precompute_crc PRIVATE GTA_SA_cheat_finder_lib)
 # target_compile_features(precompute_crc PRIVATE cxx_std_17)
 
-add_test(NAME precompute_crc COMMAND precompute_crc)
+#add_test(NAME precompute_crc COMMAND precompute_crc)
 
 if(UNIX AND NOT APPLE)
   include(FetchContent)
