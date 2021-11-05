@@ -68,7 +68,7 @@ jobs:
         run: ctest --output-on-failure -j 2
 
       - name: Process coverage info
-        run: cmake --build build/coverage -t coverage
+        run: cmake --build build/coverage -t main_coverage
 
       - name: Submit to codecov.io
         uses: codecov/codecov-action@v2.1.0
