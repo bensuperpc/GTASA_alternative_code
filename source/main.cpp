@@ -1,8 +1,21 @@
-//#include <iostream>
-//#include <string>
 #include <chrono>  // std::chrono
+#include <iostream> // std::cout
 
 #include "gta_sa_lib.hpp"
+
+#if ((defined(_MSVC_LANG) && _MSVC_LANG >= 201703L) || __cplusplus >= 201703L)
+#  if __has_include("omp.h")
+#    include <omp.h>
+#  endif
+#endif
+
+#if !defined(_OPENMP)
+#  if _MSC_VER && !__INTEL_COMPILER
+#    pragma message("No openMP ! Only use 1 thread.")
+#  else
+#    warning No openMP ! Only use 1 thread.
+#  endif
+#endif
 
 using cpp_clock = std::chrono::high_resolution_clock;
 

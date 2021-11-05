@@ -17,20 +17,6 @@
 #include <utility>  // std::make_pair
 #include <vector>  // std::vector
 
-#if ((defined(_MSVC_LANG) && _MSVC_LANG >= 201703L) || __cplusplus >= 201703L)
-#  if __has_include("omp.h")
-#    include <omp.h>
-#  endif
-#endif
-
-#if !defined(_OPENMP)
-#  if _MSC_VER && !__INTEL_COMPILER
-#    pragma message("No openMP ! Only use 1 thread.")
-#  else
-#    warning No openMP ! Only use 1 thread.
-#  endif
-#endif
-
 namespace gta
 {
 /** @brief List of CRC32/JAMCRC hash of cheats codes */
