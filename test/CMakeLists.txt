@@ -61,4 +61,6 @@ if(UNIX AND NOT APPLE)
 
   #include(GoogleTest)
   #gtest_discover_tests(jamcrc_test)
+else()
+  message(WARNING "Disable tests, only supported on Linux")
 endif()
