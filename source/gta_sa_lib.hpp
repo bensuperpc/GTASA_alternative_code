@@ -17,20 +17,6 @@
 #include <utility>  // std::make_pair
 #include <vector>  // std::vector
 
-#if ((defined(_MSVC_LANG) && _MSVC_LANG >= 201703L) || __cplusplus >= 201703L)
-#  if __has_include("omp.h")
-#    include <omp.h>
-#  endif
-#endif
-
-#if !defined(_OPENMP)
-#  if _MSC_VER && !__INTEL_COMPILER
-#    pragma message("No openMP ! Only use 1 thread.")
-#  else
-#    warning No openMP ! Only use 1 thread.
-#  endif
-#endif
-
 namespace gta
 {
 /** @brief List of CRC32/JAMCRC hash of cheats codes */
@@ -170,8 +156,6 @@ static constexpr uint32_t polynomial = 0xEDB88320;
 /**
  * \brief Source: https://create.stephan-brumme.com/crc32/#slicing-by-8-overview
  */
-void precompute_crc();
-
-static std::array<uint32_t, 256> crc32_lookup = {0};
+constexpr std::array<uint32_t, 256> precompute_crc();
 
 }  // namespace gta
