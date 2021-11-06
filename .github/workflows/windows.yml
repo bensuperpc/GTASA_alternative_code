@@ -1,0 +1,72 @@
+name: windows
+
+on:
+  push:
+    branches:
+      - "*"
+    paths-ignore:
+      - "**.md"
+  pull_request:
+    branches:
+      - "*"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ${{matrix.os}}
+    strategy:
+      fail-fast: false
+      matrix:
+        library:
+          - { shared: YES }
+          - { shared: NO }
+        builder:
+          - {
+              os: windows-2016,
+              platform: Win32,
+              standard: 11,
+              cxxflags: "",
+              build_type: Debug,
+            }
+          - {
+              os: windows-2016,
+              platform: x64,
+              standard: 11,
+              cxxflags: "",
+              build_type: Debug,
+            }
+          - {
+              os: windows-2019,
+              platform: Win32,
+              standard: 17,
+              cxxflags: "",
+              build_type: Debug,
+            }
+          - {
+              os: windows-2019,
+              platform: x64,
+              standard: 17,
+              cxxflags: "",
+              build_type: Debug,
+            }
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Create Build Environment
+        run: cmake -E make_directory ${{runner.workspace}}/build
+
+      - name: Configure
+        run: |
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=${{matrix.build_type}} \
+                -A ${{matrix.platform}} ${{matrix.shared}} \
+                -DCMAKE_CXX_STANDARD=${{matrix.standard}}
+      - name: Build
+        run: |
+          $threads = (Get-CimInstance Win32_ComputerSystem).NumberOfLogicalProcessors
+          cmake --build build --parallel $threads
+
+      - name: Test
+        working-directory: build
+        run: ctest --output-on-failure -j 2
+        env:
+          CTEST_OUTPUT_ON_FAILURE: True
