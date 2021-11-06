@@ -16,9 +16,9 @@ jobs:
     runs-on: macos-10.15
     strategy:
       matrix:
-        build_type: [Debug, Release]
-        include:
-          - shared: -DBUILD_SHARED_LIBS=ON
+        build_type: [Debug]
+        shared: [YES, NO]
+        standard: [11, 17]
 
     steps:
       - uses: actions/checkout@v2
@@ -28,8 +28,8 @@ jobs:
 
       - name: Configure
         run: |
-          cmake -S . -B build -DCMAKE_BUILD_TYPE=${{matrix.build_type}} ${{matrix.shared}} \
-            -DCMAKE_CXX_STANDARD=17
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -DBUILD_SHARED_LIBS=${{matrix.shared}} \
+            -DCMAKE_CXX_STANDARD=${{matrix.standard}}
 
       - name: Build
         run: |

@@ -49,6 +49,13 @@ jobs:
               cxxflags: "",
               build_type: Debug,
             }
+          - {
+              os: windows-2019,
+              platform: x64,
+              standard: 20,
+              cxxflags: "",
+              build_type: Debug,
+            }
     steps:
       - uses: actions/checkout@v2
 
@@ -57,8 +64,8 @@ jobs:
 
       - name: Configure
         run: |
-          cmake -S . -B build -DCMAKE_BUILD_TYPE=${{matrix.build_type}} \
-                -DCMAKE_CXX_STANDARD=${{matrix.standard}} ${{matrix.shared}}
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=${{matrix.builder.build_type}} \
+                -DCMAKE_CXX_STANDARD=${{matrix.builder.standard}} ${{matrix.library.shared}}
       - name: Build
         run: |
           $threads = (Get-CimInstance Win32_ComputerSystem).NumberOfLogicalProcessors
