@@ -22,15 +22,8 @@ jobs:
           - { shared: NO }
         builder:
           - {
-              os: windows-2016,
+              os: windows-2019,
               platform: Win32,
-              standard: 11,
-              cxxflags: "",
-              build_type: Debug,
-            }
-          - {
-              os: windows-2016,
-              platform: x64,
               standard: 11,
               cxxflags: "",
               build_type: Debug,
@@ -38,7 +31,14 @@ jobs:
           - {
               os: windows-2019,
               platform: Win32,
-              standard: 17,
+              standard: 20,
+              cxxflags: "",
+              build_type: Debug,
+            }
+          - {
+              os: windows-2019,
+              platform: x64,
+              standard: 11,
               cxxflags: "",
               build_type: Debug,
             }
