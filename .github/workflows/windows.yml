@@ -58,8 +58,7 @@ jobs:
       - name: Configure
         run: |
           cmake -S . -B build -DCMAKE_BUILD_TYPE=${{matrix.build_type}} \
-                -A ${{matrix.platform}} ${{matrix.shared}} \
-                -DCMAKE_CXX_STANDARD=${{matrix.standard}}
+                -DCMAKE_CXX_STANDARD=${{matrix.standard}} ${{matrix.shared}}
       - name: Build
         run: |
           $threads = (Get-CimInstance Win32_ComputerSystem).NumberOfLogicalProcessors
