@@ -13,49 +13,14 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.builder.os }}
+    runs-on: windows-latest
     strategy:
       fail-fast: false
       matrix:
-        library:
-          - { shared: YES }
-          - { shared: NO }
-        builder:
-          - {
-              os: windows-2019,
-              platform: Win32,
-              standard: 11,
-              cxxflags: "",
-              build_type: Debug,
-            }
-          - {
-              os: windows-2019,
-              platform: Win32,
-              standard: 20,
-              cxxflags: "",
-              build_type: Debug,
-            }
-          - {
-              os: windows-2019,
-              platform: x64,
-              standard: 11,
-              cxxflags: "",
-              build_type: Debug,
-            }
-          - {
-              os: windows-2019,
-              platform: x64,
-              standard: 17,
-              cxxflags: "",
-              build_type: Debug,
-            }
-          - {
-              os: windows-2019,
-              platform: x64,
-              standard: 20,
-              cxxflags: "",
-              build_type: Debug,
-            }
+        shared: [YES, NO]
+        standard: [11, 14, 17, 20]
+        platform: [Win32, x64]
+        build_type: [Debug, Release]
     steps:
       - uses: actions/checkout@v2
 
@@ -63,7 +28,7 @@ jobs:
         run: cmake -E make_directory ${{runner.workspace}}/build
 
       - name: Configure
-        run: cmake -S . -B build -D CMAKE_BUILD_TYPE=Debug -A ${{matrix.builder.platform}} -D CMAKE_CXX_STANDARD=${{matrix.builder.standard}} -D BUILD_SHARED_LIBS=${{matrix.library.shared}}
+        run: cmake -S . -B build -D CMAKE_BUILD_TYPE=${{matrix.build_type}} -A ${{matrix.platform}} -D CMAKE_CXX_STANDARD=${{matrix.standard}} -D BUILD_SHARED_LIBS=${{matrix.shared}}
 
       - name: Build
         run: |
