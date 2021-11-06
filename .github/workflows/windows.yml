@@ -65,7 +65,7 @@ jobs:
       - name: Configure
         run: |
           cmake -S . -B build -DCMAKE_BUILD_TYPE=${{matrix.builder.build_type}} \
-                -DCMAKE_CXX_STANDARD=${{matrix.builder.standard}} ${{matrix.library.shared}}
+                -DCMAKE_CXX_STANDARD=${{matrix.builder.standard}} -DBUILD_SHARED_LIBS=${{matrix.library.shared}}
       - name: Build
         run: |
           $threads = (Get-CimInstance Win32_ComputerSystem).NumberOfLogicalProcessors
