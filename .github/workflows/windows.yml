@@ -63,11 +63,7 @@ jobs:
         run: cmake -E make_directory ${{runner.workspace}}/build
 
       - name: Configure
-        run: |
-          cmake -S . -B build -D CMAKE_BUILD_TYPE=Debug \ 
-            -A ${{matrix.builder.platform}} \
-            -D CMAKE_CXX_STANDARD=${{matrix.builder.standard}} \ 
-            -D BUILD_SHARED_LIBS=${{matrix.library.shared}}
+        run: cmake -S . -B build -D CMAKE_BUILD_TYPE=Debug -A ${{matrix.builder.platform}} -D CMAKE_CXX_STANDARD=${{matrix.builder.standard}} -D BUILD_SHARED_LIBS=${{matrix.library.shared}}
 
       - name: Build
         run: |
