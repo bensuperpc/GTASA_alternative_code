@@ -64,8 +64,9 @@ jobs:
 
       - name: Configure
         run: |
-          cmake -S . -B build -D CMAKE_BUILD_TYPE=${{matrix.builder.build_type}} \ 
-                -D CMAKE_CXX_STANDARD=${{matrix.builder.standard}} -D BUILD_SHARED_LIBS=${{matrix.library.shared}}
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=${{matrix.builder.build_type}} \ 
+                -DCMAKE_CXX_STANDARD=${{matrix.builder.standard}} \ 
+                -DBUILD_SHARED_LIBS=${{matrix.library.shared}}
 
       - name: Build
         run: |
