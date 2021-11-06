@@ -29,6 +29,7 @@ jobs:
       - name: Configure
         run: |
           cmake -S . -B build -DCMAKE_BUILD_TYPE=${{matrix.build_type}} ${{matrix.shared}}
+          -DCMAKE_CXX_STANDARD=17
 
       - name: Build
         run: |
