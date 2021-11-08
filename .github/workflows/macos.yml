@@ -15,21 +15,27 @@ jobs:
   build:
     runs-on: macos-latest
     strategy:
+      fail-fast: false
       matrix:
-        build_type: [Debug]
+        build_type: [Debug, Release]
         shared: [YES, NO]
-        standard: [11, 17]
+        standard: [11, 14, 17, 20]
 
     steps:
-      - uses: actions/checkout@v2
+      - name: "Checkout Code"
+        uses: actions/checkout@v2
+        with:
+          submodules: "recursive"
+          fetch-depth: 0
 
       - name: Create Build Environment
         run: cmake -E make_directory ${{runner.workspace}}/build
 
       - name: Configure
         run: |
-          cmake -S . -B build -DCMAKE_BUILD_TYPE=${{matrix.build_type}} -D BUILD_SHARED_LIBS=${{matrix.shared}} \
-            -D CMAKE_CXX_STANDARD=${{matrix.standard}}
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=${{matrix.build_type}} \
+            -D BUILD_SHARED_LIBS=${{matrix.shared}} \
+            -D CMAKE_CXX_STANDARD=${{matrix.standard}} --preset=ci-macos
 
       - name: Build
         run: |
@@ -37,7 +43,6 @@ jobs:
           cmake --build build  --config ${{matrix.build_type}} --parallel $threads
 
       - name: Test
-        working-directory: build
-        run: ctest --output-on-failure -j 2
+        run: ctest --test-dir build --verbose --output-on-failure --parallel 2
         env:
           CTEST_OUTPUT_ON_FAILURE: True

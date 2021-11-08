@@ -175,8 +175,8 @@ jobs:
               cmake_arg: "-DCMAKE_BUILD_WITH_INSTALL_RPATH=ON -DCMAKE_CXX_STANDARD=17",
             }
 
-        # Disable MinSizeRel RelWithDebInfo, Release
-        build_type: [Debug]
+        # Disable MinSizeRel RelWithDebInfo, Release, Debug
+        build_type: [Release]
     steps:
       - name: "Checkout Code"
         uses: actions/checkout@v2

@@ -17,7 +17,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        compiler: [g++-10, clang++-10]
+        compiler: [g++, clang++]
         shared: [YES, NO]
         standard: [11, 14, 17, 20]
         build_type: [Debug, Release]
@@ -44,7 +44,6 @@ jobs:
         run: ninja -C build
 
       - name: Test
-        working-directory: build
-        run: ctest --output-on-failure -j 2
+        run: ctest --test-dir build --verbose --output-on-failure --parallel 2
         env:
           CTEST_OUTPUT_ON_FAILURE: True
