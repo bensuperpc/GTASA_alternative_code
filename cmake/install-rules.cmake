@@ -9,7 +9,7 @@ include(GNUInstallDirs)
 set(package GTA_SA_cheat_finder)
 
 install(
-    TARGETS GTA_SA_cheat_finder_GTA_SA_cheat_finder
+    TARGETS GTA_SA_cheat_finder_exe
     EXPORT GTA_SA_cheat_finderTargets
     RUNTIME COMPONENT GTA_SA_cheat_finder_Runtime
 )

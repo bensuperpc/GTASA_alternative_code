@@ -1,29 +1,12 @@
-#!/bin/bash
-#//////////////////////////////////////////////////////////////
-#//   ____                                                   //
-#//  | __ )  ___ _ __  ___ _   _ _ __   ___ _ __ _ __   ___  //
-#//  |  _ \ / _ \ '_ \/ __| | | | '_ \ / _ \ '__| '_ \ / __| //
-#//  | |_) |  __/ | | \__ \ |_| | |_) |  __/ |  | |_) | (__  //
-#//  |____/ \___|_| |_|___/\__,_| .__/ \___|_|  | .__/ \___| //
-#//                             |_|             |_|          //
-#//////////////////////////////////////////////////////////////
-#//                                                          //
-#//  Script, 2020                                            //
-#//  Created: 06, October, 2020                              //
-#//  Modified: 30, October, 2021                             //
-#//  file: -                                                 //
-#//  -                                                       //
-#//  Source: https://github.com/bensuperpc/scripts                                                //
-#//  OS: ALL                                                 //
-#//  CPU: ALL                                                //
-#//                                                          //
-#//////////////////////////////////////////////////////////////
+#!/usr/bin/env bash
 
-#export CC=/usr/bin/clang
-#export CXX=/usr/bin/clang++
+export CC=/usr/bin/clang
+export CXX=/usr/bin/clang++
 
-#--preset=dev
+#--preset=dev --preset=dev-coverage -D CMAKE_BUILD_TYPE=Release -D CMAKE_CXX_STANDARD=17
 
-cmake -S . -B build -G Ninja $* --preset=dev-coverage
+cmake -S . -B build -G Ninja $* --preset=dev-coverage -D CMAKE_BUILD_TYPE=Release -D CMAKE_CXX_STANDARD=17
 
 ninja -C build
+
+# ctest --verbose --parallel $(nproc) --test-dir build

@@ -14,7 +14,7 @@ endif()
 # to omit warnings from the provided paths, if the compiler supports that
 # This is to provide a user experience similar to find_package when
 # add_subdirectory or FetchContent is used to consume this project
-set(GTA_SA_cheat_finder_warning_guard "")
+set(warning_guard "")
 if(NOT PROJECT_IS_TOP_LEVEL)
   option(
       GTA_SA_cheat_finder_INCLUDES_WITH_SYSTEM
@@ -23,6 +23,6 @@ if(NOT PROJECT_IS_TOP_LEVEL)
   )
   mark_as_advanced(GTA_SA_cheat_finder_INCLUDES_WITH_SYSTEM)
   if(GTA_SA_cheat_finder_INCLUDES_WITH_SYSTEM)
-    set(GTA_SA_cheat_finder_warning_guard SYSTEM)
+    set(warning_guard SYSTEM)
   endif()
 endif()

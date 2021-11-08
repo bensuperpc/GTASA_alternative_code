@@ -25,7 +25,7 @@ set(
 # ---- Coverage target ----
 
 add_custom_target(
-    main_coverage
+    coverage
     COMMAND ${COVERAGE_TRACE_COMMAND}
     COMMAND ${COVERAGE_HTML_COMMAND}
     COMMENT "Generating coverage report"
