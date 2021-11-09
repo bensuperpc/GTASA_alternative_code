@@ -1,5 +1,6 @@
 #include <chrono>  // std::chrono
 #include <iostream>  // std::cout
+#include <sstream>  // std::istringstream
 
 #include "gta_sa_lib.hpp"
 
@@ -44,9 +45,17 @@ auto main(int argc, char* argv[]) -> int
       return EXIT_SUCCESS;
     }
     if (*i == "--min") {
-      min_range = static_cast<uint64_t>(std::stoll(*++i));
+      std::istringstream iss(*++i);
+      if (!(iss >> min_range)) {
+        std::cout << "Error, non-numeric character !" << std::endl;
+        return EXIT_FAILURE;
+      }
     } else if (*i == "--max") {
-      max_range = static_cast<uint64_t>(std::stoll(*++i));
+      std::istringstream iss(*++i);
+      if (!(iss >> max_range)) {
+        std::cout << "Error, non-numeric character !" << std::endl;
+        return EXIT_FAILURE;
+      }
     }
   }
 
