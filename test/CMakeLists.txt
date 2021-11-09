@@ -17,7 +17,7 @@ if(UNIX AND NOT APPLE)
   FetchContent_Declare(
     googletest
     GIT_REPOSITORY https://github.com/google/googletest.git
-    GIT_TAG release-1.11.0)
+    GIT_TAG master)
 
   FetchContent_Declare(
     googlebenchmark
@@ -42,12 +42,12 @@ if(UNIX AND NOT APPLE)
   FetchContent_MakeAvailable(googletest googlebenchmark)
 
   add_executable(jamcrc_bench source/jamcrc_bench.cpp)
-  target_link_libraries(jamcrc_bench PRIVATE benchmark::benchmark
+  target_link_libraries(jamcrc_bench PRIVATE benchmark::benchmark_main
                                              GTA_SA_cheat_finder_lib)
   # add_test(NAME jamcrc_bench COMMAND jamcrc_bench)
 
   add_executable(find_string_inv_bench source/find_string_inv_bench.cpp)
-  target_link_libraries(find_string_inv_bench PRIVATE benchmark::benchmark
+  target_link_libraries(find_string_inv_bench PRIVATE benchmark::benchmark_main
                                                       GTA_SA_cheat_finder_lib)
   # add_test(NAME find_string_inv_bench COMMAND find_string_inv_bench)
 
