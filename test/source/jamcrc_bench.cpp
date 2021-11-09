@@ -32,10 +32,9 @@ static void jamcrc_bench(benchmark::State& state)
 
   std::string str;
   str.reserve();
-  for (size_t i = 0; i < size; i++) {
+  for (auto i = 0; i < size; i++) {
     str.push_back(c_str[i] + '0');
   }
-  c_str.release();
 
   for (auto _ : state) {
     benchmark::DoNotOptimize(str);
@@ -45,12 +44,10 @@ static void jamcrc_bench(benchmark::State& state)
   // state.SetItemsProcessed(state.iterations() * state.range(0));
   state.SetBytesProcessed(state.iterations() * state.range(0) * sizeof(char));
 
-  // state.SetLabel("OK");
+  // auto c = c_str.release();
+  // delete[] c;
 }
-BENCHMARK(jamcrc_bench)
-    ->Name("jamcrc")
-    ->RangeMultiplier(100)
-    ->Range(1, 1000000000);
+BENCHMARK(jamcrc_bench)->Name("jamcrc")->RangeMultiplier(10)->Range(1, 1000);
 
 // Run the benchmark
 // BENCHMARK_MAIN();
