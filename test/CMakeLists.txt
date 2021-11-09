@@ -44,12 +44,17 @@ if(UNIX AND NOT APPLE)
   add_executable(jamcrc_bench source/jamcrc_bench.cpp)
   target_link_libraries(jamcrc_bench PRIVATE benchmark::benchmark_main
                                              GTA_SA_cheat_finder_lib)
-  # add_test(NAME jamcrc_bench COMMAND jamcrc_bench)
 
   add_executable(find_string_inv_bench source/find_string_inv_bench.cpp)
   target_link_libraries(find_string_inv_bench PRIVATE benchmark::benchmark_main
                                                       GTA_SA_cheat_finder_lib)
-  # add_test(NAME find_string_inv_bench COMMAND find_string_inv_bench)
+
+  if(NOT CMAKE_BUILD_TYPE MATCHES Debug)
+    add_test(NAME find_string_inv_bench COMMAND find_string_inv_bench)
+    add_test(NAME jamcrc_bench COMMAND jamcrc_bench)
+  elseif()
+    message(STATUS "Disable crc32_bench, Performance benchmark test only run on Release/RelWithDebInfo/MinSizeRel")
+  endif()
 
   add_executable(jamcrc_test source/jamcrc_test.cpp)
   target_link_libraries(jamcrc_test PRIVATE GTA_SA_cheat_finder_lib gtest_main)
