@@ -41,13 +41,13 @@ static void jamcrc_bench(benchmark::State& state)
     gta::jamcrc(str);
     benchmark::ClobberMemory();
   }
-  // state.SetItemsProcessed(state.iterations() * state.range(0));
+  state.SetItemsProcessed(state.iterations());
   state.SetBytesProcessed(state.iterations() * state.range(0) * sizeof(char));
 
   // auto c = c_str.release();
   // delete[] c;
 }
-BENCHMARK(jamcrc_bench)->Name("jamcrc")->RangeMultiplier(10)->Range(1, 1000);
+BENCHMARK(jamcrc_bench)->Name("jamcrc")->RangeMultiplier(2)->Range(1, 32);
 
 // Run the benchmark
 // BENCHMARK_MAIN();
