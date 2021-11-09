@@ -32,7 +32,7 @@ auto gta::jamcrc(const std::string& my_string) -> std::uint32_t
 
 /**
  * \brief Generate Alphabetic sequence from uint64_t value, A=0, Z=26, AA = 27,
- * BA = 28 = 29 T \param n index in base 26 \param array return array
+ * T \param n index in base 26 \param array return array
  */
 void gta::find_string_inv(char* array, uint64_t n)
 {

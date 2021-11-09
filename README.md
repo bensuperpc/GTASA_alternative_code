@@ -71,7 +71,7 @@ On AMD R7 5800H (clang 12):
 
 #### How does it work ?
 
-- The algorithm will generate sequences of characters (A, B, C ... AA, BA, CA ...)
+- The algorithm will generate sequences of characters (A, B, C ... AA...)
 - It will then calculate hash (**JAMCRC**) from series of characters
 - It will compare hashes, if they are equal to one of the hashes of one of the official cheat codes, this will save the sequence of characters
 - When it is finished it displays the results
