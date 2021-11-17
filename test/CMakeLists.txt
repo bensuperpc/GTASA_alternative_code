@@ -10,36 +10,54 @@ project(GTA_SA_cheat_finderTests LANGUAGES CXX)
 
 #add_test(NAME precompute_crc COMMAND precompute_crc)
 
-if(UNIX AND NOT APPLE)
+if(NOT WIN32)
   include(FetchContent)
 
   # Externally provided libraries
   FetchContent_Declare(
     googletest
     GIT_REPOSITORY https://github.com/google/googletest.git
-    GIT_TAG master)
+    GIT_TAG main)
 
   FetchContent_Declare(
     googlebenchmark
     GIT_REPOSITORY https://github.com/google/benchmark.git
     GIT_TAG main)
 
-  #set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+  # set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
-  #set(FOLDER_benchmark "gbenchmark" CACHE STRING "" FORCE)
-  #set(FOLDER_gtest "gtest" CACHE STRING "" FORCE)
-  #set(FOLDER_gmock "gmock" CACHE STRING "" FORCE)
-  #set(FOLDER_googletest-distribution "googletest-distribution" CACHE STRING "" FORCE)
+  set(FOLDER_benchmark
+      "gbenchmark"
+      CACHE STRING "" FORCE)
+  set(FOLDER_gtest
+      "gtest"
+      CACHE STRING "" FORCE)
+  set(FOLDER_gmock
+      "gmock"
+      CACHE STRING "" FORCE)
+  set(FOLDER_googletest-distribution
+      "googletest-distribution"
+      CACHE STRING "" FORCE)
 
   # Disable tests on gtest
-  set(gtest_build_tests OFF CACHE BOOL "" FORCE)
-  set(gtest_build_samples OFF CACHE BOOL "" FORCE)
+  set(gtest_build_tests
+      OFF
+      CACHE BOOL "" FORCE)
+  set(gtest_build_samples
+      OFF
+      CACHE BOOL "" FORCE)
 
   # Disable tests on google benchmark
-  set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "" FORCE)
-  set(BENCHMARK_ENABLE_WERROR OFF CACHE BOOL "" FORCE)
+  set(BENCHMARK_ENABLE_TESTING
+      OFF
+      CACHE BOOL "" FORCE)
+  set(BENCHMARK_ENABLE_WERROR
+      OFF
+      CACHE BOOL "" FORCE)
 
   FetchContent_MakeAvailable(googletest googlebenchmark)
+  # Lib: gtest_main benchmark::benchmark benchmark::benchmark_main
+  # target_compile_features(crc32_test PRIVATE cxx_std_17)
 
   add_executable(jamcrc_bench source/jamcrc_bench.cpp)
   target_link_libraries(jamcrc_bench PRIVATE benchmark::benchmark_main
