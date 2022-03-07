@@ -42,7 +42,7 @@ set_target_properties(
     EXPORT_NAME exe
 )
 
-target_compile_features(GTA_SA_cheat_finder_exe PRIVATE cxx_std_17)
+# target_compile_features(GTA_SA_cheat_finder_exe PRIVATE cxx_std_17)
 
 find_package(OpenMP 4.0)
 if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
