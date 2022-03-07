@@ -1,7 +1,3 @@
-if(PROJECT_IS_TOP_LEVEL)
-  set(CMAKE_INSTALL_INCLUDEDIR include/GTA_SA_cheat_finder CACHE PATH "")
-endif()
-
 include(CMakePackageConfigHelpers)
 include(GNUInstallDirs)
 
@@ -10,7 +6,6 @@ set(package GTA_SA_cheat_finder)
 
 install(
     TARGETS GTA_SA_cheat_finder_exe
-    EXPORT GTA_SA_cheat_finderTargets
     RUNTIME COMPONENT GTA_SA_cheat_finder_Runtime
 )
 
@@ -27,22 +22,20 @@ set(
 mark_as_advanced(GTA_SA_cheat_finder_INSTALL_CMAKEDIR)
 
 install(
-    FILES cmake/install-config.cmake
-    DESTINATION "${GTA_SA_cheat_finder_INSTALL_CMAKEDIR}"
-    RENAME "${package}Config.cmake"
-    COMPONENT GTA_SA_cheat_finder_Development
-)
-
-install(
     FILES "${PROJECT_BINARY_DIR}/${package}ConfigVersion.cmake"
     DESTINATION "${GTA_SA_cheat_finder_INSTALL_CMAKEDIR}"
     COMPONENT GTA_SA_cheat_finder_Development
 )
 
+# Export variables for the install script to use
+install(CODE "
+set(GTA_SA_cheat_finder_NAME [[$<TARGET_FILE_NAME:GTA_SA_cheat_finder_exe>]])
+set(GTA_SA_cheat_finder_INSTALL_CMAKEDIR [[${GTA_SA_cheat_finder_INSTALL_CMAKEDIR}]])
+set(CMAKE_INSTALL_BINDIR [[${CMAKE_INSTALL_BINDIR}]])
+" COMPONENT GTA_SA_cheat_finder_Development)
+
 install(
-    EXPORT GTA_SA_cheat_finderTargets
-    NAMESPACE GTA_SA_cheat_finder::
-    DESTINATION "${GTA_SA_cheat_finder_INSTALL_CMAKEDIR}"
+    SCRIPT cmake/install-script.cmake
     COMPONENT GTA_SA_cheat_finder_Development
 )
 

@@ -1,5 +1,9 @@
 # Building with CMake
 
+## Dependencies
+
+For a list of dependencies, please refer to [conanfile.txt](conanfile.txt).
+
 ## Build
 
 This project doesn't require any special command-line flags to build to keep
@@ -21,7 +25,7 @@ cmake -S . -B build
 cmake --build build --config Release
 ```
 
-#### Build docker
+### Build docker
 
 ```sh
 docker build . -f Dockerfile -t bensuperpc/gta:latest
@@ -50,4 +54,24 @@ multi-configuration generator, like the Visual Studio ones:
 cmake --install build --config Release
 ```
 
+### CMake package
+
+This project exports a CMake package to be used with the [`find_package`][2]
+command of CMake:
+
+* Package name: `GTA_SA_cheat_finder`
+* Cache variable: `GTA_SA_CHEAT_FINDER_EXECUTABLE`
+
+Example usage:
+
+```cmake
+find_package(GTA_SA_cheat_finder REQUIRED)
+# Use the executable in some command
+execute_process(
+    COMMAND "${GTA_SA_CHEAT_FINDER_EXECUTABLE}" ...
+    ...
+)
+```
+
 [1]: https://cmake.org/cmake/help/latest/manual/cmake.1.html#install-a-project
+[2]: https://cmake.org/cmake/help/latest/command/find_package.html
