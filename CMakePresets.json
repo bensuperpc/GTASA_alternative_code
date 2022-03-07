@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "cmakeMinimumRequired": {
     "major": 3,
     "minor": 14,
@@ -17,8 +17,8 @@
         "systemVars": false
       },
       "errors": {
-        "dev": false,
-        "deprecated": false
+        "dev": true,
+        "deprecated": true
       }
     },
     {
@@ -27,6 +27,13 @@
       "inherits": "cmake-pedantic",
       "cacheVariables": {
         "GTA_SA_cheat_finder_DEVELOPER_MODE": "ON"
+      }
+    },
+    {
+      "name": "conan",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/conan/conan_toolchain.cmake"
       }
     },
     {
@@ -57,8 +64,7 @@
       "name": "flags-unix",
       "hidden": true,
       "cacheVariables": {
-        "CMAKE_CXX_FLAGS": "-Wall -Wextra -Wpedantic -Wshadow -Wold-style-cast",
-        "CMAKE_C_FLAGS": "-Wall -Wextra -Wpedantic -Wshadow"
+        "CMAKE_CXX_FLAGS": "-Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Wcast-qual -Wshadow -Wformat=2 -Wundef -Werror=float-equal"
       }
     },
     {
@@ -80,7 +86,7 @@
     {
       "name": "ci-win64",
       "inherits": ["flags-windows", "ci-std"],
-      "generator": "Visual Studio 16 2019",
+      "generator": "Visual Studio 17 2022",
       "architecture": "x64",
       "hidden": true
     },
@@ -94,12 +100,13 @@
         "CMAKE_BUILD_TYPE": "Coverage",
         "CMAKE_CXX_FLAGS_COVERAGE": "-Og -g --coverage -fkeep-inline-functions -fkeep-static-functions",
         "CMAKE_EXE_LINKER_FLAGS_COVERAGE": "--coverage",
-        "CMAKE_SHARED_LINKER_FLAGS_COVERAGE": "--coverage"
+        "CMAKE_SHARED_LINKER_FLAGS_COVERAGE": "--coverage",
+        "CMAKE_MAP_IMPORTED_CONFIG_SANITIZE": "Coverage;RelWithDebInfo;Release;Debug;"
       }
     },
     {
       "name": "ci-coverage",
-      "inherits": ["coverage-unix", "dev-mode"],
+      "inherits": ["coverage-unix", "dev-mode", "conan"],
       "cacheVariables": {
         "COVERAGE_HTML_COMMAND": ""
       }
@@ -107,10 +114,11 @@
     {
       "name": "ci-sanitize",
       "binaryDir": "${sourceDir}/build/sanitize",
-      "inherits": ["ci-unix", "dev-mode"],
+      "inherits": ["ci-unix", "dev-mode", "conan"],
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Sanitize",
-        "CMAKE_CXX_FLAGS_SANITIZE": "-O2 -g -fsanitize=address,undefined -fno-omit-frame-pointer -fno-common"
+        "CMAKE_CXX_FLAGS_SANITIZE": "-O2 -g -fsanitize=address,undefined -fno-omit-frame-pointer -fno-common",
+        "CMAKE_MAP_IMPORTED_CONFIG_SANITIZE": "Sanitize;RelWithDebInfo;Release;Debug;"
       }
     },
     {
@@ -120,15 +128,15 @@
     },
     {
       "name": "ci-macos",
-      "inherits": ["ci-build", "ci-unix", "dev-mode"]
+      "inherits": ["ci-build", "ci-unix", "dev-mode", "conan"]
     },
     {
       "name": "ci-ubuntu",
-      "inherits": ["ci-build", "ci-unix", "clang-tidy", "cppcheck", "dev-mode"]
+      "inherits": ["ci-build", "ci-unix", "clang-tidy", "conan", "cppcheck", "dev-mode"]
     },
     {
       "name": "ci-windows",
-      "inherits": ["ci-build", "ci-win64", "dev-mode"]
+      "inherits": ["ci-build", "ci-win64", "dev-mode", "conan"]
     }
   ]
 }

@@ -14,66 +14,74 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: "Checkout Code"
-        uses: actions/checkout@v2
-        with:
-          submodules: "recursive"
-          fetch-depth: 0
+    - name: "Checkout Code"
+      uses: actions/checkout@v2
+      with:
+        submodules: "recursive"
+        fetch-depth: 0
 
-      - uses: actions/setup-python@v2
-        with: { python-version: "3.8" }
+    - uses: actions/setup-python@v2
+      with: { python-version: "3.8" }
 
-      - name: Install codespell
-        run: pip3 install codespell
+    - name: Install codespell
+      run: pip3 install codespell
 
-      - name: Lint
-        run: cmake -D FORMAT_COMMAND=clang-format-11 -P cmake/lint.cmake
+    - name: Lint
+      run: cmake -D FORMAT_COMMAND=clang-format-11 -P cmake/lint.cmake
 
-      - name: Spell check
-        if: always()
-        run: cmake -P cmake/spell.cmake
+    - name: Spell check
+      if: always()
+      run: cmake -P cmake/spell.cmake
 
   coverage:
     needs: [lint]
 
     runs-on: ubuntu-latest
 
-    # To enable coverage, go to https://codecov.io/, acquire a token, put it
-    # into your secrets (Settings > Secrets > New repository secret), delete
-    # the last line from the conditional below and edit the "<name>"
-    # placeholder to your GitHub name.
+    # To enable coverage, delete the last line from the conditional below and
+    # edit the "<name>" placeholder to your GitHub name.
     # If you do not wish to use codecov, then simply delete this job from the
     # workflow.
     if: github.repository_owner == 'bensuperpc'
 
     steps:
-      - name: "Checkout Code"
-        uses: actions/checkout@v2
-        with:
-          submodules: "recursive"
-          fetch-depth: 0
+    - name: "Checkout Code"
+      uses: actions/checkout@v2
+      with:
+        submodules: "recursive"
+        fetch-depth: 0
 
-      - name: Install LCov
-        run: sudo apt-get update -q
-          && sudo apt-get install lcov libtbb-dev -q -y
+    - name: Install LCov
+      run: sudo apt-get update -q
+        && sudo apt-get install lcov libtbb-dev -q -y
 
-      - name: Configure
-        run: cmake --preset=ci-coverage
+    - name: Install Python
+      uses: actions/setup-python@v2
+      with: { python-version: "3.8" }
 
-      - name: Build
-        run: cmake --build build/coverage -j 2
+    - name: Install dependencies
+      run: pip3 install conan
+        && conan profile new default --detect
+        && conan profile update settings.compiler.libcxx=libstdc++11 default
+        && conan install . -if conan -b missing
 
-      - name: Test
-        working-directory: build/coverage
-        run: ctest --output-on-failure -j 2
+    - name: Configure
+      run: cmake --preset=ci-coverage
 
-      - name: Process coverage info
-        run: cmake --build build/coverage -t coverage
+    - name: Build
+      run: cmake --build build/coverage -j 2
 
-      - name: Submit to codecov.io
-        uses: codecov/codecov-action@v2.1.0
-        with:
-          file: build/coverage/coverage.info
+    - name: Test
+      working-directory: build/coverage
+      run: ctest --output-on-failure -j 2
+
+    - name: Process coverage info
+      run: cmake --build build/coverage -t coverage
+
+    - name: Submit to codecov.io
+      uses: codecov/codecov-action@v2.1.0
+      with:
+        file: build/coverage/coverage.info
 
   sanitize:
     needs: [lint]
@@ -81,88 +89,93 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: "Checkout Code"
-        uses: actions/checkout@v2
-        with:
-          submodules: "recursive"
-          fetch-depth: 0
+    - name: "Checkout Code"
+      uses: actions/checkout@v2
+      with:
+        submodules: "recursive"
+        fetch-depth: 0
 
-      - name: Configure
-        env: { CXX: clang++-11 }
-        run: cmake --preset=ci-sanitize
+    - name: Install Python
+      uses: actions/setup-python@v2
+      with: { python-version: "3.8" }
 
-      - name: Build
-        run: cmake --build build/sanitize -j 2
+    - name: Install dependencies
+      run: pip3 install conan
+        && conan profile new default --detect
+        && cp .github/clang-11.profile ~/.conan/profiles/default
+        && conan install . -if conan -b missing
 
-      - name: Test
-        working-directory: build/sanitize
-        env:
-          ASAN_OPTIONS: "strict_string_checks=1:\
-            detect_stack_use_after_return=1:\
-            check_initialization_order=1:\
-            strict_init_order=1:\
-            detect_leaks=1"
-          UBSAN_OPTIONS: print_stacktrace=1
-        run: ctest --output-on-failure -j 2
+    - name: Configure
+      env: { CXX: clang++-11 }
+      run: cmake --preset=ci-sanitize
+
+    - name: Build
+      run: cmake --build build/sanitize -j 2
+
+    - name: Test
+      working-directory: build/sanitize
+      env:
+        ASAN_OPTIONS: "strict_string_checks=1:\
+          detect_stack_use_after_return=1:\
+          check_initialization_order=1:\
+          strict_init_order=1:\
+          detect_leaks=1"
+        UBSAN_OPTIONS: print_stacktrace=1
+      run: ctest --output-on-failure -j 2
 
   test:
     needs: [lint]
 
     strategy:
       matrix:
-        os: [macos, ubuntu, windows]
+        os: [macos-latest, ubuntu-latest, windows-2022]
 
-    runs-on: ${{ matrix.os }}-latest
-
-    steps:
-      - name: "Checkout Code"
-        uses: actions/checkout@v2
-        with:
-          submodules: "recursive"
-          fetch-depth: 0
-
-      - name: Install static analyzers
-        if: matrix.os == 'ubuntu'
-        run: sudo apt-get install clang-tidy cppcheck libtbb-dev -y -q
-
-      - name: Configure
-        run: cmake --preset=ci-${{ matrix.os }}
-
-      - name: Build
-        run: cmake --build build --config Release -j 2
-
-      - name: Install
-        run: cmake --install build --config Release --prefix prefix
-
-      - name: Test
-        working-directory: build
-        run: ctest --output-on-failure -C Release -j 2
-
-      - name: Test Release script
-        if: matrix.os == 'ubuntu'
-        run: |
-          chmod +x ./tools/make-release-build.sh
-          ./tools/make-release-build.sh
-
-  shellcheck:
-    needs: [lint]
-
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
 
     steps:
-      - name: "Checkout Code"
-        uses: actions/checkout@v2
-        with:
-          submodules: "recursive"
-          fetch-depth: 0
+    - name: "Checkout Code"
+      uses: actions/checkout@v2
+      with:
+        submodules: "recursive"
+        fetch-depth: 0
 
-      - name: Run ShellCheck
-        uses: ludeeus/action-shellcheck@master
-        with:
-          severity: error
-          format: gcc
-        env:
-          SHELLCHECK_OPTS: -s bash
+    - name: Install static analyzers
+      if: matrix.os == 'ubuntu-latest'
+      run: sudo apt-get install clang-tidy cppcheck libtbb-dev -y -q
+
+    - name: Install Python
+      uses: actions/setup-python@v2
+      with: { python-version: "3.8" }
+
+    - name: Install dependencies
+      shell: bash
+      run: |
+        pip3 install conan
+        conan profile new default --detect
+        if [ ${{ matrix.os }} = ubuntu-latest ]; then
+          conan profile update settings.compiler.libcxx=libstdc++11 default
+        fi
+        conan install . -if conan -b missing
+
+    - name: Configure
+      shell: pwsh
+      run: cmake "--preset=ci-$("${{ matrix.os }}".split("-")[0])"
+
+    - name: Build
+      run: cmake --build build --config Release -j 2
+
+    - name: Install
+      run: cmake --install build --config Release --prefix prefix
+
+    - name: Test
+      working-directory: build
+      run: ctest --output-on-failure -C Release -j 2
+
+    - name: Test Release script
+      if: matrix.os == 'ubuntu'
+      run: |
+        chmod +x ./tools/make-release-build.sh
+        ./tools/make-release-build.sh
 
   docs:
     # Deploy docs only when builds succeed
@@ -186,31 +199,31 @@ jobs:
       && github.repository_owner == 'bensuperpc'
 
     steps:
-      - name: "Checkout Code"
-        uses: actions/checkout@v2
-        with:
-          submodules: "recursive"
-          fetch-depth: 0
+    - name: "Checkout Code"
+      uses: actions/checkout@v2
+      with:
+        submodules: "recursive"
+        fetch-depth: 0
 
-      - uses: actions/setup-python@v2
-        with: { python-version: "3.8" }
+    - uses: actions/setup-python@v2
+      with: { python-version: "3.8" }
 
-      - name: Install m.css dependencies
-        run: pip3 install jinja2 Pygments
+    - name: Install m.css dependencies
+      run: pip3 install jinja2 Pygments
 
-      - name: Install Doxygen
-        run: sudo apt-get update -q
-          && sudo apt-get install doxygen -q -y
+    - name: Install Doxygen
+      run: sudo apt-get update -q
+        && sudo apt-get install doxygen -q -y
 
-      - name: Build docs
-        run: cmake -B build -D "CMAKE_PROJECT_INCLUDE=$PWD/cmake/docs.cmake"
-          && cmake --build build --target docs
+    - name: Build docs
+      run: cmake "-DPROJECT_SOURCE_DIR=$PWD" "-DPROJECT_BINARY_DIR=$PWD/build"
+        -P cmake/docs-ci.cmake
 
-      - name: Deploy docs
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: build/docs/html
+    - name: Deploy docs
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: build/docs/html
 
   docker:
     needs: [lint]
