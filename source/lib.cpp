@@ -1,6 +1,6 @@
 #include <cstdint>
 
-#include "gta_sa_lib.hpp"
+#include "lib.hpp"
 
 /**
  * \brief Source: https://create.stephan-brumme.com/crc32/#slicing-by-8-overview
