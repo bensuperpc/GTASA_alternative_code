@@ -2,7 +2,7 @@
 #include <iostream>  // std::cout
 #include <sstream>  // std::istringstream
 
-#include "gta_sa_lib.hpp"
+#include "lib.hpp"
 
 #if ((defined(_MSVC_LANG) && _MSVC_LANG >= 201703L) || __cplusplus >= 201703L)
 #  if __has_include("omp.h")

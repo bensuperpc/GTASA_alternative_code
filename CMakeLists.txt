@@ -10,22 +10,14 @@ project(
     LANGUAGES CXX
 )
 
-docs_early_return()
-
 include(cmake/project-is-top-level.cmake)
 include(cmake/variables.cmake)
-
-# ---- Output bin/lib etc... ----
-
-#set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-#set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-#set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 # ---- Declare library ----
 
 add_library(
     GTA_SA_cheat_finder_lib OBJECT
-    source/gta_sa_lib.cpp
+    source/lib.cpp
 )
 
 target_include_directories(
@@ -34,7 +26,10 @@ target_include_directories(
     "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/source>"
 )
 
-#target_compile_features(GTA_SA_cheat_finder_lib PUBLIC cxx_std_17)
+target_compile_features(GTA_SA_cheat_finder_lib PUBLIC cxx_std_17)
+
+# find_package(fmt REQUIRED)
+# target_link_libraries(GTA_SA_cheat_finder_lib PRIVATE fmt::fmt)
 
 # ---- Declare executable ----
 
@@ -47,7 +42,7 @@ set_target_properties(
     EXPORT_NAME exe
 )
 
-#target_compile_features(GTA_SA_cheat_finder_exe PRIVATE cxx_std_17)
+target_compile_features(GTA_SA_cheat_finder_exe PRIVATE cxx_std_17)
 
 find_package(OpenMP 4.0)
 if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
