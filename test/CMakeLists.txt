@@ -33,6 +33,14 @@ if(NOT WIN32)
   set(BENCHMARK_ENABLE_WERROR
       OFF
       CACHE BOOL "" FORCE)
+  set(BENCHMARK_FORCE_WERROR
+      OFF
+      CACHE BOOL "" FORCE)
+
+  set(BENCHMARK_ENABLE_INSTALL
+      OFF
+      CACHE BOOL "" FORCE)
+      
 
   FetchContent_MakeAvailable(googletest googlebenchmark)
   # Lib: gtest_main benchmark::benchmark benchmark::benchmark_main
