@@ -1,8 +1,8 @@
 #include <array>
 #include <string>
 
-#include "lib.hpp"
 #include "gtest/gtest.h"
+#include "lib.hpp"
 
 static const auto array_size = 29;
 

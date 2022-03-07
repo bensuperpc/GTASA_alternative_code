@@ -1,7 +1,7 @@
 #include <string>
 
-#include "lib.hpp"
 #include "gtest/gtest.h"
+#include "lib.hpp"
 
 TEST(jamcrc, basic1)
 {
