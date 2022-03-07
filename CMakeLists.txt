@@ -26,7 +26,7 @@ target_include_directories(
     "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/source>"
 )
 
-target_compile_features(GTA_SA_cheat_finder_lib PUBLIC cxx_std_17)
+# target_compile_features(GTA_SA_cheat_finder_lib PUBLIC cxx_std_17)
 
 # find_package(fmt REQUIRED)
 # target_link_libraries(GTA_SA_cheat_finder_lib PRIVATE fmt::fmt)
