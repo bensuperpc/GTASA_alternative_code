@@ -14,11 +14,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: "Checkout Code"
-      uses: actions/checkout@v2
-      with:
-        submodules: "recursive"
-        fetch-depth: 0
+    - uses: actions/checkout@v2
 
     - uses: actions/setup-python@v2
       with: { python-version: "3.8" }
@@ -43,6 +39,7 @@ jobs:
     # If you do not wish to use codecov, then simply delete this job from the
     # workflow.
     if: github.repository_owner == 'bensuperpc'
+      && false
 
     steps:
     - name: "Checkout Code"
@@ -54,16 +51,6 @@ jobs:
     - name: Install LCov
       run: sudo apt-get update -q
         && sudo apt-get install lcov libtbb-dev -q -y
-
-    - name: Install Python
-      uses: actions/setup-python@v2
-      with: { python-version: "3.8" }
-
-    - name: Install dependencies
-      run: pip3 install conan
-        && conan profile new default --detect
-        && conan profile update settings.compiler.libcxx=libstdc++11 default
-        && conan install . -if conan -b missing
 
     - name: Configure
       run: cmake --preset=ci-coverage
@@ -94,16 +81,6 @@ jobs:
       with:
         submodules: "recursive"
         fetch-depth: 0
-
-    - name: Install Python
-      uses: actions/setup-python@v2
-      with: { python-version: "3.8" }
-
-    - name: Install dependencies
-      run: pip3 install conan
-        && conan profile new default --detect
-        && cp .github/clang-11.profile ~/.conan/profiles/default
-        && conan install . -if conan -b missing
 
     - name: Configure
       env: { CXX: clang++-11 }
@@ -141,21 +118,7 @@ jobs:
 
     - name: Install static analyzers
       if: matrix.os == 'ubuntu-latest'
-      run: sudo apt-get install clang-tidy cppcheck libtbb-dev -y -q
-
-    - name: Install Python
-      uses: actions/setup-python@v2
-      with: { python-version: "3.8" }
-
-    - name: Install dependencies
-      shell: bash
-      run: |
-        pip3 install conan
-        conan profile new default --detect
-        if [ ${{ matrix.os }} = ubuntu-latest ]; then
-          conan profile update settings.compiler.libcxx=libstdc++11 default
-        fi
-        conan install . -if conan -b missing
+      run: sudo apt-get install clang-tidy cppcheck -y -q
 
     - name: Configure
       shell: pwsh
@@ -194,9 +157,10 @@ jobs:
     # this comment and the last line in the conditional below.
     # If you do not wish to use GitHub Pages for deploying documentation, then
     # simply delete this job similarly to the coverage one.
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/master'
       && github.event_name == 'push'
       && github.repository_owner == 'bensuperpc'
+      && false
 
     steps:
     - name: "Checkout Code"
@@ -213,7 +177,7 @@ jobs:
 
     - name: Install Doxygen
       run: sudo apt-get update -q
-        && sudo apt-get install doxygen -q -y
+        && sudo apt-get install libtbb-dev doxygen -q -y
 
     - name: Build docs
       run: cmake "-DPROJECT_SOURCE_DIR=$PWD" "-DPROJECT_BINARY_DIR=$PWD/build"
@@ -224,18 +188,3 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: build/docs/html
-
-  docker:
-    needs: [lint]
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: "Checkout Code"
-        uses: actions/checkout@v2
-        with:
-          submodules: "recursive"
-          fetch-depth: 0
-
-      - name: Build
-        run: docker build . -f Dockerfile -t bensuperpc/gta:latest
