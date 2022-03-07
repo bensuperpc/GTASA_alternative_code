@@ -18,21 +18,6 @@ if(NOT WIN32)
     GIT_REPOSITORY https://github.com/google/benchmark.git
     GIT_TAG main)
 
-  # set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-
-  set(FOLDER_benchmark
-      "gbenchmark"
-      CACHE STRING "" FORCE)
-  set(FOLDER_gtest
-      "gtest"
-      CACHE STRING "" FORCE)
-  set(FOLDER_gmock
-      "gmock"
-      CACHE STRING "" FORCE)
-  set(FOLDER_googletest-distribution
-      "googletest-distribution"
-      CACHE STRING "" FORCE)
-
   # Disable tests on gtest
   set(gtest_build_tests
       OFF
