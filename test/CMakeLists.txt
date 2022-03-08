@@ -45,6 +45,7 @@ if(NOT WIN32)
       ON
       CACHE BOOL "" FORCE)
       
+  set(CMAKE_CXX_CLANG_TIDY "")
 
   FetchContent_MakeAvailable(googletest googlebenchmark)
   # Lib: gtest_main benchmark::benchmark benchmark::benchmark_main

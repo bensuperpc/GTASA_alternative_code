@@ -21,7 +21,7 @@ auto gta::jamcrc(const std::string& my_string) -> std::uint32_t
 {
 #endif
   auto crc = static_cast<uint32_t>(-1);
-  auto* current = reinterpret_cast<const unsigned char*>(my_string.data());
+  const auto* current = reinterpret_cast<const unsigned char*>(my_string.data());
   uint64_t length = my_string.length();
   // process eight bytes at once
   while (static_cast<bool>(length--)) {
