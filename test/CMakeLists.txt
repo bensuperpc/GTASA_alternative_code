@@ -40,6 +40,10 @@ if(NOT WIN32)
   set(BENCHMARK_ENABLE_INSTALL
       OFF
       CACHE BOOL "" FORCE)
+
+  set(BENCHMARK_DOWNLOAD_DEPENDENCIES
+      ON
+      CACHE BOOL "" FORCE)
       
 
   FetchContent_MakeAvailable(googletest googlebenchmark)
