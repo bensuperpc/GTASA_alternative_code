@@ -44,7 +44,7 @@ set_target_properties(
 
 # target_compile_features(GTA_SA_cheat_finder_exe PRIVATE cxx_std_17)
 
-find_package(OpenMP 4.0)
+find_package(OpenMP 2.0)
 if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
   target_link_libraries(GTA_SA_cheat_finder_exe PUBLIC OpenMP::OpenMP_CXX)
 endif()

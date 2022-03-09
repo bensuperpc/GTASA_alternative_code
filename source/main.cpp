@@ -33,10 +33,7 @@ auto main(int argc, char* argv[]) -> int
       0;  // Alphabetic sequence range max, must be > min_range !
 
   std::vector<std::string> args(argv + 1, argv + argc);
-  std::string infname;
-  std::string outfname;
 
-  // args[i] instead of *i -- don't tell anyone! ;)
   for (auto i = args.begin(); i != args.end(); ++i) {
     if (*i == "-h" || *i == "--help") {
       std::cout << "Syntax: GTA_SA_cheat_finder --min <from (uint64_t)> --max "
@@ -86,7 +83,12 @@ auto main(int argc, char* argv[]) -> int
   uint32_t crc = 0;  // CRC value
   auto&& t1 = cpp_clock::now();
 #if defined(_OPENMP)
-#  pragma omp parallel for schedule(auto) shared(results) firstprivate(tmp, crc)
+#  ifdef _MSC_VER
+#    pragma omp parallel for shared(results) firstprivate(tmp, crc)
+#  else
+#    pragma omp parallel for schedule(auto) shared(results) \
+        firstprivate(tmp, crc)
+#  endif
 #endif
   for (std::uint64_t i = min_range; i <= max_range; i++) {
     gta::find_string_inv(tmp.data(),
