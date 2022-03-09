@@ -34,7 +34,7 @@ auto main(int argc, char* argv[]) -> int
 
   std::vector<std::string> args(argv + 1, argv + argc);
 
-  for (std::string i = args.begin(); i != args.end(); ++i) {
+  for (auto i = args.begin(); i != args.end(); ++i) {
     if (*i == "-h" || *i == "--help") {
       std::cout << "Syntax: GTA_SA_cheat_finder --min <from (uint64_t)> --max "
                    "<to (uint64_t)>"
