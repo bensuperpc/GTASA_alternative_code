@@ -10,7 +10,7 @@ set(config_file "${config_dir}/GTA_SA_cheat_finderConfig.cmake")
 
 message(STATUS "Installing: ${config_file}")
 file(WRITE "${config_file}" "\
-set(
+get_filename_component(
     GTA_SA_CHEAT_FINDER_EXECUTABLE
     \"\${CMAKE_CURRENT_LIST_DIR}/${relative_path}\"
     CACHE FILEPATH \"Path to the GTA_SA_cheat_finder executable\"
