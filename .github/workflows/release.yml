@@ -199,7 +199,7 @@ jobs:
           ./tools/make-release-build.sh && mv gta-local.tar.xz gta-${{ matrix.dockcross.image_name }}.tar.xz
 
       - name: "Save binaries"
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: bin-artifact
           path: gta-${{ matrix.dockcross.image_name }}.tar.xz
