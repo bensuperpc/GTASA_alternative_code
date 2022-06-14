@@ -199,7 +199,7 @@ jobs:
           ./tools/make-release-build.sh && mv gta-local.tar.xz gta-${{ matrix.dockcross.image_name }}.tar.xz
 
       - name: "Save binaries"
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v2
         with:
           name: bin-artifact
           path: gta-${{ matrix.dockcross.image_name }}.tar.xz
@@ -215,7 +215,7 @@ jobs:
           submodules: "recursive"
           fetch-depth: 0
       - name: get artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v2
         with:
           name: bin-artifact
           path: .

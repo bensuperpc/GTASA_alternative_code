@@ -5,7 +5,7 @@
 
 #include <benchmark/benchmark.h>
 
-#include "lib.hpp"
+#include "GTA_SA_cheat_finder.hpp"
 
 static void find_string_inv_bench(benchmark::State& state)
 {
@@ -16,7 +16,7 @@ static void find_string_inv_bench(benchmark::State& state)
   std::array<char, array_size> tmp = {0};
 
   for (auto _ : state) {
-    gta::find_string_inv(tmp.data(), range);
+    GTA_SA::find_string_inv(tmp.data(), range);
     benchmark::DoNotOptimize(tmp);
     // benchmark::ClobberMemory();
   }
@@ -26,7 +26,7 @@ static void find_string_inv_bench(benchmark::State& state)
 }
 // Register the function as a benchmark
 BENCHMARK(find_string_inv_bench)
-    ->Name("find_string_inv")
+    ->Name("find_string_inv_bench")
     ->RangeMultiplier(100)
     ->Range(1, 1000000000000000);
 

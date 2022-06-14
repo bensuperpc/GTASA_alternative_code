@@ -5,7 +5,7 @@
 
 #include <benchmark/benchmark.h>
 
-#include "lib.hpp"
+#include "GTA_SA_cheat_finder.hpp"
 
 // Source: https://github.com/stbrumme/crc32
 static std::unique_ptr<char[]> generate(const std::uint64_t length);
@@ -31,14 +31,14 @@ static void jamcrc_bench(benchmark::State& state)
   auto c_str = generate(size);
 
   std::string str;
-  str.reserve();
+  std::reverse(str.begin(), str.end());
   for (auto i = 0; i < size; i++) {
     str.push_back(c_str[i] + '0');
   }
 
   for (auto _ : state) {
     benchmark::DoNotOptimize(str);
-    gta::jamcrc(str);
+    GTA_SA::jamcrc(str);
     benchmark::ClobberMemory();
   }
   state.SetItemsProcessed(state.iterations());
@@ -47,7 +47,7 @@ static void jamcrc_bench(benchmark::State& state)
   // auto c = c_str.release();
   // delete[] c;
 }
-BENCHMARK(jamcrc_bench)->Name("jamcrc")->RangeMultiplier(2)->Range(1, 32);
+BENCHMARK(jamcrc_bench)->Name("jamcrc_bench")->RangeMultiplier(2)->Range(1, 32);
 
 // Run the benchmark
 // BENCHMARK_MAIN();

@@ -1,7 +1,7 @@
 #include <string>
 
 #include "gtest/gtest.h"
-#include "lib.hpp"
+#include "GTA_SA_cheat_finder.hpp"
 
 TEST(jamcrc, basic1)
 {
@@ -10,8 +10,8 @@ TEST(jamcrc, basic1)
 
   EXPECT_EQ("", str);
 
-  EXPECT_NE(0x0, gta::jamcrc(str));
-  EXPECT_EQ(0xffffffff, gta::jamcrc(str));
+  EXPECT_NE(0x0, GTA_SA::jamcrc(str));
+  EXPECT_EQ(0xffffffff, GTA_SA::jamcrc(str));
 }
 
 TEST(jamcrc, basic2)
@@ -21,8 +21,8 @@ TEST(jamcrc, basic2)
 
   EXPECT_EQ("BEANSA", str);
 
-  EXPECT_NE(0x0, gta::jamcrc(str));
-  EXPECT_EQ(0x555fc201, gta::jamcrc(str));
+  EXPECT_NE(0x0, GTA_SA::jamcrc(str));
+  EXPECT_EQ(0x555fc201, GTA_SA::jamcrc(str));
 }
 
 TEST(jamcrc, basic3)
@@ -32,8 +32,8 @@ TEST(jamcrc, basic3)
 
   EXPECT_EQ("BRGHBSA", str);
 
-  EXPECT_NE(0x0, gta::jamcrc(str));
-  EXPECT_EQ(0xa7613f99, gta::jamcrc(str));
+  EXPECT_NE(0x0, GTA_SA::jamcrc(str));
+  EXPECT_EQ(0xa7613f99, GTA_SA::jamcrc(str));
 }
 
 TEST(jamcrc, basic4)
@@ -43,8 +43,8 @@ TEST(jamcrc, basic4)
 
   EXPECT_EQ("DMWCIX", str);
 
-  EXPECT_NE(0x0, gta::jamcrc(str));
-  EXPECT_EQ(0x1a9aa3d6, gta::jamcrc(str));
+  EXPECT_NE(0x0, GTA_SA::jamcrc(str));
+  EXPECT_EQ(0x1a9aa3d6, GTA_SA::jamcrc(str));
 }
 
 TEST(jamcrc, basic5)
@@ -54,8 +54,8 @@ TEST(jamcrc, basic5)
 
   EXPECT_EQ("+AIQTBGL", str);
 
-  EXPECT_NE(0x0, gta::jamcrc(str));
-  EXPECT_EQ(0x6ba88a6, gta::jamcrc(str));
+  EXPECT_NE(0x0, GTA_SA::jamcrc(str));
+  EXPECT_EQ(0x6ba88a6, GTA_SA::jamcrc(str));
 }
 
 TEST(jamcrc, basic6)
@@ -65,6 +65,6 @@ TEST(jamcrc, basic6)
 
   EXPECT_EQ("snoitasilatnemenrevuogretni", str);
 
-  EXPECT_NE(0x0, gta::jamcrc(str));
-  EXPECT_EQ(0x1a384955, gta::jamcrc(str));
+  EXPECT_NE(0x0, GTA_SA::jamcrc(str));
+  EXPECT_EQ(0x1a384955, GTA_SA::jamcrc(str));
 }

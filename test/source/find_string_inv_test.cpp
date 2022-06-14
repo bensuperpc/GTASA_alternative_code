@@ -2,7 +2,7 @@
 #include <string>
 
 #include "gtest/gtest.h"
-#include "lib.hpp"
+#include "GTA_SA_cheat_finder.hpp"
 
 static const auto array_size = 29;
 
@@ -10,7 +10,7 @@ TEST(jamcrc, basic1)
 {
   std::array<char, array_size> tmp1 = {0};
 
-  gta::find_string_inv(tmp1.data(), 0);
+  GTA_SA::find_string_inv(tmp1.data(), 0);
 
   EXPECT_NE("", static_cast<std::string>(tmp1.data()));
   EXPECT_NE("", static_cast<std::string>(tmp1.data()));
@@ -25,7 +25,7 @@ TEST(jamcrc, basic2)
 {
   std::array<char, array_size> tmp1 = {0};
 
-  gta::find_string_inv(tmp1.data(), 255);
+  GTA_SA::find_string_inv(tmp1.data(), 255);
 
   EXPECT_NE("", static_cast<std::string>(tmp1.data()));
   EXPECT_NE("A", static_cast<std::string>(tmp1.data()));
@@ -40,7 +40,7 @@ TEST(jamcrc, basic3)
 {
   std::array<char, array_size> tmp1 = {0};
 
-  gta::find_string_inv(tmp1.data(), 40000);
+  GTA_SA::find_string_inv(tmp1.data(), 40000);
 
   EXPECT_NE("", static_cast<std::string>(tmp1.data()));
   EXPECT_NE("A", static_cast<std::string>(tmp1.data()));
@@ -55,7 +55,7 @@ TEST(jamcrc, basic4)
 {
   std::array<char, array_size> tmp1 = {0};
 
-  gta::find_string_inv(tmp1.data(), 1000000000);
+  GTA_SA::find_string_inv(tmp1.data(), 1000000000);
 
   EXPECT_NE("", static_cast<std::string>(tmp1.data()));
   EXPECT_NE("A", static_cast<std::string>(tmp1.data()));
@@ -70,7 +70,7 @@ TEST(jamcrc, basic5)
 {
   std::array<char, array_size> tmp1 = {0};
 
-  gta::find_string_inv(tmp1.data(), 1000000000000);
+  GTA_SA::find_string_inv(tmp1.data(), 1000000000000);
 
   EXPECT_NE("", static_cast<std::string>(tmp1.data()));
   EXPECT_NE("A", static_cast<std::string>(tmp1.data()));

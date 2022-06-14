@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v3
         with: { python-version: "3.8" }
 
       - name: Install codespell
@@ -65,7 +65,7 @@ jobs:
         run: cmake --build build/coverage -t coverage
 
       - name: Submit to codecov.io
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v2.1.0
         with:
           file: build/coverage/coverage.info
 
@@ -168,7 +168,7 @@ jobs:
           submodules: "recursive"
           fetch-depth: 0
 
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v3
         with: { python-version: "3.8" }
 
       - name: Install m.css dependencies
