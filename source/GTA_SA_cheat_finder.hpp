@@ -97,8 +97,8 @@ public:
    * \brief Source:
    * https://create.stephan-brumme.com/crc32/#slicing-by-8-overview
    */
-#ifdef _MSC_VER
-  static std::vector<std::tuple<std::uint64_t, std::string, std::uint32_t, std::string>> results = {};
+#if defined(_MSC_VER)
+  inline static std::vector<std::tuple<std::uint64_t, std::string, std::uint32_t, std::string>> results = {};
 #else
   std::vector<std::tuple<std::uint64_t, std::string, std::uint32_t, std::string>> results = {};
 #endif
