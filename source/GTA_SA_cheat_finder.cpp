@@ -101,18 +101,22 @@ void GTA_SA::run()
 
 #if defined(_OPENMP)
 #  ifdef _MSC_VER
-    std::int64_t i =
+    static std::int64_t i =
         0;  // OpenMP (2.0) on Windows doesn't support unsigned variable
 #    pragma omp parallel for shared(results) schedule(dynamic)
-// firstprivate(tmp, crc)
+    for (i = static_cast<std::int64_t>(min_range);
+         i <= static_cast<std::int64_t>(max_range);
+         i++)
+    {
+      runner(static_cast<std::int64_t>(i));
+    }
 #  else
     std::uint64_t i = 0;
 #    pragma omp parallel for schedule(auto) shared(results)
-// firstprivate(tmp, crc)
-#  endif
     for (i = min_range; i <= max_range; i++) {
       runner(i);
     }
+#  endif
 #else
     std::cout << "OpenMP is not supported" << std::endl;
 #endif
@@ -235,12 +239,13 @@ void GTA_SA::runner(const std::uint64_t& i)
     const uint64_t index =
         static_cast<uint64_t>(it - std::begin(GTA_SA::cheat_list));
 
-    this->results.emplace_back(std::make_tuple(
-        i,
-        std::string(tmp.data()),
-        crc,
-        cheat_list_name.at(index)));  // Save result: calculation position,
-                                      // Alphabetic sequence, CRC,
+    this->results.emplace_back(
+        std::make_tuple(i,
+                        std::string(tmp.data()),
+                        crc,
+                        cheat_list_name.at(static_cast<std::size_t>(
+                            index))));  // Save result: calculation position,
+                                        // Alphabetic sequence, CRC,
   }
 }
 
@@ -283,7 +288,7 @@ void GTA_SA::find_string_inv(char* array, uint64_t n)
       "ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
   // If n < 27
   if (n < 26) {
-    array[0] = alpha[n];
+    array[0] = alpha[static_cast<std::size_t>(n)];
     return;
   }
   // If n > 27

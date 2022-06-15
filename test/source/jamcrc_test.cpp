@@ -1,7 +1,7 @@
 #include <string>
 
-#include "gtest/gtest.h"
 #include "GTA_SA_cheat_finder.hpp"
+#include "gtest/gtest.h"
 
 TEST(jamcrc, basic1)
 {

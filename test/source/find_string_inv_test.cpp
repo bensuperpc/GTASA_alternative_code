@@ -1,8 +1,8 @@
 #include <array>
 #include <string>
 
-#include "gtest/gtest.h"
 #include "GTA_SA_cheat_finder.hpp"
+#include "gtest/gtest.h"
 
 static const auto array_size = 29;
 
