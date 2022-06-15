@@ -9,12 +9,12 @@ endmacro()
 default(SPELL_COMMAND codespell)
 default(FIX NO)
 
-set(flag "${flag}" --ignore-words codespell.ignore-words.txt)
-
 set(flag "")
 if(FIX)
   set(flag -w)
 endif()
+
+set(flag "${flag}" --ignore-words codespell.ignore-words.txt)
 
 execute_process(
     COMMAND "${SPELL_COMMAND}" ${flag}
