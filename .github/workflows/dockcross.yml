@@ -27,7 +27,7 @@ jobs:
 
           # Web images
           - { image_name: web-wasm, cmake_arg: "-DCMAKE_CXX_STANDARD=20" }
-          # - {
+          #- {
           #    image_name: web-wasi,
           #    cmake_arg: "-DCMAKE_CXX_FLAGS='${CMAKE_CXX_FLAGS} -fno-exceptions'",
           #  }
@@ -119,24 +119,24 @@ jobs:
             }
 
           # ManyLinux images
-          - { image_name: manylinux1-x64, cmake_arg: "-DCMAKE_CXX_STANDARD=14" }
-          - { image_name: manylinux1-x86, cmake_arg: "-DCMAKE_CXX_STANDARD=14" }
-          - {
-              image_name: manylinux2010-x86,
-              cmake_arg: "-DCMAKE_CXX_STANDARD=20",
-            }
-          - {
-              image_name: manylinux2010-x64,
-              cmake_arg: "-DCMAKE_CXX_STANDARD=20",
-            }
-          - {
-              image_name: manylinux2014-x86,
-              cmake_arg: "-DCMAKE_CXX_STANDARD=20",
-            }
-          - {
-              image_name: manylinux2014-x64,
-              cmake_arg: "-DCMAKE_CXX_STANDARD=20",
-            }
+          #- { image_name: manylinux1-x64, cmake_arg: "-DCMAKE_CXX_STANDARD=14" }
+          #- { image_name: manylinux1-x86, cmake_arg: "-DCMAKE_CXX_STANDARD=14" }
+          #- {
+          #    image_name: manylinux2010-x86,
+          #    cmake_arg: "-DCMAKE_CXX_STANDARD=20",
+          #  }
+          #- {
+          #    image_name: manylinux2010-x64,
+          #    cmake_arg: "-DCMAKE_CXX_STANDARD=20",
+          #  }
+          #- {
+          #    image_name: manylinux2014-x86,
+          #    cmake_arg: "-DCMAKE_CXX_STANDARD=20",
+          #  }
+          #- {
+          #    image_name: manylinux2014-x64,
+          #    cmake_arg: "-DCMAKE_CXX_STANDARD=20",
+          #  }
           #          - { image_name: manylinux2014-aarch64, cmake_arg: "-DCMAKE_CXX_STANDARD=20" }
 
           # Windows x86 images

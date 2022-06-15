@@ -9,6 +9,8 @@ endmacro()
 default(SPELL_COMMAND codespell)
 default(FIX NO)
 
+set(flag "${flag}" --ignore-words codespell.ignore-words.txt)
+
 set(flag "")
 if(FIX)
   set(flag -w)
