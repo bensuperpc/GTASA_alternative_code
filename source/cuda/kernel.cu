@@ -36,9 +36,7 @@ __global__ void jamcrc_kernel_wrapper(const void* data,
   }
 }
 
-__device__ uint32_t jamcrc_kernel(const void* data,
-                                  uint64_t length,
-                                  const uint32_t previousCrc32)
+__device__ uint32_t jamcrc_kernel(const void* data, uint64_t length, const uint32_t previousCrc32)
 {
   uint32_t crc = ~previousCrc32;
   unsigned char* current = (unsigned char*)data;
@@ -47,11 +45,7 @@ __device__ uint32_t jamcrc_kernel(const void* data,
   return crc;
 }
 
-__global__ void runner_kernel(uint32_t* crc_result,
-                              uint64_t* index_result,
-                              uint64_t array_size,
-                              uint64_t a,
-                              uint64_t b)
+__global__ void runner_kernel(uint32_t* crc_result, uint64_t* index_result, uint64_t array_size, uint64_t a, uint64_t b)
 {
   const uint64_t id = blockIdx.x * blockDim.x + threadIdx.x + a;
   // printf("blockIdx %d, blockDimx %d, threadIdx %d\n", blockIdx.x, blockDim.x,
@@ -95,14 +89,11 @@ __global__ void runner_kernel(uint32_t* crc_result,
   }
 }
 
-__device__ void find_string_inv_kernel(unsigned char* array,
-                                       uint64_t n,
-                                       uint64_t& terminator_index)
+__device__ void find_string_inv_kernel(unsigned char* array, uint64_t n, uint64_t& terminator_index)
 {
   const uint32_t string_size_alphabet = 27;
 
-  const unsigned char alpha[string_size_alphabet] = {
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
+  const unsigned char alpha[string_size_alphabet] = {"ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
   // If n < 27
   if (n < 26) {
     array[0] = alpha[n];

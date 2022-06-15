@@ -19,7 +19,7 @@ jobs:
       matrix:
         compiler: [g++, clang++]
         shared: [YES, NO]
-        standard: [11, 14, 17, 20]
+        standard: [20]
         build_type: [Debug, Release]
 
     steps:

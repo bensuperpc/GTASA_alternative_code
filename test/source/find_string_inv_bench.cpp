@@ -25,10 +25,7 @@ static void find_string_inv_bench(benchmark::State& state)
   // sizeof(char));
 }
 // Register the function as a benchmark
-BENCHMARK(find_string_inv_bench)
-    ->Name("find_string_inv_bench")
-    ->RangeMultiplier(100)
-    ->Range(1, 1000000000000000);
+BENCHMARK(find_string_inv_bench)->Name("find_string_inv_bench")->RangeMultiplier(100)->Range(1, 1000000000000000);
 
 // Run the benchmark
 // BENCHMARK_MAIN();

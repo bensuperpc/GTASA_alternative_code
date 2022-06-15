@@ -19,7 +19,7 @@ jobs:
       matrix:
         build_type: [Debug, Release]
         shared: [YES, NO]
-        standard: [11, 14, 17, 20]
+        standard: [20]
 
     steps:
       - name: "Checkout Code"

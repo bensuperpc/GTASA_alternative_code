@@ -34,8 +34,7 @@ __host__ void jamcrc_wrapper(dim3* grid,
                              uint32_t* result,
                              const uint32_t previousCrc32)
 {
-  jamcrc_kernel_wrapper<<<*grid, *threads, device, *stream>>>(
-      data, result, length, previousCrc32);
+  jamcrc_kernel_wrapper<<<*grid, *threads, device, *stream>>>(data, result, length, previousCrc32);
 }
 
 __host__ uint32_t my::cuda::jamcrc(const void* data,
@@ -73,16 +72,14 @@ __host__ uint32_t my::cuda::jamcrc(const void* data,
   memcpy(data_cuda, data, data_size);
   *result_cuda = 0;
 
-  uint64_t grid_size = static_cast<uint64_t>(
-      ceil(static_cast<double>(data_size) / cuda_block_size));
+  uint64_t grid_size = static_cast<uint64_t>(ceil(static_cast<double>(data_size) / cuda_block_size));
   // std::cout << "grid_size: " << static_cast<double>(data_size) /
   // cuda_block_size << std::endl;
 
   dim3 threads(static_cast<uint>(cuda_block_size), 1, 1);
   dim3 grid(static_cast<uint>(grid_size), 1, 1);
 
-  jamcrc_kernel_wrapper<<<grid, threads, device, stream>>>(
-      data_cuda, result_cuda, length, previousCrc32);
+  jamcrc_kernel_wrapper<<<grid, threads, device, stream>>>(data_cuda, result_cuda, length, previousCrc32);
 
   cudaStreamSynchronize(stream);
   cudaDeviceSynchronize();
@@ -121,18 +118,15 @@ __host__ void my::cuda::launch_kernel(std::vector<uint32_t>& jamcrc_results,
   // cudaDeviceSetLimit(cudaLimitMallocHeapSize, 128 * 1024 * 1024);
 
   // Calculate length of the array with max_range and min_range
-  uint64_t array_length =
-      static_cast<uint64_t>((max_range - min_range) / 20000000 + 1);
+  uint64_t array_length = static_cast<uint64_t>((max_range - min_range) / 20000000 + 1);
   uint64_t jamcrc_results_size = array_length * sizeof(uint32_t);
   uint64_t index_results_size = array_length * sizeof(uint64_t);
 
   uint32_t* jamcrc_results_ptr = nullptr;
   uint64_t* index_results_ptr = nullptr;
 
-  cudaMallocManaged(
-      &jamcrc_results_ptr, jamcrc_results_size, cudaMemAttachGlobal);
-  cudaMallocManaged(
-      &index_results_ptr, index_results_size, cudaMemAttachGlobal);
+  cudaMallocManaged(&jamcrc_results_ptr, jamcrc_results_size, cudaMemAttachGlobal);
+  cudaMallocManaged(&index_results_ptr, index_results_size, cudaMemAttachGlobal);
 
   cudaStreamAttachMemAsync(stream, &jamcrc_results_ptr);
   cudaStreamAttachMemAsync(stream, &index_results_size);
@@ -145,8 +139,7 @@ __host__ void my::cuda::launch_kernel(std::vector<uint32_t>& jamcrc_results,
     index_results_ptr[i] = 0;
   }
 
-  uint64_t grid_size = static_cast<uint64_t>(
-      ceil(static_cast<double>(max_range - min_range) / cuda_block_size));
+  uint64_t grid_size = static_cast<uint64_t>(ceil(static_cast<double>(max_range - min_range) / cuda_block_size));
   // std::cout << "CUDA Grid size: " << grid_size << std::endl;
   // std::cout << "CUDA Block size: " << cuda_block_size << std::endl;
 
@@ -155,11 +148,8 @@ __host__ void my::cuda::launch_kernel(std::vector<uint32_t>& jamcrc_results,
 
   // my::cuda::launch_kernel_wrapper(grid, threads, stream, jamcrc_results_ptr,
   // index_results_ptr, array_length, min_range, max_range);
-  runner_kernel<<<grid, threads, device, stream>>>(jamcrc_results_ptr,
-                                                   index_results_ptr,
-                                                   array_length,
-                                                   min_range,
-                                                   max_range);
+  runner_kernel<<<grid, threads, device, stream>>>(
+      jamcrc_results_ptr, index_results_ptr, array_length, min_range, max_range);
 
   // my::cuda::launch_kernel();
   cudaStreamSynchronize(stream);
@@ -190,8 +180,7 @@ __host__ void my::cuda::launch_kernel(size_t grid,
                                       uint64_t a,
                                       uint64_t b)
 {
-  runner_kernel<<<grid, threads, device, stream>>>(
-      crc_result, index_result, array_size, a, b);
+  runner_kernel<<<grid, threads, device, stream>>>(crc_result, index_result, array_size, a, b);
 }
 
 __host__ void my::cuda::launch_kernel(dim3& grid,
@@ -204,6 +193,5 @@ __host__ void my::cuda::launch_kernel(dim3& grid,
                                       uint64_t a,
                                       uint64_t b)
 {
-  runner_kernel<<<grid, threads, device, stream>>>(
-      crc_result, index_result, array_size, a, b);
+  runner_kernel<<<grid, threads, device, stream>>>(crc_result, index_result, array_size, a, b);
 }
