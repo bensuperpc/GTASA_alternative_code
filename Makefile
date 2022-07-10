@@ -110,7 +110,6 @@ relwithdebinfo:
 gprof:
 	cmake --preset=$@ -G $(GENERATOR)
 	cmake --build build/$@
-	ctest $(CTEST_OPTIONS) --timeout $(CTEST_TIMEOUT) --parallel $(PARALLEL) --test-dir build/$@
 	echo "Run executable and after gprof <exe> gmon.out | less"
 
 .PHONY: lint
