@@ -51,7 +51,7 @@ public:
    * @param my_string String input
    * @return uint32_t with JAMCRC value
    */
-  static const auto jamcrc(std::string_view my_string, const uint32_t previousCrc32 = 0) -> std::uint32_t;
+  static auto jamcrc(std::string_view my_string, const uint32_t previousCrc32 = 0) -> std::uint32_t;
 
   /**
    * \brief Generate Alphabetic sequence from uint64_t value, A=1, Z=27, AA =

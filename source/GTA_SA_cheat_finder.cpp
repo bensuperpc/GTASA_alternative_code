@@ -199,7 +199,7 @@ void GTA_SA::cpu_runner(const std::uint64_t i)
   }
 }
 
-const auto GTA_SA::jamcrc(std::string_view my_string, const uint32_t previousCrc32) -> std::uint32_t
+auto GTA_SA::jamcrc(std::string_view my_string, const uint32_t previousCrc32) -> std::uint32_t
 {
   auto crc = ~previousCrc32;
   const auto* current = reinterpret_cast<const uint8_t*>(my_string.data());
