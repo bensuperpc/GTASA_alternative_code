@@ -149,7 +149,7 @@ void GTA_SA::run()
   std::cout << "" << std::endl;
 }
 
-#if !defined(BUILD_WITH_CUDA)
+#if defined(BUILD_WITH_CUDA)
 void GTA_SA::cuda_runner()
 {
   if ((max_range - min_range) < cuda_block_size) {
