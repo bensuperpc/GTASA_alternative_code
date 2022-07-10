@@ -210,20 +210,8 @@ void GTA_SA::cpu_runner(const std::uint64_t& i)
   }
 }
 
-#if ((defined(_MSVC_LANG) && _MSVC_LANG >= 201703L) || __cplusplus >= 201703L)
 const auto GTA_SA::jamcrc(std::string_view my_string, const uint32_t previousCrc32) -> std::uint32_t
 {
-#else
-
-#  if _MSC_VER && !__INTEL_COMPILER
-#    pragma message("C++17 is not enabled, the program will be less efficient with previous standards")
-#  else
-#    warning C++17 is not enabled, the program will be less efficient with previous standards.
-#  endif
-
-const auto GTA_SA::jamcrc(const std::string& my_string, const uint32_t previousCrc32) -> std::uint32_t
-{
-#endif
   auto crc = ~previousCrc32;
   const auto* current = reinterpret_cast<const unsigned char*>(my_string.data());
   uint64_t length = my_string.length();
