@@ -40,7 +40,7 @@ __host__ void jamcrc_wrapper(dim3* grid,
 __host__ uint32_t my::cuda::jamcrc(const void* data,
                                    const uint64_t length,
                                    const uint32_t previousCrc32,
-                                   const uint cuda_block_size)
+                                   const uint32_t cuda_block_size)
 {
   int device = 0;
   cudaGetDevice(&device);
@@ -71,8 +71,8 @@ __host__ uint32_t my::cuda::jamcrc(const void* data,
   uint64_t grid_size = static_cast<uint64_t>(ceil(static_cast<double>(data_size) / cuda_block_size));
   // std::cout << "grid_size: " << static_cast<double>(data_size) / cuda_block_size << std::endl;
 
-  dim3 threads(static_cast<uint>(cuda_block_size), 1, 1);
-  dim3 grid(static_cast<uint>(grid_size), 1, 1);
+  dim3 threads(static_cast<uint32_t>(cuda_block_size), 1, 1);
+  dim3 grid(static_cast<uint32_t>(grid_size), 1, 1);
 
   jamcrc_kernel_wrapper<<<grid, threads, device, stream>>>(data_cuda, result_cuda, length, previousCrc32);
 
@@ -138,8 +138,8 @@ __host__ void my::cuda::launch_kernel(std::vector<uint32_t>& jamcrc_results,
   std::cout << "CUDA Grid size: " << grid_size << std::endl;
   std::cout << "CUDA Block size: " << cuda_block_size << std::endl;
 
-  dim3 threads(static_cast<uint>(cuda_block_size), 1, 1);
-  dim3 grid(static_cast<uint>(grid_size), 1, 1);
+  dim3 threads(static_cast<uint32_t>(cuda_block_size), 1, 1);
+  dim3 grid(static_cast<uint32_t>(grid_size), 1, 1);
 
   runner_kernel<<<grid, threads, device, stream>>>(
       jamcrc_results_ptr, index_results_ptr, array_length, min_range, max_range);
