@@ -24,8 +24,14 @@ project(
     VERSION 0.1.0
     DESCRIPTION "Krack cuda lib"
     HOMEPAGE_URL "https://github.com/bensuperpc"
-    LANGUAGES C CXX CUDA
+    LANGUAGES C CXX
 )
+
+include(CheckLanguage)
+check_language(CUDA)
+if(CMAKE_CUDA_COMPILER)
+	enable_language(CUDA)
+endif()
 
 find_package(CUDAToolkit 11.0)
 

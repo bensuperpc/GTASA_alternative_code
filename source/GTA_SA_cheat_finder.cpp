@@ -72,6 +72,8 @@ void GTA_SA::run()
     return;
   }
 
+  results.reserve((max_range - min_range) / 20000000 + 1);
+
   std::cout << "Number of calculations: " << (max_range - min_range) << std::endl;
 
   GTA_SA::find_string_inv(tmp1.data(), min_range);
@@ -85,7 +87,7 @@ void GTA_SA::run()
                           [&](const std::uint64_t& _min_range, const std::uint64_t& _max_range)
                           {
                             for (std::uint64_t i = _min_range; i <= _max_range; i++) {
-                              runner(i);
+                              cpu_runner(i);
                             }
                           });
   } else if (calc_mode == 1) {
@@ -98,13 +100,13 @@ void GTA_SA::run()
     static std::int64_t i = 0;  // OpenMP (2.0) on Windows doesn't support unsigned variable
 #    pragma omp parallel for shared(results) schedule(dynamic)
     for (i = static_cast<std::int64_t>(min_range); i <= static_cast<std::int64_t>(max_range); i++) {
-      runner(static_cast<std::int64_t>(i));
+      cpu_runner(static_cast<std::int64_t>(i));
     }
 #  else
     std::uint64_t i = 0;
 #    pragma omp parallel for schedule(auto) shared(results)
     for (i = min_range; i <= max_range; i++) {
-      runner(i);
+      cpu_runner(i);
     }
 #  endif
 #else
@@ -112,42 +114,14 @@ void GTA_SA::run()
 #endif
   } else if (calc_mode == 2) {
 #if defined(BUILD_WITH_CUDA)
-
-    if ((max_range - min_range) < cuda_block_size) {
-      std::cout << "Number of calculations is less than cuda_block_size" << std::endl;
-    }
-
-    std::vector<uint32_t> jamcrc_results;
-    std::vector<uint64_t> index_results;
-
-    my::cuda::launch_kernel(jamcrc_results, index_results, min_range, max_range, cuda_block_size);
-
-    for (uint64_t i = 0; i < jamcrc_results.size(); ++i) {
-      std::array<char, 29> tmpCUDA = {0};
-
-      GTA_SA::find_string_inv(tmpCUDA.data(), index_results[i]);
-      std::reverse(tmpCUDA.data(),
-                   tmpCUDA.data() + strlen(tmpCUDA.data()));  // Invert char array
-
-#  if ((defined(_MSVC_LANG) && _MSVC_LANG >= 202002L) \
-       || __cplusplus >= 202002L && !defined(ANDROID) && !defined(__EMSCRIPTEN__) && !defined(__clang__))
-
-      const auto&& it = std::find(
-          std::execution::unseq, std::begin(GTA_SA::cheat_list), std::end(GTA_SA::cheat_list), jamcrc_results[i]);
-#  else
-      const auto&& it = std::find(std::begin(GTA_SA::cheat_list), std::end(GTA_SA::cheat_list), jamcrc_results[i]);
-#  endif
-
-      const uint64_t index = static_cast<uint64_t>(it - std::begin(GTA_SA::cheat_list));
-      results.emplace_back(
-          std::make_tuple(index_results[i], std::string(tmpCUDA.data()), jamcrc_results[i], cheat_list_name.at(index)));
-    }
+    cuda_runner();
 #else
-    std::cout << "CUDA is not supported" << std::endl;
+    std::cout << "CUDA is not supported." << std::endl;
 #endif
   } else if (calc_mode == 3) {
+    std::cout << "OpenCL is not supported." << std::endl;
   } else {
-    std::cout << "Unknown calculation mode" << std::endl;
+    std::cout << "Unknown calculation mode." << std::endl;
   }
 
   end_time = std::chrono::high_resolution_clock::now();
@@ -175,24 +149,42 @@ void GTA_SA::run()
   std::cout << "" << std::endl;
 }
 
-void GTA_SA::runner(const std::uint64_t& i)
+#if defined(BUILD_WITH_CUDA)
+void GTA_SA::cuda_runner()
+{
+  if ((max_range - min_range) < cuda_block_size) {
+    std::cout << "Number of calculations is less than cuda_block_size" << std::endl;
+  }
+
+  std::vector<uint32_t> jamcrc_results;
+  std::vector<uint64_t> index_results;
+
+  my::cuda::launch_kernel(jamcrc_results, index_results, min_range, max_range, cuda_block_size);
+
+  for (uint64_t i = 0; i < jamcrc_results.size(); ++i) {
+    std::array<char, 29> tmpCUDA = {0};
+
+    GTA_SA::find_string_inv(tmpCUDA.data(), index_results[i]);
+    std::reverse(tmpCUDA.data(),
+                 tmpCUDA.data() + strlen(tmpCUDA.data()));  // Invert char array
+
+    const auto&& it = std::find(std::begin(GTA_SA::cheat_list), std::end(GTA_SA::cheat_list), jamcrc_results[i]);
+
+    const uint64_t index = static_cast<uint64_t>(it - std::begin(GTA_SA::cheat_list));
+    results.emplace_back(
+        std::make_tuple(index_results[i], std::string(tmpCUDA.data()), jamcrc_results[i], cheat_list_name.at(index)));
+  }
+}
+#endif
+
+void GTA_SA::cpu_runner(const std::uint64_t i)
 {
   std::array<char, 29> tmp = {0};
   GTA_SA::find_string_inv(tmp.data(),
                           i);  // Generate Alphabetic sequence from uint64_t
                                // value, A=1, Z=27, AA = 28, AB = 29
-  uint32_t crc = GTA_SA::jamcrc(tmp.data());  // JAMCRC
-
-  // #pragma omp critical
-  // std::cout << "str:" << tmp.data() << " crc: " << crc << std::endl;
-
-#if ((defined(_MSVC_LANG) && _MSVC_LANG >= 202002L) \
-     || __cplusplus >= 202002L && !defined(ANDROID) && !defined(__EMSCRIPTEN__) && !defined(__clang__))
-
-  const auto&& it = std::find(std::execution::unseq, std::begin(GTA_SA::cheat_list), std::end(GTA_SA::cheat_list), crc);
-#else
-  const auto&& it = std::find(std::begin(GTA_SA::cheat_list), std::end(GTA_SA::cheat_list), crc);
-#endif
+  const uint32_t crc = GTA_SA::jamcrc(tmp.data());  // JAMCRC
+  const auto it = std::find(std::begin(GTA_SA::cheat_list), std::end(GTA_SA::cheat_list), crc);
 
   // If crc is present in Array
   if (it != std::end(GTA_SA::cheat_list)) {
@@ -209,22 +201,10 @@ void GTA_SA::runner(const std::uint64_t& i)
   }
 }
 
-#if ((defined(_MSVC_LANG) && _MSVC_LANG >= 201703L) || __cplusplus >= 201703L)
 auto GTA_SA::jamcrc(std::string_view my_string, const uint32_t previousCrc32) -> std::uint32_t
 {
-#else
-
-#  if _MSC_VER && !__INTEL_COMPILER
-#    pragma message("C++17 is not enabled, the program will be less efficient with previous standards")
-#  else
-#    warning C++17 is not enabled, the program will be less efficient with previous standards.
-#  endif
-
-auto GTA_SA::jamcrc(const std::string& my_string, const uint32_t previousCrc32) -> std::uint32_t
-{
-#endif
   auto crc = ~previousCrc32;
-  const auto* current = reinterpret_cast<const unsigned char*>(my_string.data());
+  const auto* current = reinterpret_cast<const uint8_t*>(my_string.data());
   uint64_t length = my_string.length();
   // process eight bytes at once
   while (static_cast<bool>(length--)) {

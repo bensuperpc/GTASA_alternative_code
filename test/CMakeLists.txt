@@ -21,6 +21,8 @@ function(add_test_fn TEST_NAME)
   endif()
 
   if (CUDAToolkit_FOUND)
+    target_include_directories("${TEST_NAME}" PRIVATE ${CUDAToolkit_INCLUDE_DIRS})
+    target_link_libraries("${TEST_NAME}" PRIVATE CUDA::cudart)
     target_link_libraries("${TEST_NAME}" PRIVATE cuda_lib)
   endif()
 
@@ -38,6 +40,8 @@ function(add_bench_fn BENCH_NAME)
   endif()
 
   if (CUDAToolkit_FOUND)
+    target_include_directories("${BENCH_NAME}" PRIVATE ${CUDAToolkit_INCLUDE_DIRS})
+    target_link_libraries("${BENCH_NAME}" PRIVATE CUDA::cudart)
     target_link_libraries("${BENCH_NAME}" PRIVATE cuda_lib)
   endif()
 
@@ -55,6 +59,7 @@ include(../cmake/lib/benchmark.cmake)
   # Add tests
   add_test_fn(find_string_inv_test)
   add_test_fn(jamcrc_test)
+  add_test_fn(gta_sa_test)
 
   # Add bench
   add_bench_fn(find_string_inv_bench)

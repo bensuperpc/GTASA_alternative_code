@@ -9,31 +9,15 @@
 #include <iomanip>  // std::setw
 #include <iostream>  // std::cout
 #include <string>  // std::string
+#include <string_view>  // std::string_view
 #include <tuple>  // std::pair
 #include <utility>  // std::make_pair
 #include <vector>  // std::vector
 
 #include "BS_thread_pool.hpp"
 
-#if ((defined(_MSVC_LANG) && _MSVC_LANG >= 201703L) || __cplusplus >= 201703L)
-#  include <string_view>  // std::string_view
-#  if ((defined(_MSVC_LANG) && _MSVC_LANG >= 202002L) \
-       || __cplusplus >= 202002L && !defined(ANDROID) && !defined(__ANDROID__) && !defined(__EMSCRIPTEN__) \
-           && !defined(__clang__))
-#    include <execution>  // std::execution
-#  endif
-#endif
-
-#if ((defined(_MSVC_LANG) && _MSVC_LANG >= 201703L) || __cplusplus >= 201703L)
-#  if __has_include("omp.h")
-#    include <omp.h>
-#  else
-#    if _MSC_VER && !__INTEL_COMPILER
-#      pragma message("Can t find omp.h, please install OpenMP")
-#    else
-#      warning Can t find omp.h, please install OpenMP.
-#    endif
-#  endif
+#if __has_include("omp.h")
+#  include <omp.h>
 #endif
 
 #if !defined(_OPENMP)
@@ -44,17 +28,9 @@
 #  endif
 #endif
 
-#if ((defined(_MSVC_LANG) && _MSVC_LANG >= 201703L) || __cplusplus >= 201703L)
-#  if __has_include("cuda.h")
-#    ifndef BUILD_WITH_CUDA
-#      define BUILD_WITH_CUDA
-#    endif
-#  else
-#    if _MSC_VER && !__INTEL_COMPILER
-#      pragma message("Can t find cuda.h, disable CUDA module")
-#    else
-#      warning Can t find cuda.h, disable CUDA module.
-#    endif
+#if __has_include("cuda.h")
+#  ifndef BUILD_WITH_CUDA
+#    define BUILD_WITH_CUDA
 #  endif
 #endif
 
@@ -66,26 +42,18 @@ class GTA_SA
 {
 public:
   GTA_SA();
-  void runner(const std::uint64_t&);
+  void cpu_runner(const std::uint64_t i);
+#if defined(BUILD_WITH_CUDA)
+  void cuda_runner();
+#endif
   void run();
   void clear();
-/**
- * @brief To get JAMCRC with boost libs
- * @param my_string String input
- * @return uint32_t with JAMCRC value
- */
-#if ((defined(_MSVC_LANG) && _MSVC_LANG >= 201703L) || __cplusplus >= 201703L)
+  /**
+   * @brief To get JAMCRC with boost libs
+   * @param my_string String input
+   * @return uint32_t with JAMCRC value
+   */
   static auto jamcrc(std::string_view my_string, const uint32_t previousCrc32 = 0) -> std::uint32_t;
-#else
-
-#  if _MSC_VER && !__INTEL_COMPILER
-#    pragma message("C++17 is not enabled, the program will be less efficient with previous standards")
-#  else
-#    warning C++17 is not enabled, the program will be less efficient with previous standards.
-#  endif
-
-  static auto jamcrc(const std::string& my_string, const uint32_t previousCrc32 = 0) -> std::uint32_t;
-#endif
 
   /**
    * \brief Generate Alphabetic sequence from uint64_t value, A=1, Z=27, AA =

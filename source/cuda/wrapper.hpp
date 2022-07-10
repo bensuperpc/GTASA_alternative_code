@@ -30,17 +30,9 @@
 #ifndef CUDA_KERNEL_HPP
 #define CUDA_KERNEL_HPP
 
-#if ((defined(_MSVC_LANG) && _MSVC_LANG >= 201703L) || __cplusplus >= 201703L)
-#  if __has_include("cuda.h")
-#    ifndef BUILD_WITH_CUDA
-#      define BUILD_WITH_CUDA
-#    endif
-#  else
-#    if _MSC_VER && !__INTEL_COMPILER
-#      pragma message("Can t find cuda.h, disable CUDA module")
-#    else
-#      warning Can t find cuda.h, disable CUDA module.
-#    endif
+#if __has_include("cuda.h")
+#  ifndef BUILD_WITH_CUDA
+#    define BUILD_WITH_CUDA
 #  endif
 #endif
 
@@ -67,13 +59,13 @@ namespace my::cuda
 __host__ uint32_t jamcrc(const void* data,
                          const uint64_t length,
                          const uint32_t previousCrc32,
-                         const uint cuda_block_size = 32);
+                         const uint32_t cuda_block_size = 32);
 
 __host__ void launch_kernel(std::vector<uint32_t>& jamcrc_results,
                             std::vector<uint64_t>& index_results,
-                            const uint64_t& min_range,
-                            const uint64_t& max_range,
-                            const uint64_t& cuda_block_size);
+                            const uint64_t min_range,
+                            const uint64_t max_range,
+                            const uint64_t cuda_block_size);
 
 __host__ void launch_kernel(size_t grid,
                             size_t threads,

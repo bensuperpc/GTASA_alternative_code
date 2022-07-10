@@ -85,6 +85,14 @@
       }
     },
     {
+      "name": "flags-gprof",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_CXX_FLAGS": "-Og -g -Wall -Wextra -Wpedantic -pg",
+        "CMAKE_C_FLAGS": "-Og -g -Wall -Wextra -Wpedantic -pg"
+      }
+    },
+    {
       "name": "flags-windows",
       "description": "Note that all the flags after /W4 are required for MSVC to conform to the language standard",
       "hidden": true,
@@ -96,19 +104,16 @@
       "name": "ci-unix",
       "generator": "Unix Makefiles",
       "hidden": true,
-      "inherits": ["flags-unix", "ci-std", "ci-cuda"],
+      "inherits": ["flags-unix", "ci-std", "flags-cuda", "ci-cuda"],
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release"
       }
     },
     {
       "name": "ci-base",
-      "generator": "Ninja",
+      "generator": "Unix Makefiles",
       "hidden": true,
-      "inherits": ["ci-std", "flags-unix", "dev-mode", "ci-cuda"],
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release"
-      }
+      "inherits": ["ci-std", "flags-unix", "dev-mode", "flags-cuda", "ci-cuda"]
     },
     {
       "name": "ci-win64",
@@ -159,7 +164,10 @@
       "name": "base",
       "binaryDir": "${sourceDir}/build/base",
       "inherits": ["ci-base"],
-      "hidden": false
+      "hidden": false,
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
     },
     {
       "name": "base-clang",
@@ -170,6 +178,16 @@
         "CMAKE_BUILD_TYPE": "Release",
         "CMAKE_C_COMPILER": "clang",
         "CMAKE_CXX_COMPILER": "clang++"
+      }
+    },
+    {
+      "name": "gprof",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build/gprof",
+      "inherits": ["ci-std", "flags-gprof", "dev-mode", "ci-cuda"],
+      "hidden": false,
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
       }
     },
     {
