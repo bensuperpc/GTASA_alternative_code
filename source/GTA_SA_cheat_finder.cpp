@@ -149,6 +149,7 @@ void GTA_SA::run()
   std::cout << "" << std::endl;
 }
 
+#if !defined(BUILD_WITH_CUDA)
 void GTA_SA::cuda_runner()
 {
   if ((max_range - min_range) < cuda_block_size) {
@@ -174,6 +175,7 @@ void GTA_SA::cuda_runner()
         std::make_tuple(index_results[i], std::string(tmpCUDA.data()), jamcrc_results[i], cheat_list_name.at(index)));
   }
 }
+#endif
 
 void GTA_SA::cpu_runner(const std::uint64_t i)
 {
