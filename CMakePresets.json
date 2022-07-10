@@ -88,8 +88,8 @@
       "name": "flags-gprof",
       "hidden": true,
       "cacheVariables": {
-        "CMAKE_CXX_FLAGS": "-Wall -Wextra -Wpedantic -pg",
-        "CMAKE_C_FLAGS": "-Wall -Wextra -Wpedantic -pg"
+        "CMAKE_CXX_FLAGS": "-Og -g -Wall -Wextra -Wpedantic -pg",
+        "CMAKE_C_FLAGS": "-Og -g -Wall -Wextra -Wpedantic -pg"
       }
     },
     {
@@ -104,7 +104,7 @@
       "name": "ci-unix",
       "generator": "Unix Makefiles",
       "hidden": true,
-      "inherits": ["flags-unix", "ci-std", "ci-cuda"],
+      "inherits": ["flags-unix", "ci-std", "flags-cuda", "ci-cuda"],
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release"
       }
@@ -113,7 +113,7 @@
       "name": "ci-base",
       "generator": "Unix Makefiles",
       "hidden": true,
-      "inherits": ["ci-std", "flags-unix", "dev-mode", "ci-cuda"]
+      "inherits": ["ci-std", "flags-unix", "dev-mode", "flags-cuda", "ci-cuda"]
     },
     {
       "name": "ci-win64",
@@ -184,7 +184,7 @@
       "name": "gprof",
       "generator": "Unix Makefiles",
       "binaryDir": "${sourceDir}/build/gprof",
-      "inherits": ["ci-std", "flags-gprof", "dev-mode"],
+      "inherits": ["ci-std", "flags-gprof", "dev-mode", "ci-cuda"],
       "hidden": false,
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release"

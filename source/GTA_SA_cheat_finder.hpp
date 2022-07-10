@@ -50,7 +50,8 @@ class GTA_SA
 {
 public:
   GTA_SA();
-  void cpu_runner(const std::uint64_t&);
+  void cpu_runner(const std::uint64_t i);
+  void cuda_runner();
   void run();
   void clear();
   /**

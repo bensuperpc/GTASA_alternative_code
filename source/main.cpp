@@ -43,9 +43,6 @@ auto main(int argc, char* argv[]) -> int
     }
   }
 
-  args.clear();  // Remove all element
-  args.shrink_to_fit();  // Free memory
-
   // gta_sa.num_thread
   // gta_sa.min_range
   // gta_sa.max_range

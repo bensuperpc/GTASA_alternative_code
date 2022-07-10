@@ -72,6 +72,8 @@ void GTA_SA::run()
     return;
   }
 
+  results.reserve((max_range - min_range) / 20000000 + 1);
+
   std::cout << "Number of calculations: " << (max_range - min_range) << std::endl;
 
   GTA_SA::find_string_inv(tmp1.data(), min_range);
@@ -112,36 +114,7 @@ void GTA_SA::run()
 #endif
   } else if (calc_mode == 2) {
 #if defined(BUILD_WITH_CUDA)
-
-    if ((max_range - min_range) < cuda_block_size) {
-      std::cout << "Number of calculations is less than cuda_block_size" << std::endl;
-    }
-
-    std::vector<uint32_t> jamcrc_results;
-    std::vector<uint64_t> index_results;
-
-    my::cuda::launch_kernel(jamcrc_results, index_results, min_range, max_range, cuda_block_size);
-
-    for (uint64_t i = 0; i < jamcrc_results.size(); ++i) {
-      std::array<char, 29> tmpCUDA = {0};
-
-      GTA_SA::find_string_inv(tmpCUDA.data(), index_results[i]);
-      std::reverse(tmpCUDA.data(),
-                   tmpCUDA.data() + strlen(tmpCUDA.data()));  // Invert char array
-
-#  if ((defined(_MSVC_LANG) && _MSVC_LANG >= 202002L) \
-       || __cplusplus >= 202002L && !defined(ANDROID) && !defined(__EMSCRIPTEN__) && !defined(__clang__))
-
-      const auto&& it = std::find(
-          std::execution::unseq, std::begin(GTA_SA::cheat_list), std::end(GTA_SA::cheat_list), jamcrc_results[i]);
-#  else
-      const auto&& it = std::find(std::begin(GTA_SA::cheat_list), std::end(GTA_SA::cheat_list), jamcrc_results[i]);
-#  endif
-
-      const uint64_t index = static_cast<uint64_t>(it - std::begin(GTA_SA::cheat_list));
-      results.emplace_back(
-          std::make_tuple(index_results[i], std::string(tmpCUDA.data()), jamcrc_results[i], cheat_list_name.at(index)));
-    }
+    cuda_runner();
 #else
     std::cout << "CUDA is not supported." << std::endl;
 #endif
@@ -176,24 +149,47 @@ void GTA_SA::run()
   std::cout << "" << std::endl;
 }
 
-void GTA_SA::cpu_runner(const std::uint64_t& i)
+void GTA_SA::cuda_runner()
+{
+  if ((max_range - min_range) < cuda_block_size) {
+    std::cout << "Number of calculations is less than cuda_block_size" << std::endl;
+  }
+
+  std::vector<uint32_t> jamcrc_results;
+  std::vector<uint64_t> index_results;
+
+  my::cuda::launch_kernel(jamcrc_results, index_results, min_range, max_range, cuda_block_size);
+
+  for (uint64_t i = 0; i < jamcrc_results.size(); ++i) {
+    std::array<char, 29> tmpCUDA = {0};
+
+    GTA_SA::find_string_inv(tmpCUDA.data(), index_results[i]);
+    std::reverse(tmpCUDA.data(),
+                 tmpCUDA.data() + strlen(tmpCUDA.data()));  // Invert char array
+
+#if ((defined(_MSVC_LANG) && _MSVC_LANG >= 202002L) \
+     || __cplusplus >= 202002L && !defined(ANDROID) && !defined(__EMSCRIPTEN__) && !defined(__clang__))
+
+    const auto&& it = std::find(
+        std::execution::unseq, std::begin(GTA_SA::cheat_list), std::end(GTA_SA::cheat_list), jamcrc_results[i]);
+#else
+    const auto&& it = std::find(std::begin(GTA_SA::cheat_list), std::end(GTA_SA::cheat_list), jamcrc_results[i]);
+#endif
+
+    const uint64_t index = static_cast<uint64_t>(it - std::begin(GTA_SA::cheat_list));
+    results.emplace_back(
+        std::make_tuple(index_results[i], std::string(tmpCUDA.data()), jamcrc_results[i], cheat_list_name.at(index)));
+  }
+}
+
+void GTA_SA::cpu_runner(const std::uint64_t i)
 {
   std::array<char, 29> tmp = {0};
   GTA_SA::find_string_inv(tmp.data(),
                           i);  // Generate Alphabetic sequence from uint64_t
                                // value, A=1, Z=27, AA = 28, AB = 29
-  uint32_t crc = GTA_SA::jamcrc(tmp.data());  // JAMCRC
-
-  // #pragma omp critical
-  // std::cout << "str:" << tmp.data() << " crc: " << crc << std::endl;
-
-#if ((defined(_MSVC_LANG) && _MSVC_LANG >= 202002L) \
-     || __cplusplus >= 202002L && !defined(ANDROID) && !defined(__EMSCRIPTEN__) && !defined(__clang__))
-
-  const auto&& it = std::find(std::execution::unseq, std::begin(GTA_SA::cheat_list), std::end(GTA_SA::cheat_list), crc);
-#else
+  const uint32_t crc = GTA_SA::jamcrc(tmp.data());  // JAMCRC
   const auto&& it = std::find(std::begin(GTA_SA::cheat_list), std::end(GTA_SA::cheat_list), crc);
-#endif
 
   // If crc is present in Array
   if (it != std::end(GTA_SA::cheat_list)) {
