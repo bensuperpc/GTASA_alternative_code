@@ -25,11 +25,32 @@ GENERATOR := Ninja
 CTEST_TIMEOUT := 1500
 CTEST_OPTIONS := --output-on-failure --verbose
 
+DOCKCROSS_IMAGE := android-arm android-arm64 android-x86 android-x86_64 \
+	linux-x86 linux-x64 linux-x64-clang \
+	linux-arm64 linux-arm64-musl linux-arm64-full \
+	linux-armv5 linux-armv5-musl linux-armv5-uclibc \
+	linux-m68k-uclibc linux-s390x linux-x64-tinycc \
+	linux-armv6 linux-armv6-lts linux-armv6-musl linux-arm64-lts linux-mipsel-lts \
+	linux-armv7l-musl linux-armv7 linux-armv7a linux-armv7-lts linux-armv7a-lts linux-x86_64-full linux-mips linux-mips-lts linux-ppc64le \
+	linux-riscv64 linux-riscv32 linux-xtensa-uclibc web-wasi \
+	windows-static-x86 windows-static-x64 windows-static-x64-posix windows-armv7 windows-shared-x86 windows-shared-x64 windows-shared-x64-posix windows-arm64 \
+	manylinux_2_28-x64 manylinux2014-x64 manylinux2014-x86 manylinux2014-aarch64 web-wasm
+
 .PHONY: build
 build: base
 
+.PHONY: $(DOCKCROSS_IMAGE)
+$(DOCKCROSS_IMAGE):
+	docker run --rm dockcross/$@ > ./dockcross-$@
+	chmod +x ./dockcross-$@
+	./dockcross-$@ cmake -B build/$@ -S . -G $(GENERATOR)
+	./dockcross-$@ ninja -C build/$@
+
+.PHONY: docker
+docker: $(DOCKCROSS_IMAGE)
+
 .PHONY: all
-all: release debug minsizerel coverage relwithdebinfo minsizerel relwithdebinfo release-clang debug-clang base base-clang sanitize sanitize-clang gprof
+all: release debug minsizerel coverage relwithdebinfo minsizerel relwithdebinfo release-clang debug-clang base base-clang sanitize sanitize-clang gprof $(DOCKCROSS_IMAGE)
 
 .PHONY: base
 base:
@@ -110,7 +131,7 @@ relwithdebinfo:
 gprof:
 	cmake --preset=$@ -G $(GENERATOR)
 	cmake --build build/$@
-	echo "Run executable and after gprof <exe> gmon.out | less"
+	@echo "Run executable and after gprof <exe> gmon.out | less"
 
 .PHONY: lint
 lint:
