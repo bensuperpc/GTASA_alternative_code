@@ -167,14 +167,7 @@ void GTA_SA::cuda_runner()
     std::reverse(tmpCUDA.data(),
                  tmpCUDA.data() + strlen(tmpCUDA.data()));  // Invert char array
 
-#if ((defined(_MSVC_LANG) && _MSVC_LANG >= 202002L) \
-     || __cplusplus >= 202002L && !defined(ANDROID) && !defined(__EMSCRIPTEN__) && !defined(__clang__))
-
-    const auto&& it = std::find(
-        std::execution::unseq, std::begin(GTA_SA::cheat_list), std::end(GTA_SA::cheat_list), jamcrc_results[i]);
-#else
     const auto&& it = std::find(std::begin(GTA_SA::cheat_list), std::end(GTA_SA::cheat_list), jamcrc_results[i]);
-#endif
 
     const uint64_t index = static_cast<uint64_t>(it - std::begin(GTA_SA::cheat_list));
     results.emplace_back(
@@ -189,7 +182,7 @@ void GTA_SA::cpu_runner(const std::uint64_t i)
                           i);  // Generate Alphabetic sequence from uint64_t
                                // value, A=1, Z=27, AA = 28, AB = 29
   const uint32_t crc = GTA_SA::jamcrc(tmp.data());  // JAMCRC
-  const auto&& it = std::find(std::begin(GTA_SA::cheat_list), std::end(GTA_SA::cheat_list), crc);
+  const auto it = std::find(std::begin(GTA_SA::cheat_list), std::end(GTA_SA::cheat_list), crc);
 
   // If crc is present in Array
   if (it != std::end(GTA_SA::cheat_list)) {
@@ -209,7 +202,7 @@ void GTA_SA::cpu_runner(const std::uint64_t i)
 const auto GTA_SA::jamcrc(std::string_view my_string, const uint32_t previousCrc32) -> std::uint32_t
 {
   auto crc = ~previousCrc32;
-  const auto* current = reinterpret_cast<const unsigned char*>(my_string.data());
+  const auto* current = reinterpret_cast<const uint8_t*>(my_string.data());
   uint64_t length = my_string.length();
   // process eight bytes at once
   while (static_cast<bool>(length--)) {

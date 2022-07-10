@@ -16,14 +16,6 @@
 
 #include "BS_thread_pool.hpp"
 
-#if ((defined(_MSVC_LANG) && _MSVC_LANG >= 201703L) || __cplusplus >= 201703L)
-#  if ((defined(_MSVC_LANG) && _MSVC_LANG >= 202002L) \
-       || __cplusplus >= 202002L && !defined(ANDROID) && !defined(__ANDROID__) && !defined(__EMSCRIPTEN__) \
-           && !defined(__clang__))
-#    include <execution>  // std::execution
-#  endif
-#endif
-
 #if __has_include("omp.h")
 #  include <omp.h>
 #endif

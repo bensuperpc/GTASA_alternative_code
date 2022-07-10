@@ -42,10 +42,6 @@ __host__ uint32_t my::cuda::jamcrc(const void* data,
                                    const uint32_t previousCrc32,
                                    const uint cuda_block_size)
 {
-  // std::cout << "data: " << reinterpret_cast<const char*>(data) << std::endl;
-  // std::cout << "length: " << length << std::endl;
-  // std::cout << "previousCrc32: " << previousCrc32 << std::endl;
-
   int device = 0;
   cudaGetDevice(&device);
 
@@ -73,8 +69,7 @@ __host__ uint32_t my::cuda::jamcrc(const void* data,
   *result_cuda = 0;
 
   uint64_t grid_size = static_cast<uint64_t>(ceil(static_cast<double>(data_size) / cuda_block_size));
-  // std::cout << "grid_size: " << static_cast<double>(data_size) /
-  // cuda_block_size << std::endl;
+  // std::cout << "grid_size: " << static_cast<double>(data_size) / cuda_block_size << std::endl;
 
   dim3 threads(static_cast<uint>(cuda_block_size), 1, 1);
   dim3 grid(static_cast<uint>(grid_size), 1, 1);
@@ -94,9 +89,9 @@ __host__ uint32_t my::cuda::jamcrc(const void* data,
 
 __host__ void my::cuda::launch_kernel(std::vector<uint32_t>& jamcrc_results,
                                       std::vector<uint64_t>& index_results,
-                                      const uint64_t& min_range,
-                                      const uint64_t& max_range,
-                                      const uint64_t& cuda_block_size)
+                                      const uint64_t min_range,
+                                      const uint64_t max_range,
+                                      const uint64_t cuda_block_size)
 {
   // int device = -1;
   // cudaGetDevice(&device);
@@ -118,9 +113,9 @@ __host__ void my::cuda::launch_kernel(std::vector<uint32_t>& jamcrc_results,
   // cudaDeviceSetLimit(cudaLimitMallocHeapSize, 128 * 1024 * 1024);
 
   // Calculate length of the array with max_range and min_range
-  const uint64_t array_length = static_cast<uint64_t>((max_range - min_range) / 20000000 + 1);
-  const uint64_t jamcrc_results_size = array_length * sizeof(uint32_t);
-  const uint64_t index_results_size = array_length * sizeof(uint64_t);
+  uint64_t array_length = static_cast<uint64_t>((max_range - min_range) / 20000000 + 1);
+  uint64_t jamcrc_results_size = array_length * sizeof(uint32_t);
+  uint64_t index_results_size = array_length * sizeof(uint64_t);
 
   uint32_t* jamcrc_results_ptr = nullptr;
   uint64_t* index_results_ptr = nullptr;
@@ -139,23 +134,20 @@ __host__ void my::cuda::launch_kernel(std::vector<uint32_t>& jamcrc_results,
     index_results_ptr[i] = 0;
   }
 
-  const uint64_t grid_size = static_cast<uint64_t>(ceil(static_cast<double>(max_range - min_range) / cuda_block_size));
-  // std::cout << "CUDA Grid size: " << grid_size << std::endl;
-  // std::cout << "CUDA Block size: " << cuda_block_size << std::endl;
+  uint64_t grid_size = static_cast<uint64_t>(ceil(static_cast<double>(max_range - min_range) / cuda_block_size));
+  std::cout << "CUDA Grid size: " << grid_size << std::endl;
+  std::cout << "CUDA Block size: " << cuda_block_size << std::endl;
 
-  const dim3 threads(static_cast<uint>(cuda_block_size), 1, 1);
-  const dim3 grid(static_cast<uint>(grid_size), 1, 1);
+  dim3 threads(static_cast<uint>(cuda_block_size), 1, 1);
+  dim3 grid(static_cast<uint>(grid_size), 1, 1);
 
-  // Run the CUDA kernel
   runner_kernel<<<grid, threads, device, stream>>>(
       jamcrc_results_ptr, index_results_ptr, array_length, min_range, max_range);
 
-  // Wait all kernels to finish
-  cudaStreamSynchronize(stream);
-
-  // Reserve memory for results, avoid multiple allocations
   jamcrc_results.reserve(array_length);
   index_results.reserve(array_length);
+
+  cudaStreamSynchronize(stream);
 
   for (uint64_t i = 0; i < array_length; ++i) {
     if (jamcrc_results_ptr[i] != index_results_ptr[i]) {
@@ -165,12 +157,9 @@ __host__ void my::cuda::launch_kernel(std::vector<uint32_t>& jamcrc_results,
   }
 
   cudaDeviceSynchronize();
-
-  // Free CUDA memory
   cudaFree(jamcrc_results_ptr);
   cudaFree(index_results_ptr);
 
-  // Free CUDA stream
   cudaStreamDestroy(stream);
   // cudaStreamDestroy(st_high);
   // cudaStreamDestroy(st_low);

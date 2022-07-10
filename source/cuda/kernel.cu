@@ -30,7 +30,7 @@ __global__ void jamcrc_kernel_wrapper(const void* data,
                                       const uint64_t length,
                                       const uint32_t previousCrc32)
 {
-  const unsigned int idx = blockIdx.x * blockDim.x + threadIdx.x;
+  const uint32_t idx = blockIdx.x * blockDim.x + threadIdx.x;
   if (idx == 0) {
     *result = jamcrc_kernel(data, length, previousCrc32);
   }
@@ -39,7 +39,7 @@ __global__ void jamcrc_kernel_wrapper(const void* data,
 __device__ uint32_t jamcrc_kernel(const void* data, uint64_t length, const uint32_t previousCrc32)
 {
   uint32_t crc = ~previousCrc32;
-  unsigned char* current = (unsigned char*)data;
+  uint8_t* current = (uint8_t*)data;
   while (length--)
     crc = (crc >> 8) ^ crc32_lookup[(crc & 0xFF) ^ *current++];
   return crc;
@@ -47,26 +47,25 @@ __device__ uint32_t jamcrc_kernel(const void* data, uint64_t length, const uint3
 
 __global__ void runner_kernel(uint32_t* crc_result, uint64_t* index_result, uint64_t array_size, uint64_t a, uint64_t b)
 {
-  const uint64_t id = blockIdx.x * blockDim.x + threadIdx.x + a;
-  // printf("blockIdx %d, blockDimx %d, threadIdx %d\n", blockIdx.x, blockDim.x,
-  // threadIdx.x);
+  const uint64_t blockId = blockIdx.z * gridDim.x * gridDim.y + blockIdx.y * gridDim.x + blockIdx.x;
+  const uint64_t threadsPerBlock = blockDim.x;
+  uint64_t id = blockId * threadsPerBlock + threadIdx.x;
 
-  if (id <= b && id >= a) {
-    // printf("blockIdx %d, blockDim %d, threadIdx %d\n", blockIdx.x,
-    // blockDim.x, threadIdx.x);
+  id = id + a;
 
+  if (id >= a && id <= b) {
     // Allocate memory for the array
-    unsigned char array[29] = {0};
+    uint8_t array[29] = {0};
 
     uint64_t size = 0;
-    // Generate the array
+    // Generate the array from index (id)
     find_string_inv_kernel(array, id, size);
 
-    // Calculate the CRC
+    // Calculate the JAMCRC
     const uint32_t result = jamcrc_kernel(array, size, 0);
 
     bool found = false;
-    for (uint32_t i = 0; i < 87; i++) {
+    for (uint8_t i = 0; i < 87; i++) {
       if (result == cheat_list[i]) {
         found = true;
         break;
@@ -84,17 +83,18 @@ __global__ void runner_kernel(uint32_t* crc_result, uint64_t* index_result, uint
       if (crc_result[i] == 0 && index_result[i] == 0) {
         crc_result[i] = result;
         index_result[i] = id;
+        // printf("Found %d at %d\n", result, id);
         break;
       }
     }
   }
 }
 
-__device__ void find_string_inv_kernel(unsigned char* array, uint64_t n, uint64_t& terminator_index)
+__device__ void find_string_inv_kernel(uint8_t* array, uint64_t n, uint64_t terminator_index)
 {
   const uint32_t string_size_alphabet = 27;
 
-  const unsigned char alpha[string_size_alphabet] = {"ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
+  const uint8_t alpha[string_size_alphabet] = {"ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
   // If n < 27
   if (n < 26) {
     array[0] = alpha[n];
