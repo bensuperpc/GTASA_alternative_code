@@ -66,7 +66,7 @@ class GTA_SA
 {
 public:
   GTA_SA();
-  void runner(const std::uint64_t&);
+  void cpu_runner(const std::uint64_t&);
   void run();
   void clear();
 /**
@@ -75,7 +75,7 @@ public:
  * @return uint32_t with JAMCRC value
  */
 #if ((defined(_MSVC_LANG) && _MSVC_LANG >= 201703L) || __cplusplus >= 201703L)
-  static auto jamcrc(std::string_view my_string, const uint32_t previousCrc32 = 0) -> std::uint32_t;
+  static const auto jamcrc(std::string_view my_string, const uint32_t previousCrc32 = 0) -> std::uint32_t;
 #else
 
 #  if _MSC_VER && !__INTEL_COMPILER
@@ -84,7 +84,7 @@ public:
 #    warning C++17 is not enabled, the program will be less efficient with previous standards.
 #  endif
 
-  static auto jamcrc(const std::string& my_string, const uint32_t previousCrc32 = 0) -> std::uint32_t;
+  static const auto jamcrc(const std::string& my_string, const uint32_t previousCrc32 = 0) -> std::uint32_t;
 #endif
 
   /**

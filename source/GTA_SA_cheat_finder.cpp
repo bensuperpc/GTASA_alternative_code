@@ -85,7 +85,7 @@ void GTA_SA::run()
                           [&](const std::uint64_t& _min_range, const std::uint64_t& _max_range)
                           {
                             for (std::uint64_t i = _min_range; i <= _max_range; i++) {
-                              runner(i);
+                              cpu_runner(i);
                             }
                           });
   } else if (calc_mode == 1) {
@@ -98,13 +98,13 @@ void GTA_SA::run()
     static std::int64_t i = 0;  // OpenMP (2.0) on Windows doesn't support unsigned variable
 #    pragma omp parallel for shared(results) schedule(dynamic)
     for (i = static_cast<std::int64_t>(min_range); i <= static_cast<std::int64_t>(max_range); i++) {
-      runner(static_cast<std::int64_t>(i));
+      cpu_runner(static_cast<std::int64_t>(i));
     }
 #  else
     std::uint64_t i = 0;
 #    pragma omp parallel for schedule(auto) shared(results)
     for (i = min_range; i <= max_range; i++) {
-      runner(i);
+      cpu_runner(i);
     }
 #  endif
 #else
@@ -143,11 +143,12 @@ void GTA_SA::run()
           std::make_tuple(index_results[i], std::string(tmpCUDA.data()), jamcrc_results[i], cheat_list_name.at(index)));
     }
 #else
-    std::cout << "CUDA is not supported" << std::endl;
+    std::cout << "CUDA is not supported." << std::endl;
 #endif
   } else if (calc_mode == 3) {
+    std::cout << "OpenCL is not supported." << std::endl;
   } else {
-    std::cout << "Unknown calculation mode" << std::endl;
+    std::cout << "Unknown calculation mode." << std::endl;
   }
 
   end_time = std::chrono::high_resolution_clock::now();
@@ -175,7 +176,7 @@ void GTA_SA::run()
   std::cout << "" << std::endl;
 }
 
-void GTA_SA::runner(const std::uint64_t& i)
+void GTA_SA::cpu_runner(const std::uint64_t& i)
 {
   std::array<char, 29> tmp = {0};
   GTA_SA::find_string_inv(tmp.data(),
@@ -210,7 +211,7 @@ void GTA_SA::runner(const std::uint64_t& i)
 }
 
 #if ((defined(_MSVC_LANG) && _MSVC_LANG >= 201703L) || __cplusplus >= 201703L)
-auto GTA_SA::jamcrc(std::string_view my_string, const uint32_t previousCrc32) -> std::uint32_t
+const auto GTA_SA::jamcrc(std::string_view my_string, const uint32_t previousCrc32) -> std::uint32_t
 {
 #else
 
@@ -220,7 +221,7 @@ auto GTA_SA::jamcrc(std::string_view my_string, const uint32_t previousCrc32) ->
 #    warning C++17 is not enabled, the program will be less efficient with previous standards.
 #  endif
 
-auto GTA_SA::jamcrc(const std::string& my_string, const uint32_t previousCrc32) -> std::uint32_t
+const auto GTA_SA::jamcrc(const std::string& my_string, const uint32_t previousCrc32) -> std::uint32_t
 {
 #endif
   auto crc = ~previousCrc32;

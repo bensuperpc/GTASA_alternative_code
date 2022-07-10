@@ -118,9 +118,9 @@ __host__ void my::cuda::launch_kernel(std::vector<uint32_t>& jamcrc_results,
   // cudaDeviceSetLimit(cudaLimitMallocHeapSize, 128 * 1024 * 1024);
 
   // Calculate length of the array with max_range and min_range
-  uint64_t array_length = static_cast<uint64_t>((max_range - min_range) / 20000000 + 1);
-  uint64_t jamcrc_results_size = array_length * sizeof(uint32_t);
-  uint64_t index_results_size = array_length * sizeof(uint64_t);
+  const uint64_t array_length = static_cast<uint64_t>((max_range - min_range) / 20000000 + 1);
+  const uint64_t jamcrc_results_size = array_length * sizeof(uint32_t);
+  const uint64_t index_results_size = array_length * sizeof(uint64_t);
 
   uint32_t* jamcrc_results_ptr = nullptr;
   uint64_t* index_results_ptr = nullptr;
@@ -139,20 +139,23 @@ __host__ void my::cuda::launch_kernel(std::vector<uint32_t>& jamcrc_results,
     index_results_ptr[i] = 0;
   }
 
-  uint64_t grid_size = static_cast<uint64_t>(ceil(static_cast<double>(max_range - min_range) / cuda_block_size));
+  const uint64_t grid_size = static_cast<uint64_t>(ceil(static_cast<double>(max_range - min_range) / cuda_block_size));
   // std::cout << "CUDA Grid size: " << grid_size << std::endl;
   // std::cout << "CUDA Block size: " << cuda_block_size << std::endl;
 
-  dim3 threads(static_cast<uint>(cuda_block_size), 1, 1);
-  dim3 grid(static_cast<uint>(grid_size), 1, 1);
+  const dim3 threads(static_cast<uint>(cuda_block_size), 1, 1);
+  const dim3 grid(static_cast<uint>(grid_size), 1, 1);
 
-  // my::cuda::launch_kernel_wrapper(grid, threads, stream, jamcrc_results_ptr,
-  // index_results_ptr, array_length, min_range, max_range);
+  // Run the CUDA kernel
   runner_kernel<<<grid, threads, device, stream>>>(
       jamcrc_results_ptr, index_results_ptr, array_length, min_range, max_range);
 
-  // my::cuda::launch_kernel();
+  // Wait all kernels to finish
   cudaStreamSynchronize(stream);
+
+  // Reserve memory for results, avoid multiple allocations
+  jamcrc_results.reserve(array_length);
+  index_results.reserve(array_length);
 
   for (uint64_t i = 0; i < array_length; ++i) {
     if (jamcrc_results_ptr[i] != index_results_ptr[i]) {
@@ -162,9 +165,12 @@ __host__ void my::cuda::launch_kernel(std::vector<uint32_t>& jamcrc_results,
   }
 
   cudaDeviceSynchronize();
+
+  // Free CUDA memory
   cudaFree(jamcrc_results_ptr);
   cudaFree(index_results_ptr);
 
+  // Free CUDA stream
   cudaStreamDestroy(stream);
   // cudaStreamDestroy(st_high);
   // cudaStreamDestroy(st_low);

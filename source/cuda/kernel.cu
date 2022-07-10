@@ -77,6 +77,7 @@ __global__ void runner_kernel(uint32_t* crc_result, uint64_t* index_result, uint
       return;
     }
 
+    // Todo: Avoid datarace
     //__syncthreads();
 
     for (uint64_t i = 0; i < array_size; i++) {
