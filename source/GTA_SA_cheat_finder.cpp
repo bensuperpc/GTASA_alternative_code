@@ -219,8 +219,6 @@ auto GTA_SA::jamcrc(std::string_view my_string, const uint32_t previousCrc32) ->
  */
 void GTA_SA::find_string_inv(char* array, uint64_t n)
 {
-  constexpr std::uint32_t string_size_alphabet {27};
-  constexpr std::array<char, string_size_alphabet> alpha {"ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
   // If n < 27
   if (n < 26) {
     array[0] = alpha[static_cast<std::size_t>(n)];

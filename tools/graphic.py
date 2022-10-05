@@ -9,6 +9,9 @@ import math
 import operator
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+import numpy as np
+import seaborn as sns
+import pandas as pd
 
 
 def generate_color(size):
@@ -47,18 +50,52 @@ if __name__ == "__main__":
         benchmark_result = json.load(file)
         benchmarks = benchmark_result['benchmarks']
         elapsed_times = groupby(benchmarks, extract_label_from_benchmark)
+        data1 = None
+        data2 = None
+
         for key, group in elapsed_times:
             benchmark = list(group)
             x = list(map(extract_size_from_benchmark, benchmark))
-            y = list(map(operator.itemgetter('bytes_per_second'), benchmark))
-            #log_y = list(map(math.log, y))
-            plt.plot(x, y, label=key, marker=None)
+            y1 = list(map(operator.itemgetter('bytes_per_second'), benchmark))
+            y2 = list(map(operator.itemgetter('items_per_second'), benchmark))
 
-        plt.grid(color='green', linestyle='--', linewidth=0.2)  # Add grid
-        plt.xlabel('Array size')
-        plt.ylabel('Gigabyte per second (GB/s)')
-        plt.title('CRC32 Algorithm Benchmark')
-        plt.legend()
-        plt.savefig('benchmark.png', bbox_inches='tight', dpi=300)
-        # plt.savefig('benchmark.svg')
+            if data1 is None:
+                data1 = pd.DataFrame({'size': x, key: y1})
+            else:
+                data1[key] = y1
+            
+            if data2 is None:
+                data2 = pd.DataFrame({'size': x, key: y2})
+            else:
+                data2[key] = y2
+
+        df1 = pd.melt(data1, id_vars=['size'], var_name='algorithm', value_name='bytes_per_second')
+        df2 = pd.melt(data2, id_vars=['size'], var_name='algorithm', value_name='items_per_second')
+        
+        print(df1)
+        
+        sns.set_theme()
+
+        fig, ax = plt.subplots(2, 1)
+
+        fig.set_size_inches(16, 9)
+        fig.set_dpi(160)
+
+        sns.lineplot(data=df1, x='size', y='bytes_per_second', hue='algorithm', ax=ax[0])
+        sns.lineplot(data=df2, x='size', y='items_per_second', hue='algorithm', ax=ax[1])
+
+        ax[0].set_title('Bytes per second')
+        ax[1].set_title('Items per second')
+
+        ax[0].set_xlabel('Array size')
+        ax[1].set_xlabel('Array size')
+
+        ax[0].set_ylabel('Giga byte per second (GB/s)')
+        ax[1].set_ylabel('Giga items per second (GI/s)')
+
+        fig.tight_layout()
+
         plt.show()
+
+        plt.savefig('benchmark.png', bbox_inches='tight', dpi=300)
+

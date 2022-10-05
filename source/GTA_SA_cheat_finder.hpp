@@ -120,6 +120,9 @@ public:
 
   std::chrono::high_resolution_clock::time_point end_time = std::chrono::high_resolution_clock::now();
 
+  static constexpr std::uint32_t string_size_alphabet {27};
+  static constexpr std::array<char, string_size_alphabet> alpha {"ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
+
   static constexpr std::array<std::uint32_t, 87> cheat_list {
       0xDE4B237D, 0xB22A28D1, 0x5A783FAE, 0xEECCEA2B, 0x42AF1E28, 0x555FC201, 0x2A845345, 0xE1EF01EA, 0x771B83FC,
       0x5BF12848, 0x44453A17, 0xFCFF1D08, 0xB69E8532, 0x8B828076, 0xDD6ED9E9, 0xA290FD8C, 0x3484B5A7, 0x43DB914E,

@@ -12,12 +12,14 @@ static void find_string_inv_bench(benchmark::State& state)
   // Code inside this loop is measured repeatedly
   auto range = state.range(0);
 
-  const auto array_size = 29;
-  std::array<char, array_size> tmp = {0};
+  GTA_SA gta_sa;
+  gta_sa.min_range = 0;
+  gta_sa.max_range = 0x1000;
+  gta_sa.calc_mode = 2;
 
+  gta_sa.run();
+  // benchmark::DoNotOptimize(tmp);
   for (auto _ : state) {
-    GTA_SA::find_string_inv(tmp.data(), range);
-    benchmark::DoNotOptimize(tmp);
     // benchmark::ClobberMemory();
   }
   state.SetItemsProcessed(state.iterations());
