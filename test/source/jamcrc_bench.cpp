@@ -61,7 +61,7 @@ static void jamcrc_bench(benchmark::State& state)
 }
 BENCHMARK(jamcrc_bench)->Name("jamcrc_bench")->RangeMultiplier(16)->Range(1, 1048576);
 
-
+#if defined(BUILD_WITH_CUDA)
 static void cuda_jamcrc_bench(benchmark::State& state)
 {
   // Code inside this loop is measured repeatedly
@@ -77,3 +77,5 @@ static void cuda_jamcrc_bench(benchmark::State& state)
   state.SetBytesProcessed(state.iterations() * state.range(0) * sizeof(char));
 }
 BENCHMARK(cuda_jamcrc_bench)->Name("cuda_jamcrc_bench")->RangeMultiplier(16)->Range(256, 1048576);
+
+#endif
