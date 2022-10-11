@@ -8,3 +8,5 @@ prefix/
 CMakeLists.txt.user
 CMakeUserPresets.json
 dockcross-*
+tools/bench.json
+tools/benchmark.png

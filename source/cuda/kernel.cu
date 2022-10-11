@@ -30,8 +30,11 @@ __global__ void jamcrc_kernel_wrapper(const void* data,
                                       const uint64_t length,
                                       const uint32_t previousCrc32)
 {
-  const uint32_t idx = blockIdx.x * blockDim.x + threadIdx.x;
-  if (idx == 0) {
+  const uint64_t blockId = blockIdx.z * gridDim.x * gridDim.y + blockIdx.y * gridDim.x + blockIdx.x;
+  const uint64_t threadsPerBlock = blockDim.x;
+  uint64_t id = blockId * threadsPerBlock + threadIdx.x;
+
+  if (id == 0) {
     *result = jamcrc_kernel(data, length, previousCrc32);
   }
 }

@@ -49,7 +49,7 @@ __host__ uint32_t my::cuda::jamcrc(const void* data,
   cudaStreamCreateWithFlags(&stream, cudaStreamNonBlocking);
 
   // Calculate length of the array with max_range and min_range
-  uint64_t data_size = (length + 1) * sizeof(void*);
+  uint64_t data_size = (length) * sizeof(char);
   uint32_t* data_cuda = nullptr;
 
   uint64_t result_size = 1 * sizeof(uint32_t);
@@ -64,12 +64,10 @@ __host__ uint32_t my::cuda::jamcrc(const void* data,
   cudaMemPrefetchAsync(data_cuda, data_size, device, stream);
   cudaMemPrefetchAsync(result_cuda, result_size, device, stream);
 
-  // std::copy(data, data + length, data_cuda);
   memcpy(data_cuda, data, data_size);
   *result_cuda = 0;
 
-  uint64_t grid_size = static_cast<uint64_t>(ceil(static_cast<double>(data_size) / cuda_block_size));
-  // std::cout << "grid_size: " << static_cast<double>(data_size) / cuda_block_size << std::endl;
+  uint64_t grid_size = static_cast<uint64_t>(ceil(static_cast<double>(1) / cuda_block_size));
 
   dim3 threads(static_cast<uint32_t>(cuda_block_size), 1, 1);
   dim3 grid(static_cast<uint32_t>(grid_size), 1, 1);
@@ -112,8 +110,8 @@ __host__ void my::cuda::launch_kernel(std::vector<uint32_t>& jamcrc_results,
 
   // cudaDeviceSetLimit(cudaLimitMallocHeapSize, 128 * 1024 * 1024);
 
-  // Calculate length of the array with max_range and min_range
-  uint64_t array_length = static_cast<uint64_t>((max_range - min_range) / 20000000 + 1);
+  // Calculate length of the array with max_range and min_range (Estimate size of the array)
+  uint64_t array_length = static_cast<uint64_t>((max_range - min_range) / 20000000);
   uint64_t jamcrc_results_size = array_length * sizeof(uint32_t);
   uint64_t index_results_size = array_length * sizeof(uint64_t);
 
@@ -163,30 +161,4 @@ __host__ void my::cuda::launch_kernel(std::vector<uint32_t>& jamcrc_results,
   cudaStreamDestroy(stream);
   // cudaStreamDestroy(st_high);
   // cudaStreamDestroy(st_low);
-}
-
-__host__ void my::cuda::launch_kernel(size_t grid,
-                                      size_t threads,
-                                      cudaStream_t& stream,
-                                      const int device,
-                                      uint32_t* crc_result,
-                                      uint64_t* index_result,
-                                      uint64_t array_size,
-                                      uint64_t a,
-                                      uint64_t b)
-{
-  runner_kernel<<<grid, threads, device, stream>>>(crc_result, index_result, array_size, a, b);
-}
-
-__host__ void my::cuda::launch_kernel(dim3& grid,
-                                      dim3& threads,
-                                      cudaStream_t& stream,
-                                      const int device,
-                                      uint32_t* crc_result,
-                                      uint64_t* index_result,
-                                      uint64_t array_size,
-                                      uint64_t a,
-                                      uint64_t b)
-{
-  runner_kernel<<<grid, threads, device, stream>>>(crc_result, index_result, array_size, a, b);
 }

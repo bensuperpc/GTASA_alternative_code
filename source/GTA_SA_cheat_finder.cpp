@@ -43,16 +43,22 @@ void GTA_SA::run()
     calc_mode = 0;
   }
 
-  if (calc_mode == 0) {
-    std::cout << "Running with std::thread mode" << std::endl;
-  } else if (calc_mode == 1) {
-    std::cout << "Running with OpenMP mode" << std::endl;
-  } else if (calc_mode == 2) {
-    std::cout << "Running with CUDA mode" << std::endl;
-  } else if (calc_mode == 3) {
-    std::cout << "Running with OpenCL mode" << std::endl;
-  } else {
+  switch (calc_mode) {
+    case 0:
+      std::cout << "Running with std::thread mode" << std::endl;
+      break;
+    case 1:
+      std::cout << "Running with OpenMP mode" << std::endl;
+      break;
+    case 2:
+      std::cout << "Running with CUDA mode" << std::endl;
+      break;
+    case 3:
+      std::cout << "Running with OpenCL mode" << std::endl;
+      break;
+    default:
     std::cout << "Unknown calculation mode" << std::endl;
+      break;
   }
 
   std::cout << "Max thread support: " << max_thread_support() << std::endl;
@@ -204,7 +210,7 @@ void GTA_SA::cpu_runner(const std::uint64_t i)
 auto GTA_SA::jamcrc(std::string_view my_string, const uint32_t previousCrc32) -> std::uint32_t
 {
   auto crc = ~previousCrc32;
-  const auto* current = reinterpret_cast<const uint8_t*>(my_string.data());
+  const uint8_t* current = reinterpret_cast<const uint8_t*>(my_string.data());
   uint64_t length = my_string.length();
   // process eight bytes at once
   while (static_cast<bool>(length--)) {
