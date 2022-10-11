@@ -7,6 +7,10 @@
 
 #include "GTA_SA_cheat_finder.hpp"
 
+#if defined(BUILD_WITH_CUDA)
+#  include "cuda/wrapper.hpp"
+#endif
+
 // Source: https://github.com/stbrumme/crc32
 static std::unique_ptr<char[]> generate_string(const std::uint64_t length)
 {
