@@ -4,15 +4,69 @@
 #include <tuple>
 #include <vector>
 
-#include "GTA_SA_cheat_finder.hpp"
+#if __has_include(<QApplication>)
+// Building with Qt
+#  include <QApplication>
+#  include <QGuiApplication>
+#  include <QQmlApplicationEngine>
+#  include <QQmlContext>
+
+#  include "gta_sa_ui.h"
+#include "about_compilation.h"
+#else
+// Not building with Qt
+#  include "GTA_SA_cheat_finder.hpp"
+#endif
 
 auto main(int argc, char* argv[]) -> int
 {
-  GTA_SA gta_sa;
+  std::vector<std::string> args(argv + 1, argv + argc);
 
   // std::ios_base::sync_with_stdio(false);  // Improve std::cout speed
 
-  std::vector<std::string> args(argv + 1, argv + argc);
+#if __has_include(<QApplication>)
+
+#  if ((QT_VERSION >= QT_VERSION_CHECK(5, 6, 0)) && (QT_VERSION < QT_VERSION_CHECK(6, 0, 0)))
+  QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+  QGuiApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+#  endif
+
+#  if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
+  QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
+#  endif
+
+  QApplication app(argc, argv);
+
+  about_compilation ac;
+
+  GTA_SA_UI gta_sa_ui;
+
+  QQmlApplicationEngine engine;  // Create Engine AFTER initializing the classes
+  QQmlContext* context = engine.rootContext();
+
+  context->setContextProperty("gta_sa", &gta_sa_ui);
+  context->setContextProperty("about_compilation", &ac);
+  
+  context->setContextProperty("qtversion", QString(qVersion()));
+
+  const QUrl url(u"qrc:/bensuperpc.com/qml_files/source/qml/main.qml"_qs);
+  QObject::connect(
+      &engine,
+      &QQmlApplicationEngine::objectCreated,
+      &app,
+      [url](const QObject* obj, const QUrl& obj_url)
+      {
+        if (!obj && url == obj_url)
+          QCoreApplication::exit(-1);
+      },
+      Qt::QueuedConnection);
+  engine.load(url);
+
+  return app.exec();
+
+#else  // Not building with Qt
+
+  GTA_SA gta_sa;
 
   for (auto i = args.begin(); i != args.end(); ++i) {
     if (*i == "-h" || *i == "--help") {
@@ -53,7 +107,8 @@ auto main(int argc, char* argv[]) -> int
   // Launch operation
   gta_sa.run();
 
-  // Clear old data
-  // gta_sa.clear();
+// Clear old data
+// gta_sa.clear();
+#endif
   return 0;
 }

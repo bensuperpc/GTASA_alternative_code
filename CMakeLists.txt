@@ -16,6 +16,9 @@ if(CMAKE_CUDA_COMPILER)
 	enable_language(CUDA)
 endif()
 
+# For Qt
+set(CMAKE_AUTOMOC ON)
+
 include(cmake/project-is-top-level.cmake)
 include(cmake/variables.cmake)
 
@@ -29,6 +32,8 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 # ---- Declare deps ----
+
+find_package(Qt6 6.2 COMPONENTS Quick Core Qml Charts Multimedia)
 
 find_package(OpenMP 2.0)
 
@@ -55,6 +60,10 @@ endif()
 add_library(
     GTA_SA_cheat_finder_lib OBJECT
     source/GTA_SA_cheat_finder.cpp
+    source/gta_sa_ui.cpp
+    source/about_compilation.cpp
+    source/compilation.cpp
+    source/TableModel.cpp
 )
 
 target_include_directories(
@@ -84,6 +93,24 @@ if (CUDAToolkit_FOUND)
   # target_include_directories(GTA_SA_cheat_finder_lib PUBLIC "${PROJECT_SOURCE_DIR}/source/cuda")
 endif()
 
+if (Qt6_FOUND)
+target_link_libraries(GTA_SA_cheat_finder_lib PUBLIC Qt6::Quick Qt6::Core Qt6::Qml Qt6::Charts Qt6::Multimedia)
+
+qt_add_qml_module(krackx_exe
+    URI qml_files
+    VERSION 1.0
+    RESOURCE_PREFIX /bensuperpc.com
+    QML_FILES 
+    source/qml/main.qml 
+    source/qml/AboutPage.qml 
+    source/qml/KrackPasswordPage.qml 
+    source/qml/mainPage.qml 
+    source/qml/SettingsPage.qml 
+    source/qml/GTA_SA.qml
+#    RESOURCES
+#    img/Profile_400x400.jpg
+)
+endif()
 # ---- Declare executable ----
 
 add_executable(GTA_SA_cheat_finder_exe source/main.cpp)
@@ -98,6 +125,10 @@ set_target_properties(
 target_compile_features(GTA_SA_cheat_finder_exe PRIVATE cxx_std_20)
 
 target_link_libraries(GTA_SA_cheat_finder_exe PRIVATE GTA_SA_cheat_finder_lib)
+
+if (Qt6_FOUND)
+target_link_libraries(GTA_SA_cheat_finder_exe PUBLIC Qt6::Quick Qt6::Core Qt6::Qml Qt6::Charts Qt6::Multimedia)
+endif()
 
 # ---- Install rules ----
 
