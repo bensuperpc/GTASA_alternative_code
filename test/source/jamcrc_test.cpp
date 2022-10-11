@@ -1,11 +1,6 @@
 #include <string>
 
 #include "GTA_SA_cheat_finder.hpp"
-
-#if defined(BUILD_WITH_CUDA)
-#  include "cuda/wrapper.hpp"
-#endif
-
 #include "gtest/gtest.h"
 
 TEST(jamcrc, basic1)
