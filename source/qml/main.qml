@@ -108,24 +108,24 @@ ApplicationWindow {
 
 
     /*
-    Dialog {
-        id: aPropos
-        modal: true
-        focus: true
-        title: "About"
-        x: (window.width - width) / 2
-        y: window.height / 6
-        width: Math.min(window.width, window.height) / 3 * 2
-        contentHeight: message.height
-        Label {
-            id: message
-            width: aPropos.availableWidth
-            text: "Application built with Qt quick."
-            wrapMode: Label.Wrap
-            font.pixelSize: 12
+        Dialog {
+            id: aPropos
+            modal: true
+            focus: true
+            title: "About"
+            x: (window.width - width) / 2
+            y: window.height / 6
+            width: Math.min(window.width, window.height) / 3 * 2
+            contentHeight: message.height
+            Label {
+                id: message
+                width: aPropos.availableWidth
+                text: "Application built with Qt quick."
+                wrapMode: Label.Wrap
+                font.pixelSize: 12
+            }
         }
-    }
-*/
+        */
     Dialog {
         id: aPropos
         focus: true
@@ -164,8 +164,6 @@ ApplicationWindow {
         onOpened: {
             console.log("drawer onOpened")
             isOpened = true
-            myApp.quitSignalSlot()
-            myApp.quitSignalInvokable()
         }
         onClosed: {
             console.log("drawer onClosed")
@@ -186,12 +184,12 @@ ApplicationWindow {
                     width: parent.width
                     onClicked: {
                         if (stackView.depth > 1) {
-                            stackView.push("mainPage.qml")
+                            stackView.push("GTA_SA.qml")
                             drawer.close()
                         } else {
                             drawer.close()
                             // To remove later
-                            stackView.push("mainPage.qml")
+                            stackView.push("GTA_SA.qml")
                         }
                     }
                 }
@@ -211,15 +209,7 @@ ApplicationWindow {
                     width: parent.width // toute la largeur du tiroir
                     onClicked: {
                         stackView.push("SettingsPage.qml")
-                        drawer.close() // et on referme le tiroir
-                    }
-                }
-                ItemDelegate {
-                    text: qsTr("KrackPasswordPage")
-                    width: parent.width
-                    onClicked: {
-                        stackView.push("KrackPasswordPage.qml")
-                        drawer.close() // et on referme le tiroir
+                        drawer.close()
                     }
                 }
                 ItemDelegate {
@@ -227,7 +217,7 @@ ApplicationWindow {
                     width: parent.width
                     onClicked: {
                         stackView.push("GTA_SA.qml")
-                        drawer.close() // et on referme le tiroir
+                        drawer.close()
                     }
                 }
                 ItemDelegate {
@@ -242,32 +232,13 @@ ApplicationWindow {
                     }
                 }
                 ItemDelegate {
-                    text: qsTr("Image_test")
-                    width: parent.width // toute la largeur du tiroir
-                    onClicked: {
-                        stackView.push("image_test.qml")
-                        drawer.close() // et on referme le tiroir
-                    }
-                }
-                ItemDelegate {
-                    width: parent.width
-                    height: menu_separator3.height
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    enabled: false
-                    MenuSeparator {
-                        id: menu_separator3
-                        width: parent.width
-                        anchors.horizontalCenter: parent.horizontalCenter
-                    }
-                }
-                ItemDelegate {
                     id: choix4
                     text: qsTr("About")
                     width: parent.width
                     onClicked: {
                         console.log("onClicked " + choix4.text)
                         stackView.push("AboutPage.qml")
-                        drawer.close() // et on referme le tiroir
+                        drawer.close()
                     }
                 }
             }

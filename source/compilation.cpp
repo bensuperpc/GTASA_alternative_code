@@ -146,6 +146,7 @@ const std::string compiler_ver()
 
 const std::string os()
 {
+// https://stackoverflow.com/a/5920028/10152334
 #if defined(_WIN32)
   return std::string("win");
 #elif defined(__APPLE__)

@@ -66,6 +66,7 @@ void GTA_SA_UI::set_calc_mode(uint64_t value)
 
 void GTA_SA_UI::runOpThread()
 {
+  std::cout << __FUNCTION_NAME__ << std::endl;
   // Clear old data
   this->gta_sa.clear();
   this->tableModel.clear();

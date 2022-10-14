@@ -155,8 +155,6 @@ __host__ void my::cuda::launch_kernel(std::vector<uint32_t>& jamcrc_results,
     if (jamcrc_results_ptr[i] != index_results_ptr[i]) {
       jamcrc_results.emplace_back(jamcrc_results_ptr[i]);
       index_results.emplace_back(index_results_ptr[i]);
-      std::cout << "jamcrc_results_ptr[" << i << "]: " << jamcrc_results_ptr[i] << std::endl;
-      std::cout << "index_results_ptr[" << i << "]: " << index_results_ptr[i] << std::endl;
     }
   }
 

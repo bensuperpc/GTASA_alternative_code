@@ -10,8 +10,9 @@
 #include <vector>
 
 #include "GTA_SA_cheat_finder.hpp"
-#include "gta_sa_ui.h"
 #include "TableModel.h"
+#include "gta_sa_ui.h"
+#include "about_compilation.h"
 
 auto main(int argc, char* argv[]) -> int
 {
@@ -21,11 +22,12 @@ auto main(int argc, char* argv[]) -> int
     qDebug() << it.next();
   }
   */
- /*
 
   QGuiApplication app(argc, argv);
+  // Initialize BEFORE class instance
   QQmlApplicationEngine engine;
 
+  about_compilation ab;
   GTA_SA_UI gta_sa_ui;
   qmlRegisterSingletonType<GTA_SA_UI>("org.bensuperpc.GTA_SAObjects",
                                       1,
@@ -38,13 +40,15 @@ auto main(int argc, char* argv[]) -> int
   // import org.bensuperpc.GTA_SAObjectType 1.0
 
   qmlRegisterSingletonType<TableModel>("org.bensuperpc.TableModelObjects",
-                                      1,
-                                      0,
-                                      "TableModelObjects",
-                                      [&](QQmlEngine*, QJSEngine*) -> QObject* { return &gta_sa_ui.tableModel; });
+                                       1,
+                                       0,
+                                       "TableModelObjects",
+                                       [&](QQmlEngine*, QJSEngine*) -> QObject* { return &gta_sa_ui.tableModel; });
   // import org.bensuperpc.TableModelObjects 1.0
 
-  engine.rootContext()->setContextProperty("myModel", &gta_sa_ui.tableModel);
+  qmlRegisterSingletonInstance("org.bensuperpc.ABCObjects", 1, 0, "ABCObjects", &ab);
+
+  //engine.rootContext()->setContextProperty("myModel", &gta_sa_ui.tableModel);
 
   const QUrl url(u"qrc:/bensuperpc.com/qml_files/source/qml/main.qml"_qs);
   QObject::connect(
@@ -60,55 +64,53 @@ auto main(int argc, char* argv[]) -> int
   engine.load(url);
 
   return app.exec();
-  */
-  
+
   GTA_SA gta_sa;
 
-    // std::ios_base::sync_with_stdio(false);  // Improve std::cout speed
+  std::ios_base::sync_with_stdio(false);  // Improve std::cout speed
 
-    std::vector<std::string> args(argv + 1, argv + argc);
+  std::vector<std::string> args(argv + 1, argv + argc);
 
-    for (auto i = args.begin(); i != args.end(); ++i) {
-      if (*i == "-h" || *i == "--help") {
-        std::cout << "Syntax: GTA_SA_cheat_finder --min <from (uint64_t)> --max "
-                     "<to (uint64_t)>"
-                     "--calc-mode <0-2> 0: std::thread, 1: OpenMP, 2: CUDA>"
-                  << std::endl;
-        return EXIT_SUCCESS;
+  for (auto i = args.begin(); i != args.end(); ++i) {
+    if (*i == "-h" || *i == "--help") {
+      std::cout << "Syntax: GTA_SA_cheat_finder --min <from (uint64_t)> --max "
+                   "<to (uint64_t)>"
+                   "--calc-mode <0-2> 0: std::thread, 1: OpenMP, 2: CUDA>"
+                << std::endl;
+      return EXIT_SUCCESS;
+    }
+    if (*i == "--min") {
+      std::istringstream iss(*++i);
+      if (!(iss >> gta_sa.min_range)) {
+        std::cout << "Error, non-numeric character !" << std::endl;
+        return EXIT_FAILURE;
       }
-      if (*i == "--min") {
-        std::istringstream iss(*++i);
-        if (!(iss >> gta_sa.min_range)) {
-          std::cout << "Error, non-numeric character !" << std::endl;
-          return EXIT_FAILURE;
-        }
-      } else if (*i == "--max") {
-        std::istringstream iss(*++i);
-        if (!(iss >> gta_sa.max_range)) {
-          std::cout << "Error, non-numeric character !" << std::endl;
-          return EXIT_FAILURE;
-        }
-      } else if (*i == "--calc-mode") {
-        std::istringstream iss(*++i);
-        if (!(iss >> gta_sa.calc_mode)) {
-          std::cout << "Error, non-numeric character !" << std::endl;
-          return EXIT_FAILURE;
-        }
+    } else if (*i == "--max") {
+      std::istringstream iss(*++i);
+      if (!(iss >> gta_sa.max_range)) {
+        std::cout << "Error, non-numeric character !" << std::endl;
+        return EXIT_FAILURE;
+      }
+    } else if (*i == "--calc-mode") {
+      std::istringstream iss(*++i);
+      if (!(iss >> gta_sa.calc_mode)) {
+        std::cout << "Error, non-numeric character !" << std::endl;
+        return EXIT_FAILURE;
       }
     }
+  }
 
-    // gta_sa.num_thread
-    // gta_sa.min_range
-    // gta_sa.max_range
-    // gta_sa.num_thread
-    // gta_sa.cuda_block_size
-    // gta_sa.calc_mode
+  // gta_sa.num_thread
+  // gta_sa.min_range
+  // gta_sa.max_range
+  // gta_sa.num_thread
+  // gta_sa.cuda_block_size
+  // gta_sa.calc_mode
 
-    // Launch operation
-    gta_sa.run();
+  // Launch operation
+  gta_sa.run();
 
-    // Clear old data
-    // gta_sa.clear();
-    return 0;
-    
+  // Clear old data
+  // gta_sa.clear();
+  return 0;
 }

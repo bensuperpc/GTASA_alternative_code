@@ -132,10 +132,9 @@ qt_add_qml_module(GTA_SA_cheat_finder_exe
     QML_FILES
     source/qml/main.qml 
     source/qml/AboutPage.qml 
-    source/qml/mainPage.qml 
     source/qml/GTA_SA.qml
-    #RESOURCES
-    #img/Profile_400x400.jpg
+    RESOURCES
+    img/Profile_400x400.jpg
 )
 
 set_target_properties(

@@ -3,7 +3,8 @@ import QtQuick.Window
 import QtQuick.Layouts
 import QtQuick.Controls
 import QtQuick.Controls.Material
-//import MyApp.Images
+
+import org.bensuperpc.ABCObjects 1.0
 
 Page {
     title: qsTr("About Page")
@@ -32,7 +33,7 @@ Page {
                 anchors.fill: parent
                 Column {
                     Text {
-                        text: qsTr("Compiler: " + about_compilation.return_Compiler_name(
+                        text: qsTr("Compiler: " + ABCObjects.return_Compiler_name(
                                        ))
                         color: "white"
                         font.bold: true
@@ -41,7 +42,7 @@ Page {
                         font.pixelSize: 12
                     }
                     Text {
-                        text: qsTr("Compiler vers: " + about_compilation.return_Compiler_version(
+                        text: qsTr("Compiler vers: " + ABCObjects.return_Compiler_version(
                                        ))
                         color: "white"
                         font.bold: true
@@ -50,7 +51,7 @@ Page {
                         font.pixelSize: 12
                     }
                     Text {
-                        text: qsTr("C++ version: " + about_compilation.return_Cplusplus_used(
+                        text: qsTr("C++ version: " + ABCObjects.return_Cplusplus_used(
                                        ))
                         color: "white"
                         font.bold: true
@@ -59,8 +60,7 @@ Page {
                         font.pixelSize: 12
                     }
                     Text {
-                        text: qsTr("Build: " + about_compilation.return_BuildDate(
-                                       ))
+                        text: qsTr("Build: " + ABCObjects.return_BuildDate())
                         color: "white"
                         font.bold: true
                         fontSizeMode: Text.Fit
@@ -87,9 +87,7 @@ Page {
                     }
 
                     Text {
-                        text: qsTr(
-                                  "OpenMP: " + about_compilation.openmpIsEnable(
-                                      ))
+                        text: qsTr("OpenMP: " + ABCObjects.openmpIsEnable())
                         color: "white"
                         font.bold: true
                         fontSizeMode: Text.Fit
@@ -97,8 +95,7 @@ Page {
                         font.pixelSize: 12
                     }
                     Text {
-                        text: qsTr("Nvidia CUDA: " + about_compilation.cudaIsEnable(
-                                       ))
+                        text: qsTr("Nvidia CUDA: " + ABCObjects.cudaIsEnable())
                         color: "white"
                         font.bold: true
                         fontSizeMode: Text.Fit
@@ -106,9 +103,7 @@ Page {
                         font.pixelSize: 12
                     }
                     Text {
-                        text: qsTr(
-                                  "OpenCL: " + about_compilation.openclIsEnable(
-                                      ))
+                        text: qsTr("OpenCL: " + ABCObjects.openclIsEnable())
                         color: "white"
                         font.bold: true
                         fontSizeMode: Text.Fit
@@ -168,13 +163,16 @@ Page {
                 title: qsTr("Test")
                 // Layout.alignment: Qt.AlignHCenter
                 anchors.fill: parent
-                    Image {
-                        source: Qt.resolvedUrl("/bensuperpc.com/qml_files/img/Profile_400x400.jpg")
-                        anchors.fill: parent
-                        sourceSize.width: parent.width
-                        sourceSize.height: parent.height
-                    }
-                    /*
+                Image {
+                    source: Qt.resolvedUrl(
+                                "/bensuperpc.com/qml_files/img/Profile_400x400.jpg")
+                    anchors.fill: parent
+                    sourceSize.width: parent.width
+                    sourceSize.height: parent.height
+                }
+
+
+                /*
                     Rectangle {
                         width: parent.width
                         height: parent.height
