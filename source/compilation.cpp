@@ -158,6 +158,41 @@ const std::string os()
 #endif
 }
 
+const std::string os_adv()
+{
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+#  ifdef defined(_WIN64)
+  return std::string("win64");
+#  else
+  return std::string("win32");
+#  endif
+#elif defined(__APPLE__)
+#  include <TargetConditionals.h>
+#  if defined(TARGET_IPHONE_SIMULATOR)
+  return std::string("ios_sim");
+#  elif defined(TARGET_OS_MACCATALYST)
+  return std::string("mac_catalyst");
+#  elif defined(TARGET_OS_IPHONE)
+  return std::string("ios");
+#  elif defined(TARGET_OS_MAC)
+  return std::string("mac");
+#  else
+#    error "Unknown Apple platform"
+  return std::string("unknown");
+#  endif
+#elif defined(__ANDROID__)
+  return std::string("android");
+#elif defined(__linux__)
+  return std::string("linux");
+#elif defined(__unix__)
+  return std::string("unix");
+#elif defined(_POSIX_VERSION)
+  return std::string("posix");
+#else
+  return std::string("unknown");
+#endif
+}
+
 const std::string cxx()
 {
   return std::to_string(__cplusplus);

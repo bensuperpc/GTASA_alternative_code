@@ -27,6 +27,8 @@ const std::string compiler_ver();
 
 const std::string os();
 
+const std::string os_adv();
+
 const std::string cxx();
 
 const std::string build_date();

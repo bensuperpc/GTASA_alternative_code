@@ -18,9 +18,11 @@ ApplicationWindow {
 
     visible: true
     width: 720
-    height: 1080
+    height: 1280
+    minimumWidth: 720
+    minimumHeight: 1280
 
-    title: qsTr("KrackX")
+    title: qsTr("GTA SA alt. cheats finder")
 
     header: ToolBar {
         id: toolbar
@@ -64,14 +66,6 @@ ApplicationWindow {
         width: window.width * 0.37
         // transformOrigin: Menu.TopRight
         MenuItem {
-            id: parametres
-            text: "Paramètres"
-            onTriggered: {
-                console.log("onTriggered " + parametres.text)
-                stackView.push("SettingsPage.qml")
-            }
-        }
-        MenuItem {
             id: quit
             text: "Quit"
             onTriggered: {
@@ -107,43 +101,25 @@ ApplicationWindow {
     }
 
 
-    /*
-        Dialog {
-            id: aPropos
-            modal: true
-            focus: true
-            title: "About"
-            x: (window.width - width) / 2
-            y: window.height / 6
-            width: Math.min(window.width, window.height) / 3 * 2
-            contentHeight: message.height
-            Label {
-                id: message
-                width: aPropos.availableWidth
-                text: "Application built with Qt quick."
-                wrapMode: Label.Wrap
-                font.pixelSize: 12
-            }
-        }
-        */
+    
     Dialog {
         id: aPropos
+        modal: true
         focus: true
         title: "About"
-        anchors.centerIn: parent
-        Text {
-            id: field
-            width: parent.width
-            height: parent.height
+        x: (window.width - width) / 2
+        y: window.height / 6
+        width: Math.min(window.width, window.height) / 3 * 2
+        contentHeight: message.height
+        Label {
+            id: message
+            width: aPropos.availableWidth
             text: "Application built with Qt quick."
-            minimumPointSize: 5
-            font.pointSize: 25
-            fontSizeMode: Text.Fit
-            color: 'white'
-            anchors.centerIn: parent
+            wrapMode: Label.Wrap
+            font.pixelSize: 12
         }
     }
-
+    
     Drawer {
         id: drawer
 
@@ -172,7 +148,7 @@ ApplicationWindow {
 
         Flickable {
             //Fix issue with wrong Flickable size in !inPortrait
-            contentHeight: !inPortrait ? idContentColumn.height : idContentColumn.width
+            // contentHeight: !inPortrait ? idContentColumn.height : idContentColumn.width
             anchors.fill: parent
             clip: true
             Column {
@@ -202,14 +178,6 @@ ApplicationWindow {
                         id: menu_separator
                         width: parent.width
                         anchors.horizontalCenter: parent.horizontalCenter
-                    }
-                }
-                ItemDelegate {
-                    text: qsTr("Settings")
-                    width: parent.width // toute la largeur du tiroir
-                    onClicked: {
-                        stackView.push("SettingsPage.qml")
-                        drawer.close()
                     }
                 }
                 ItemDelegate {

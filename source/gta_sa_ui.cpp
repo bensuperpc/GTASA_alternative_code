@@ -78,7 +78,7 @@ void GTA_SA_UI::runOpThread()
   for (const auto& result : this->gta_sa.results) {
     QVector<QString> vect = {QString::number(std::get<0>(result)),
                              QString::fromStdString(std::get<1>(result)),
-                             QString::number(std::get<2>(result)),
+                             QString("0x") + QString::number(std::get<2>(result), 16),
                              QString::fromStdString(std::get<3>(result))};
     this->tableModel.addPerson(vect);
   }
