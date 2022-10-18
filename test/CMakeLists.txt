@@ -62,8 +62,8 @@ include(../cmake/lib/benchmark.cmake)
   add_test_fn(gta_sa_test)
 
   # Add bench
-  add_bench_fn(find_string_inv_bench)
-  add_bench_fn(jamcrc_bench)
+  #add_bench_fn(find_string_inv_bench)
+  #add_bench_fn(jamcrc_bench)
 endif()
 
 

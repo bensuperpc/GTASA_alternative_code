@@ -36,7 +36,7 @@ __global__ void jamcrc_kernel_wrapper(const void* data,
                                       uint64_t length,
                                       const uint32_t previousCrc32);
 
-__device__ void find_string_inv_kernel(uint8_t* array, uint64_t n, uint64_t terminator_index);
+__device__ void find_string_inv_kernel(uint8_t* array, uint64_t n, uint64_t* terminator_index);
 __global__ void runner_kernel(
     uint32_t* crc_result, uint64_t* index_result, uint64_t array_size, uint64_t a, uint64_t b);
 

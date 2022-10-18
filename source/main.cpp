@@ -1,3 +1,11 @@
+#if __has_include(<QString>)
+#  include <QDirIterator>
+#  include <QGuiApplication>
+#  include <QQmlApplicationEngine>
+#  include <QQmlContext>
+#  include <QStringList>
+#endif
+
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -6,11 +14,68 @@
 
 #include "GTA_SA_cheat_finder.hpp"
 
+#if __has_include(<QString>)
+#  include "about_compilation.h"
+#  include "gta_sa_ui.h"
+#  include "qt-utils/TableModel.h"
+#endif
+
 auto main(int argc, char* argv[]) -> int
 {
+#if __has_include(<QString>)
+  /*
+  QDirIterator it(":", QDirIterator::Subdirectories);
+  while (it.hasNext()) {
+    qDebug() << it.next();
+  }
+  */
+
+  QGuiApplication app(argc, argv);
+  // Initialize BEFORE class instance
+  QQmlApplicationEngine engine;
+
+  about_compilation ab;
+  GTA_SA_UI gta_sa_ui;
+  qmlRegisterSingletonType<GTA_SA_UI>("org.bensuperpc.GTA_SAObjects",
+                                      1,
+                                      0,
+                                      "GTA_SASingleton",
+                                      [&](QQmlEngine*, QJSEngine*) -> QObject* { return &gta_sa_ui; });
+  // import org.bensuperpc.GTA_SAObjects 1.0
+
+  qmlRegisterType<GTA_SA_UI>("org.bensuperpc.GTA_SAObjectType", 1, 0, "GTA_SAType");
+  // import org.bensuperpc.GTA_SAObjectType 1.0
+
+  qmlRegisterSingletonType<TableModel>("org.bensuperpc.TableModelObjects",
+                                       1,
+                                       0,
+                                       "TableModelObjects",
+                                       [&](QQmlEngine*, QJSEngine*) -> QObject* { return &gta_sa_ui.tableModel; });
+  // import org.bensuperpc.TableModelObjects 1.0
+
+  qmlRegisterSingletonInstance("org.bensuperpc.ABCObjects", 1, 0, "ABCObjects", &ab);
+
+  // engine.rootContext()->setContextProperty("myModel", &gta_sa_ui.tableModel);
+
+  const QUrl url(u"qrc:/bensuperpc.com/qml_files/source/qml/main.qml"_qs);
+  QObject::connect(
+      &engine,
+      &QQmlApplicationEngine::objectCreated,
+      &app,
+      [url](QObject* obj, const QUrl& objUrl)
+      {
+        if (!obj && url == objUrl)
+          QCoreApplication::exit(-1);
+      },
+      Qt::QueuedConnection);
+  engine.load(url);
+
+  return app.exec();
+#else
+
   GTA_SA gta_sa;
 
-  // std::ios_base::sync_with_stdio(false);  // Improve std::cout speed
+  std::ios_base::sync_with_stdio(false);  // Improve std::cout speed
 
   std::vector<std::string> args(argv + 1, argv + argc);
 
@@ -56,4 +121,5 @@ auto main(int argc, char* argv[]) -> int
   // Clear old data
   // gta_sa.clear();
   return 0;
+#endif
 }

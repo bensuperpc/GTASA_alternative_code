@@ -91,6 +91,9 @@ __host__ void my::cuda::launch_kernel(std::vector<uint32_t>& jamcrc_results,
                                       const uint64_t max_range,
                                       const uint64_t cuda_block_size)
 {
+  std::cout << "Launching kernel..." << std::endl;
+  std::cout << "min_range: " << min_range << std::endl;
+  std::cout << "max_range: " << max_range << std::endl;
   // int device = -1;
   // cudaGetDevice(&device);
 
