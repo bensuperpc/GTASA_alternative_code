@@ -34,7 +34,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 # ---- Declare deps ----
 
 find_package(Qt6 6.4 COMPONENTS Quick Gui Core Qml Charts Multimedia)
-qt_standard_project_setup()
+#qt_standard_project_setup()
 
 find_package(OpenMP 2.0)
 
@@ -57,6 +57,12 @@ if (CUDAToolkit_FOUND)
   add_subdirectory(source/cuda)
 endif()
 
+add_subdirectory(source/utils)
+
+if (Qt6_FOUND)
+  add_subdirectory(source/qt-utils)
+  endif()
+
 # ---- Declare library ----
 
 if (Qt6_FOUND)
@@ -67,11 +73,6 @@ add_library(
     source/GTA_SA_cheat_finder.hpp
     source/gta_sa_ui.cpp
     source/gta_sa_ui.h
-    source/TableModel.cpp
-    source/TableModel.h
-    source/utils.h
-    source/compilation.cpp
-    source/compilation.hpp
     source/about_compilation.cpp
     source/about_compilation.h
 )
@@ -96,10 +97,24 @@ target_include_directories(
     "$<BUILD_INTERFACE:${thread-pool_SOURCE_DIR}>"
 )
 
+target_include_directories(
+    GTA_SA_cheat_finder_lib ${warning_guard}
+    PUBLIC
+    "$<BUILD_INTERFACE:${utils_lib_SOURCE_DIR}>"
+)
+
+if (Qt6_FOUND)
+target_include_directories(
+    GTA_SA_cheat_finder_lib ${warning_guard}
+    PUBLIC
+    "$<BUILD_INTERFACE:${qt_utils_lib_SOURCE_DIR}>"
+)
+endif()
+
 target_compile_features(GTA_SA_cheat_finder_lib PUBLIC cxx_std_20)
 
 if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
-  target_link_libraries(GTA_SA_cheat_finder_lib PUBLIC OpenMP::OpenMP_CXX)
+  target_link_libraries(GTA_SA_cheat_finder_lib PRIVATE OpenMP::OpenMP_CXX)
 endif()
 
 
@@ -107,13 +122,15 @@ if (CUDAToolkit_FOUND)
   target_include_directories(GTA_SA_cheat_finder_lib PUBLIC ${CUDAToolkit_INCLUDE_DIRS})
   target_link_libraries(GTA_SA_cheat_finder_lib PUBLIC CUDA::cudart)
   target_link_libraries(GTA_SA_cheat_finder_lib PUBLIC cuda_lib)
-
   # target_include_directories(GTA_SA_cheat_finder_lib PUBLIC "${PROJECT_SOURCE_DIR}/source/cuda")
 endif()
 
 if (Qt6_FOUND)
-  target_link_libraries(GTA_SA_cheat_finder_lib PRIVATE Qt6::Quick Qt6::Gui Qt6::Core Qt6::Qml Qt6::Charts Qt6::Multimedia)
+  target_link_libraries(GTA_SA_cheat_finder_lib PUBLIC Qt6::Quick Qt6::Gui Qt6::Core Qt6::Qml Qt6::Charts Qt6::Multimedia)
+  target_link_libraries(GTA_SA_cheat_finder_lib PUBLIC qt_utils_lib)
 endif()
+
+target_link_libraries(GTA_SA_cheat_finder_lib PUBLIC utils_lib)
 
 # ---- Declare executable ----
 if (Qt6_FOUND)
@@ -124,6 +141,7 @@ else()
   add_executable(GTA_SA_cheat_finder::exe ALIAS GTA_SA_cheat_finder_exe)
 endif()
 
+if (Qt6_FOUND)
 # Resources:
 qt_add_qml_module(GTA_SA_cheat_finder_exe
     URI qml_files
@@ -136,20 +154,13 @@ qt_add_qml_module(GTA_SA_cheat_finder_exe
     RESOURCES
     img/Profile_400x400.jpg
 )
+endif()
 
-set_target_properties(
-    GTA_SA_cheat_finder_exe PROPERTIES
-    OUTPUT_NAME GTA_SA_cheat_finder
-    EXPORT_NAME exe
-)
+set_property(TARGET GTA_SA_cheat_finder_exe PROPERTY OUTPUT_NAME GTA_SA_cheat_finder)
 
 target_compile_features(GTA_SA_cheat_finder_exe PRIVATE cxx_std_20)
 
 target_link_libraries(GTA_SA_cheat_finder_exe PRIVATE GTA_SA_cheat_finder_lib)
-
-if (Qt6_FOUND)
-  target_link_libraries(GTA_SA_cheat_finder_exe PRIVATE Qt6::Quick Qt6::Gui Qt6::Core Qt6::Qml Qt6::Charts Qt6::Multimedia)
-endif()
 
 # ---- Install rules ----
 

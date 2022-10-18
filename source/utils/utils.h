@@ -24,11 +24,17 @@
  * @param method The human-readable name for the method.
  * @param name The machine-readable name of the property.
  */
-#define GETTERSETTER(type, method, name) \
+#  define GETTERSETTER(type, method, name) \
     /** Retrieves the name value for the object. @return The name value of the object. */ \
-    inline type Get##method() const { return name; }  \
+    inline type Get##method() const \
+    { \
+      return name; \
+    } \
     /** Sets the name value for the object. @param value The value of which to set name to. */ \
-    inline void Set##method(type value) { name = value; }
+    inline void Set##method(type value) \
+    { \
+      name = value; \
+    }
 #endif
 
 #endif  // UTILS_H

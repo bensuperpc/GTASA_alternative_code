@@ -1,8 +1,11 @@
-#include <QDirIterator>
-#include <QGuiApplication>
-#include <QQmlApplicationEngine>
-#include <QQmlContext>
-#include <QStringList>
+#if __has_include(<QString>)
+#  include <QDirIterator>
+#  include <QGuiApplication>
+#  include <QQmlApplicationEngine>
+#  include <QQmlContext>
+#  include <QStringList>
+#endif
+
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -10,12 +13,16 @@
 #include <vector>
 
 #include "GTA_SA_cheat_finder.hpp"
-#include "TableModel.h"
-#include "gta_sa_ui.h"
-#include "about_compilation.h"
+
+#if __has_include(<QString>)
+#  include "about_compilation.h"
+#  include "gta_sa_ui.h"
+#  include "qt-utils/TableModel.h"
+#endif
 
 auto main(int argc, char* argv[]) -> int
 {
+#if __has_include(<QString>)
   /*
   QDirIterator it(":", QDirIterator::Subdirectories);
   while (it.hasNext()) {
@@ -48,7 +55,7 @@ auto main(int argc, char* argv[]) -> int
 
   qmlRegisterSingletonInstance("org.bensuperpc.ABCObjects", 1, 0, "ABCObjects", &ab);
 
-  //engine.rootContext()->setContextProperty("myModel", &gta_sa_ui.tableModel);
+  // engine.rootContext()->setContextProperty("myModel", &gta_sa_ui.tableModel);
 
   const QUrl url(u"qrc:/bensuperpc.com/qml_files/source/qml/main.qml"_qs);
   QObject::connect(
@@ -64,6 +71,7 @@ auto main(int argc, char* argv[]) -> int
   engine.load(url);
 
   return app.exec();
+#else
 
   GTA_SA gta_sa;
 
@@ -113,4 +121,5 @@ auto main(int argc, char* argv[]) -> int
   // Clear old data
   // gta_sa.clear();
   return 0;
+#endif
 }

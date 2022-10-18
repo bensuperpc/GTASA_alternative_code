@@ -13,24 +13,15 @@ class TableModel : public QAbstractTableModel
   };
 
 public:
-  explicit TableModel(QObject* parent = nullptr)
-      : QAbstractTableModel(parent)
-  {
-    this->init();
-  }
+  explicit TableModel(QObject* parent = nullptr);
+  
   void clear();
 
   void init();
 
-  int rowCount(const QModelIndex& = QModelIndex()) const override
-  {
-    return static_cast<int>(table.size());
-  }
+  int rowCount(const QModelIndex& = QModelIndex()) const override { return static_cast<int>(table.size()); }
 
-  int columnCount(const QModelIndex& = QModelIndex()) const override
-  {
-    return static_cast<int>(table.at(0).size());
-  }
+  int columnCount(const QModelIndex& = QModelIndex()) const override { return static_cast<int>(table.at(0).size()); }
 
   QVariant data(const QModelIndex& index, int role) const override;
 

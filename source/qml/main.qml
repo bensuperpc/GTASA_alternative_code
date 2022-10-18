@@ -19,8 +19,8 @@ ApplicationWindow {
     visible: true
     width: 720
     height: 1280
-    minimumWidth: 720
-    minimumHeight: 1280
+    //minimumWidth: 720
+    //minimumHeight: 1280
 
     title: qsTr("GTA SA alt. cheats finder")
 
@@ -217,8 +217,8 @@ ApplicationWindow {
         id: stackView
         initialItem: "GTA_SA.qml"
         anchors.fill: parent
-        width: parent.width
-        height: parent.height
+        //width: parent.width
+        //height: parent.height
 
         // anchors.centerIn: parent
         pushEnter: Transition {

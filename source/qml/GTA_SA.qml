@@ -13,15 +13,19 @@ Page {
     id: page
 
     Flickable {
-        anchors.fill: parent
+        // anchors.fill: parent
+        anchors.centerIn: parent
+        width: parent.width
+        height: parent.height
         anchors.margins: 5
         id: flickable
 
-        contentHeight: page.height
-        contentWidth: page.width
+        contentHeight: gridLayout.height
+        contentWidth: gridLayout.width
         flickableDirection: Flickable.AutoFlickIfNeeded
 
         GridLayout {
+            id: gridLayout
             anchors.fill: parent
             anchors.margins: 5
             columns: 12

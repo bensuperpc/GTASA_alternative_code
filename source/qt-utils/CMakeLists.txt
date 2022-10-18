@@ -20,41 +20,34 @@
 
 cmake_minimum_required(VERSION 3.14)
 project(
-    cuda_lib
+    qt_utils_lib
     VERSION 0.1.0
-    DESCRIPTION "Krack cuda lib"
+    DESCRIPTION "utils library with Qt"
     HOMEPAGE_URL "https://github.com/bensuperpc"
     LANGUAGES C CXX
 )
 
-include(CheckLanguage)
-check_language(CUDA)
-if(CMAKE_CUDA_COMPILER)
-	enable_language(CUDA)
-endif()
-
-find_package(CUDAToolkit 11.0 REQUIRED)
+find_package(Qt6 6.4 COMPONENTS Quick Gui Core Qml Charts Multimedia REQUIRED)
+qt_standard_project_setup()
 
 set(SRCS
-    kernel.cu
-    wrapper.cu
+    imageprovider.cpp
+    liveimage.cpp
+    TableModel.cpp
 	)
 	
 set(HEADERS
-    kernel.cuh
-    wrapper.hpp
+    imageprovider.h
+    liveimage.h
+    TableModel.h
     )
 
-add_library(cuda_lib ${SRCS} ${HEADERS})
+add_library(qt_utils_lib ${SRCS} ${HEADERS})
+target_include_directories(qt_utils_lib PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+target_link_libraries(qt_utils_lib PRIVATE Qt6::Quick Qt6::Gui Qt6::Core Qt6::Qml Qt6::Charts Qt6::Multimedia)
+target_compile_features(qt_utils_lib PUBLIC cxx_std_20)
 
-#if (CUDAToolkit_FOUND)
-target_include_directories(cuda_lib PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
-target_include_directories(cuda_lib PRIVATE ${CUDAToolkit_INCLUDE_DIRS})
-target_link_libraries(cuda_lib PRIVATE CUDA::cudart)
-target_compile_features(cuda_lib PUBLIC cuda_std_17)
-#endif()
-
-set_target_properties(cuda_lib
+set_target_properties(qt_utils_lib
     PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"

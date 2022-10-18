@@ -57,9 +57,9 @@ if(NOT WIN32)
 include(../cmake/lib/gtest.cmake)
 include(../cmake/lib/benchmark.cmake)
   # Add tests
-  #add_test_fn(find_string_inv_test)
-  #add_test_fn(jamcrc_test)
-  #add_test_fn(gta_sa_test)
+  add_test_fn(find_string_inv_test)
+  add_test_fn(jamcrc_test)
+  add_test_fn(gta_sa_test)
 
   # Add bench
   #add_bench_fn(find_string_inv_bench)

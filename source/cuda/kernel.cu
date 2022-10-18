@@ -57,8 +57,8 @@ __global__ void runner_kernel(uint32_t* crc_result, uint64_t* index_result, uint
   id = id + a;
 
   if (id >= a && id <= b) {
-    //printf("id: %llu a: %llu b: %llu\n", id, a, b);
-    // Allocate memory for the array
+    // printf("id: %llu a: %llu b: %llu\n", id, a, b);
+    //  Allocate memory for the array
     uint8_t array[29] = {0};
 
     uint64_t size = 0;
@@ -67,7 +67,7 @@ __global__ void runner_kernel(uint32_t* crc_result, uint64_t* index_result, uint
 
     // Calculate the JAMCRC
     const uint32_t result = jamcrc_kernel(array, size, 0);
-    //printf("id: %llu, size: %llu, array: %s, crc: 0x%x\n", id, size, array, result);
+    // printf("id: %llu, size: %llu, array: %s, crc: 0x%x\n", id, size, array, result);
 
     bool found = false;
     for (uint8_t i = 0; i < 87; i++) {
@@ -95,7 +95,7 @@ __global__ void runner_kernel(uint32_t* crc_result, uint64_t* index_result, uint
   }
 }
 
-__device__ void find_string_inv_kernel(uint8_t* array, uint64_t n, uint64_t *terminator_index)
+__device__ void find_string_inv_kernel(uint8_t* array, uint64_t n, uint64_t* terminator_index)
 {
   const uint32_t string_size_alphabet = 27;
 

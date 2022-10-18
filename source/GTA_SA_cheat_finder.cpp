@@ -57,7 +57,7 @@ void GTA_SA::run()
       std::cout << "Running with OpenCL mode" << std::endl;
       break;
     default:
-    std::cout << "Unknown calculation mode" << std::endl;
+      std::cout << "Unknown calculation mode" << std::endl;
       break;
   }
 

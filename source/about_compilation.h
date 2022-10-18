@@ -8,7 +8,7 @@
 #include <sstream>
 #include <string>
 
-#include "compilation.hpp"
+#include "utils/compilation.hpp"
 
 #if ((defined(_MSVC_LANG) && _MSVC_LANG >= 201703L) || __cplusplus >= 201703L)
 #  if __has_include("cuda.h")
@@ -37,28 +37,16 @@ public:
   std::string ver_string(int a, int b, int c);
 
   Q_INVOKABLE
-  QString return_Compiler_version()
-  {
-    return QString::fromStdString(my::compile::compiler_ver());
-  }
+  QString return_Compiler_version() { return QString::fromStdString(my::compile::compiler_ver()); }
 
   Q_INVOKABLE
-  QString return_Compiler_name()
-  {
-    return QString::fromStdString(my::compile::compiler());
-  }
+  QString return_Compiler_name() { return QString::fromStdString(my::compile::compiler()); }
 
   Q_INVOKABLE
-  QString return_Cplusplus_used()
-  {
-    return QString::fromStdString(my::compile::cxx());
-  }
+  QString return_Cplusplus_used() { return QString::fromStdString(my::compile::cxx()); }
 
   Q_INVOKABLE
-  QString return_BuildDate()
-  {
-    return QString::fromStdString(my::compile::build_date());
-  }
+  QString return_BuildDate() { return QString::fromStdString(my::compile::build_date()); }
   Q_INVOKABLE
   QString openmpIsEnable()
   {

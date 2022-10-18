@@ -1,5 +1,11 @@
 #include "TableModel.h"
 
+TableModel::TableModel(QObject* parent)
+    : QAbstractTableModel(parent)
+{
+  this->init();
+}
+
 void TableModel::clear()
 {
   this->table.clear();
