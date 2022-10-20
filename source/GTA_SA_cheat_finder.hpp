@@ -42,6 +42,10 @@ class GTA_SA
 {
 public:
   GTA_SA();
+  ~GTA_SA();
+
+  GTA_SA& operator=(const GTA_SA& other);
+
   void cpu_runner(const std::uint64_t i);
 #if defined(BUILD_WITH_CUDA)
   void cuda_runner();

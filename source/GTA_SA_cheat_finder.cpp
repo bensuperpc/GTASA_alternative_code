@@ -2,6 +2,20 @@
 
 GTA_SA::GTA_SA() {}
 
+GTA_SA::~GTA_SA() {}
+
+GTA_SA& GTA_SA::operator=(const GTA_SA& other)
+{
+  if (this != &other) {
+    this->min_range = other.min_range;
+    this->max_range = other.max_range;
+    this->num_thread = other.num_thread;
+    this->cuda_block_size = other.cuda_block_size;
+    this->calc_mode = other.calc_mode;
+  }
+  return *this;
+}
+
 void GTA_SA::clear()
 {
   results.clear();

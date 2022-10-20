@@ -34,6 +34,7 @@ set(SRCS
 set(HEADERS
     compilation.hpp
     utils.h
+    type.h
     )
 
 add_library(utils_lib ${SRCS} ${HEADERS})

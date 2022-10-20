@@ -1,6 +1,6 @@
 # GTA_SA_cheat_finder
 
-### _Find alternate cheat codes in Grand Theft Auto San Andreas by brute foce_
+## _Find alternate cheat codes in Grand Theft Auto San Andreas by brute foce_
 
 [![Continuous Integration](https://github.com/bensuperpc/GTA_SA_cheat_finder/actions/workflows/ci.yml/badge.svg)](https://github.com/bensuperpc/GTA_SA_cheat_finder/actions/workflows/base.yml) [![Dockcross CI](https://github.com/bensuperpc/GTA_SA_cheat_finder/actions/workflows/dockcross.yml/badge.svg)](https://github.com/bensuperpc/GTA_SA_cheat_finder/actions/workflows/dockcross.yml) [![tagged-release](https://github.com/bensuperpc/GTA_SA_cheat_finder/actions/workflows/release.yml/badge.svg)](https://github.com/bensuperpc/GTA_SA_cheat_finder/actions/workflows/release.yml) [![linux](https://github.com/bensuperpc/GTA_SA_cheat_finder/actions/workflows/linux.yml/badge.svg)](https://github.com/bensuperpc/GTA_SA_cheat_finder/actions/workflows/linux.yml)
 
@@ -8,11 +8,12 @@
 
  [![Twitter](https://img.shields.io/twitter/follow/Bensuperpc?style=social)](https://img.shields.io/twitter/follow/Bensuperpc?style=social) [![Youtube](https://img.shields.io/youtube/channel/subscribers/UCJsQFFL7QW4LSX9eskq-9Yg?style=social)](https://img.shields.io/youtube/channel/subscribers/UCJsQFFL7QW4LSX9eskq-9Yg?style=social) 
 
-# New Features !
+## New Features
 
-  - Multi-plateform build: AMD64, I386, ARM64, ARMv7, ARMv7a, ARMv6, ARMv5, RISC-V 32/64, PPC64le, Mips, Windows 32/64, Android (Exec only), m68k... Thanks [dockcross](https://github.com/dockcross/dockcross) and [crosstool-ng](https://github.com/crosstool-ng/crosstool-ng)
+- Multi-plateform build: AMD64, I386, ARM64, ARMv7, ARMv7a, ARMv6, ARMv5, RISC-V 32/64, PPC64le, Mips, Windows 32/64, Android (Exec only), m68k... Thanks [dockcross](https://github.com/dockcross/dockcross) and [crosstool-ng](https://github.com/crosstool-ng/crosstool-ng)
+- Add Qt GUI (Qt 6.4.0 and Qt Quick)
 
-#### Usage
+## Usage
 
 ```sh
 ./GTA_SA_cheat_finder --min 0 --max 60000000 # (Searches codes from index 0 to 60000000, from A to: BYKYLXA alphabetic sequence)
@@ -26,7 +27,7 @@
 ./GTA_SA_cheat_finder -h # Get help (or with --help)
 ```
 
-#### Example
+## Example
 
 ```sh
 ./GTA_SA_cheat_finder --min 0 --max 600000000
@@ -34,7 +35,7 @@
 
 **You should get this result:**
 
-```
+```bash
 Number of calculations: 600000000
 
 From: A to: BYKYLXA Alphabetic sequence
@@ -57,10 +58,11 @@ Time: 1.19597 sec
 This program execute: 501.684973 MOps/sec
 ```
 
-##### Perfs
+## Perfs
 
-On AMD R7 5800H (clang 12):
-```
+On AMD R7 5800H (clang 12)
+
+```bash
 141167095653376 = ~5 days
 5429503678976 = ~4h
 208827064576 = ~8 min
@@ -69,31 +71,32 @@ On AMD R7 5800H (clang 12):
 308915776 = 0.6 sec
 ```
 
-#### How does it work ?
+### How does it work ?
 
 - The algorithm will generate sequences of characters (A, B, C ... AA...)
 - It will then calculate hash (**JAMCRC**) from series of characters
 - It will compare hashes, if they are equal to one of the hashes of one of the official cheat codes, this will save the sequence of characters
 - When it is finished it displays the results
 
-#### Information
+### Information
 
 [![GTA SA - Alternative Cheats - Feat. Badger Goodger](https://yt-embed.herokuapp.com/embed?v=W_eFZ4HzU7Q)](https://youtu.be/W_eFZ4HzU7Q "GTA SA - Alternative Cheats - Feat. Badger Goodger")
 
-# Building and installing
+## Building and installing
 
 See the [BUILDING](BUILDING.md) document.
 
-# Contributing
+## Contributing
 
 See the [CONTRIBUTING](CONTRIBUTING.md) document.
 
-### Todos
+## Todos
 
- - Write Tests
- - Use intrinsics
+- Write Tests
+- Use intrinsics
 
-### Open source projects used
+## Open source projects used
+
 - [dockcross](https://github.com/dockcross/dockcross)
 - [crosstool-ng](https://github.com/crosstool-ng/crosstool-ng)
 - [git](https://github.com/git/git)
@@ -106,8 +109,6 @@ See the [CONTRIBUTING](CONTRIBUTING.md) document.
 - [actions](https://github.com/actions/virtual-environments)
 - [fmt](https://github.com/fmtlib/fmt)
 
-# Licensing
+## Licensing
 
 [MIT License](LICENSE)
-
-**Free Software forever !**

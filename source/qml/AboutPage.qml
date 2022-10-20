@@ -180,7 +180,6 @@ Page {
         ProportionalRect {
             Layout.columnSpan: 12
             Layout.rowSpan: 3
-            color: "orange"
 
             // 2 columns inside second row
             GridLayout {
@@ -192,13 +191,27 @@ Page {
                 ProportionalRect {
                     Layout.columnSpan: 1
                     Layout.rowSpan: 1
-                    color: "red"
+                    Image {
+                        source: Qt.resolvedUrl(
+                                    "/bensuperpc.com/qml_files/img/Profile_400x400.jpg")
+                        anchors.fill: parent
+                        sourceSize.width: parent.width
+                        sourceSize.height: parent.height
+                    }
                 }
 
                 ProportionalRect {
                     Layout.columnSpan: 1
                     Layout.rowSpan: 1
-                    color: "green"
+                    Text {
+                        color: "white"
+                        font.bold: true
+                        fontSizeMode: Text.Fit
+                        minimumPixelSize: 5
+                        font.pixelSize: 12
+                        wrapMode: Text.WordWrap
+                        text: "I'm Bensuperpc"
+                    }
                 }
             }
         }

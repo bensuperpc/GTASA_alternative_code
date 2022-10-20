@@ -22,7 +22,7 @@ ApplicationWindow {
     //minimumWidth: 720
     //minimumHeight: 1280
 
-    title: qsTr("GTA SA alt. cheats finder")
+    // title: qsTr("GTA SA alt. cheats finder")
 
     header: ToolBar {
         id: toolbar

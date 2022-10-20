@@ -198,6 +198,12 @@ const std::string cxx()
   return std::to_string(__cplusplus);
 }
 
+const std::string c()
+{
+  // return std::to_string(__STDC_VERSION__);
+  return "0";
+}
+
 const std::string build_date()
 {
   return std::string(__DATE__) + " : " + std::string(__TIME__);

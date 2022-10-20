@@ -31,6 +31,8 @@ const std::string os_adv();
 
 const std::string cxx();
 
+const std::string c();
+
 const std::string build_date();
 
 const std::string arduino();

@@ -14,7 +14,7 @@ class TableModel : public QAbstractTableModel
 
 public:
   explicit TableModel(QObject* parent = nullptr);
-  
+
   void clear();
 
   void init();

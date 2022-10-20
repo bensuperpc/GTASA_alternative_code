@@ -26,15 +26,24 @@
  */
 #  define GETTERSETTER(type, method, name) \
     /** Retrieves the name value for the object. @return The name value of the object. */ \
-    inline type Get##method() const \
+    inline type get_##method() const \
     { \
       return name; \
     } \
     /** Sets the name value for the object. @param value The value of which to set name to. */ \
-    inline void Set##method(type value) \
+    inline void set_##method(type value) \
     { \
       name = value; \
     }
+#endif
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif  // UTILS_H

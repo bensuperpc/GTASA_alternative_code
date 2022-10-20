@@ -114,7 +114,7 @@ endif()
 target_compile_features(GTA_SA_cheat_finder_lib PUBLIC cxx_std_20)
 
 if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
-  target_link_libraries(GTA_SA_cheat_finder_lib PRIVATE OpenMP::OpenMP_CXX)
+  target_link_libraries(GTA_SA_cheat_finder_lib PUBLIC OpenMP::OpenMP_CXX)
 endif()
 
 

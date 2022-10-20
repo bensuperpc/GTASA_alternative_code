@@ -30,19 +30,22 @@ class GTA_SA_UI : public QObject
 
 public:
   explicit GTA_SA_UI(QObject* parent = nullptr);
+
   GTA_SA gta_sa;
   TableModel tableModel;
 
-  uint64_t minRangeValue() const { return _minRangeValue; };
-  uint64_t maxRangeValue() const { return _maxRangeValue; };
+  GETTERSETTER(GTA_SA, gta_sa, this->gta_sa)
 
-  uint64_t nbrThreadValue() const { return _nbrThreadValue; };
+  uint64_t minRangeValue() const { return _minRangeValue; }
+  uint64_t maxRangeValue() const { return _maxRangeValue; }
 
-  uint64_t cuda_block_size() const { return _cuda_block_size; };
+  uint32_t nbrThreadValue() const { return _nbrThreadValue; }
 
-  uint64_t calc_mode() const { return _calc_mode; };
+  uint64_t cuda_block_size() const { return _cuda_block_size; }
 
-  QString buttonValue() const { return _buttonValue; };
+  uint64_t calc_mode() const { return _calc_mode; }
+
+  QString buttonValue() const { return _buttonValue; }
 
   Q_INVOKABLE
   void runOp();
@@ -51,9 +54,9 @@ public:
   Q_INVOKABLE
   uint64_t max_thread_support() { return gta_sa.max_thread_support(); }
 
-  bool builtWithOpenMP() const { return GTA_SA::builtWithOpenMP; };
+  bool builtWithOpenMP() const { return GTA_SA::builtWithOpenMP; }
 
-  bool builtWithCUDA() const { return GTA_SA::builtWithCUDA; };
+  bool builtWithCUDA() const { return GTA_SA::builtWithCUDA; }
 
 public slots:
   void setMinRangeValue(uint64_t value);
