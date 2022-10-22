@@ -76,7 +76,6 @@ if __name__ == "__main__":
 
         fig.tight_layout()
 
-        plt.show()
-
         plt.savefig('benchmark.png', bbox_inches='tight', dpi=300)
 
+        plt.show()
