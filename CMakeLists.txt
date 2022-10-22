@@ -49,9 +49,9 @@ FetchContent_Declare(
     FETCHCONTENT_BASE_DIR ${CMAKE_BINARY_DIR}/_deps
     URL      https://github.com/bshoshany/thread-pool/archive/refs/tags/v3.3.0.zip
     URL_HASH SHA512=6502461753b79d4834207106b1c477addc821b637fcdd1d39e669238637ff16fe6b5921f893f4c2ddcef3446f6880863e1b9ccbe3985bac4bd7bc2305f41ac70
-    DOWNLOAD_EXTRACT_TIMESTAMP ON
 )
 FetchContent_MakeAvailable(thread-pool)
+#DOWNLOAD_EXTRACT_TIMESTAMP ON
 
 if (CUDAToolkit_FOUND)
   add_subdirectory(source/cuda)
