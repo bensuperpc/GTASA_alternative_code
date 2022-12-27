@@ -72,7 +72,7 @@
       "hidden": true,
       "cacheVariables": {
         "CMAKE_CXX_FLAGS": "-Wall -Wextra -Wpedantic -Wconversion -Wcast-qual -Wshadow -Wformat=2 -Wundef -Wfloat-equal -Wstrict-overflow=5 -Wswitch-default -Wunreachable-code -Wcast-align -Wmissing-include-dirs -Wnull-dereference -Wdouble-promotion -Wimplicit-fallthrough -Wextra-semi -Woverloaded-virtual -Wnon-virtual-dtor",
-        "CMAKE_C_FLAGS": "-Wall -Wextra -Wpedantic -Wconversion -Wcast-qual -Wshadow -Wformat=2 -Wundef -Wfloat-equal -Wstrict-overflow=5 -Wswitch-defa-Wdouble-promotionult -Wunreachable-code -Wcast-align -Wmissing-include-dirs -Wnull-dereference  -Wimplicit-fallthrough -Wextra-semi -Woverloaded-virtual -Wnon-virtual-dtor" 
+        "CMAKE_C_FLAGS": "-Wall -Wextra -Wpedantic -Wconversion -Wcast-qual -Wshadow -Wformat=2 -Wundef -Wfloat-equal -Wstrict-overflow=5 -Wswitch-default -Wdouble-promotion -Wunreachable-code -Wcast-align -Wmissing-include-dirs -Wnull-dereference  -Wimplicit-fallthrough -Wextra-semi -Woverloaded-virtual -Wnon-virtual-dtor" 
       }
     },
     {
