@@ -18,12 +18,17 @@
 #//                                                          //
 #//////////////////////////////////////////////////////////////
 
+PROJECT_NAME := GTA_SA_cheat_finder
+
 PARALLEL := 1
 
 GENERATOR := Ninja
 
 CTEST_TIMEOUT := 1500
 CTEST_OPTIONS := --output-on-failure --verbose
+
+# LANG := en
+# LANG=$(LANG)
 
 DOCKCROSS_IMAGE := android-arm android-arm64 android-x86 android-x86_64 \
 	linux-x86 linux-x64 linux-x64-clang \
@@ -50,7 +55,8 @@ $(DOCKCROSS_IMAGE):
 docker: $(DOCKCROSS_IMAGE)
 
 .PHONY: all
-all: release debug minsizerel coverage relwithdebinfo minsizerel relwithdebinfo release-clang debug-clang base base-clang sanitize sanitize-clang gprof $(DOCKCROSS_IMAGE)
+all: release debug minsizerel coverage relwithdebinfo minsizerel relwithdebinfo release-clang \
+	debug-clang base base-clang sanitize sanitize-clang gprof $(DOCKCROSS_IMAGE) docker valgrind gdb
 
 .PHONY: base
 base:
@@ -90,12 +96,6 @@ debug-clang:
 	cmake --build build/$@
 	ctest $(CTEST_OPTIONS) --timeout $(CTEST_TIMEOUT) --parallel $(PARALLEL) --test-dir build/$@
 
-.PHONY: graph
-graph:
-	cmake --preset=base -G $(GENERATOR) --graphviz=build/base/graph/graph.dot
-	cmake --build build/base
-	dot -Tpng -o build/base/graph/graph.png build/base/graph/graph.dot
-
 .PHONY: coverage
 coverage:
 	cmake -B build/$@ -S . -G $(GENERATOR) --preset=dev-coverage -DCMAKE_BUILD_TYPE=Coverage
@@ -133,6 +133,24 @@ gprof:
 	cmake --build build/$@
 	@echo "Run executable and after gprof <exe> gmon.out | less"
 
+.PHONY: graph
+graph:
+	cmake -B build/$@ -S . -G $(GENERATOR) --graphviz=build/$@/graph.dot
+	cmake --build build/base
+	dot -Tpng -o build/$@/graph.png build/$@/graph.dot
+
+.PHONY: valgrind
+valgrind:
+	cmake -B build/$@ -S . -G $(GENERATOR) --preset=dev -DCMAKE_BUILD_TYPE=Debug
+	cmake --build build/$@
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=build/$@/valgrind.log build/$@/bin/$(PROJECT_NAME)
+
+.PHONY: gdb
+gdb:
+	cmake -B build/$@ -S . -G $(GENERATOR) --preset=dev -DCMAKE_BUILD_TYPE=Debug
+	cmake --build build/$@
+	gdb build/$@/bin/$(PROJECT_NAME)
+
 .PHONY: lint
 lint:
 	cmake -D FORMAT_COMMAND=clang-format -P cmake/lint.cmake
@@ -141,6 +159,10 @@ lint:
 .PHONY: format
 format:
 	time find . -regex '.*\.\(cpp\|cxx\|hpp\|hxx\|c\|h\|cu\|cuh\|cuhpp\|tpp\)' -not -path '*/build/*' | parallel clang-format -style=file -i {} \;
+
+.PHONY: cloc
+cloc:
+	cloc --fullpath --not-match-d="(build|.git)" --not-match-f="(.git)" .
 
 .PHONY: update
 update:

@@ -9,7 +9,7 @@ find_package(raygui QUIET)
 if (NOT raylib_FOUND)
     FetchContent_Declare(raygui
         GIT_REPOSITORY https://github.com/raysan5/raygui.git
-        GIT_TAG 3.1
+        GIT_TAG 3.2
     )
     FetchContent_MakeAvailable(raygui)
     include_directories(${raygui_SOURCE_DIR}/src)
