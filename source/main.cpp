@@ -17,7 +17,9 @@
 #if __has_include(<QString>)
 #  include "about_compilation.h"
 #  include "gta_sa_ui.h"
-#  include "qt-utils/TableModel.h"
+#  include "TableModel.h"
+#include "imageprovider/imageprovider.h"
+#include "asyncimageprovider/asyncimageprovider.h"
 #endif
 
 auto main(int argc, char* argv[]) -> int

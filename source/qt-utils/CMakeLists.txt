@@ -31,15 +31,16 @@ find_package(Qt6 6.4 COMPONENTS Quick Gui Core Qml Charts Multimedia REQUIRED)
 qt_standard_project_setup()
 
 set(SRCS
-    imageprovider.cpp
-    liveimage.cpp
+    imageprovider/imageprovider.cpp
     TableModel.cpp
 	)
 	
 set(HEADERS
-    imageprovider.h
-    liveimage.h
+    imageprovider/imageprovider.h
     TableModel.h
+    asyncimageprovider/asyncimageprovider.h
+    asyncimageprovider/async_image_response_runnable.h
+    asyncimageprovider/async_image_response.h
     )
 
 add_library(qt_utils_lib ${SRCS} ${HEADERS})
