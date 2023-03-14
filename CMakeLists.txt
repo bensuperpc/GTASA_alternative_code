@@ -25,7 +25,9 @@ include(cmake/utile/ccache.cmake)
 # include(cmake/utile/ninja_color.cmake)
 
 # For Qt
+set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
 
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -33,7 +35,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
 # ---- Declare deps ----
 
-find_package(Qt6 6.4 COMPONENTS Quick Gui Core Qml Charts Multimedia)
+find_package(Qt6 6.4 COMPONENTS Quick QuickControls2 Gui Core Qml Charts Multimedia Widgets Concurrent SerialPort REQUIRED)
 #qt_standard_project_setup()
 
 find_package(OpenMP 2.0)
@@ -118,7 +120,8 @@ if (CUDAToolkit_FOUND)
 endif()
 
 if (Qt6_FOUND)
-  target_link_libraries(GTA_SA_cheat_finder_lib PUBLIC Qt6::Quick Qt6::Gui Qt6::Core Qt6::Qml Qt6::Charts Qt6::Multimedia)
+  target_link_libraries(GTA_SA_cheat_finder_lib PUBLIC Qt${QT_VERSION_MAJOR}::Quick Qt${QT_VERSION_MAJOR}::QuickControls2 Qt${QT_VERSION_MAJOR}::Widgets 
+    Qt${QT_VERSION_MAJOR}::Charts Qt${QT_VERSION_MAJOR}::Concurrent Qt${QT_VERSION_MAJOR}::SerialPort)
   target_link_libraries(GTA_SA_cheat_finder_lib PUBLIC qt_utils_lib)
 endif()
 
