@@ -1,71 +1,73 @@
-# Parent project does not export its library target, so this CML implicitly
-# depends on being added from it, i.e. the testing is done only from the build
-# tree and is not feasible from an install location
+cmake_minimum_required(VERSION 3.14)
 
-project(GTA_SA_cheat_finderTests LANGUAGES C CXX)
+project(world_of_blocksTests LANGUAGES CXX)
 
-include(CheckLanguage)
-check_language(CUDA)
-if(CMAKE_CUDA_COMPILER)
-	enable_language(CUDA)
-endif()
+include(../cmake/project-is-top-level.cmake)
+include(../cmake/folders.cmake)
+include(../cmake/windows-set-path.cmake)
 
-# ---- Tests ----
+function(test_bench_generator TEST_BENCH_NAME IS_TEST ADD_TO_TEST)
+    if (IS_TEST)
+        add_executable("${TEST_BENCH_NAME}" "source/test/${TEST_BENCH_NAME}.cpp")
+    else()
+        add_executable("${TEST_BENCH_NAME}" "source/benchmark/${TEST_BENCH_NAME}.cpp")
+    endif()
 
-function(add_test_fn TEST_NAME)
-  add_executable("${TEST_NAME}" "source/${TEST_NAME}.cpp")
-  target_link_libraries("${TEST_NAME}" PRIVATE GTA_SA_cheat_finder_lib gtest_main)
+    if (IS_TEST)
+        target_link_libraries("${TEST_BENCH_NAME}" PRIVATE gtest)
+    else()
+        target_link_libraries("${TEST_BENCH_NAME}" PRIVATE benchmark::benchmark)
+    endif()
 
-  if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
-    target_link_libraries("${TEST_NAME}" PRIVATE OpenMP::OpenMP_CXX)
-  endif()
+    target_link_libraries("${TEST_BENCH_NAME}" PRIVATE GTA_SA_cheat_finder_lib)
 
-  if (CUDAToolkit_FOUND)
-    target_include_directories("${TEST_NAME}" PRIVATE ${CUDAToolkit_INCLUDE_DIRS})
-    target_link_libraries("${TEST_NAME}" PRIVATE CUDA::cudart)
-    target_link_libraries("${TEST_NAME}" PRIVATE cuda_lib)
-  endif()
+    if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
+        target_link_libraries("${TEST_BENCH_NAME}" PRIVATE OpenMP::OpenMP_CXX OpenMP::OpenMP_C)
+    endif()
+  
+    if (CUDAToolkit_FOUND)
+      target_include_directories("${TEST_BENCH_NAME}" PRIVATE ${CUDAToolkit_INCLUDE_DIRS})
+      target_link_libraries("${TEST_BENCH_NAME}" PRIVATE CUDA::cudart)
+      target_link_libraries("${TEST_BENCH_NAME}" PRIVATE cuda_lib)
+    endif()
 
+    set_target_properties("${TEST_BENCH_NAME}"
+        PROPERTIES
+        RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+        LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
+        ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
+        PDB_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+    )
+    target_compile_features("${TEST_BENCH_NAME}" PRIVATE cxx_std_17)
 
-  add_test(NAME "${TEST_NAME}" COMMAND $<TARGET_FILE:${TEST_NAME}>)
-  #target_compile_features("${TEST_NAME}" PRIVATE cxx_std_20)
-endfunction()
+    #if(NOT CMAKE_BUILD_TYPE MATCHES Debug AND NOT CMAKE_BUILD_TYPE MATCHES Coverage)
+    #  add_test(NAME "${TEST_BENCH_NAME}" COMMAND $<TARGET_FILE:${TEST_BENCH_NAME}>)
+    #elseif()
+    #  message(STATUS "Disable ${BENCH_NAME}, Performance benchmark test only run on Release/RelWithDebInfo/MinSizeRel")
+    #endif()
 
-function(add_bench_fn BENCH_NAME)
-  add_executable("${BENCH_NAME}" "source/${BENCH_NAME}.cpp")
-  target_link_libraries("${BENCH_NAME}" PRIVATE GTA_SA_cheat_finder_lib benchmark::benchmark_main)
-
-  if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
-    target_link_libraries("${BENCH_NAME}" PRIVATE OpenMP::OpenMP_CXX)
-  endif()
-
-  if (CUDAToolkit_FOUND)
-    target_include_directories("${BENCH_NAME}" PRIVATE ${CUDAToolkit_INCLUDE_DIRS})
-    target_link_libraries("${BENCH_NAME}" PRIVATE CUDA::cudart)
-    target_link_libraries("${BENCH_NAME}" PRIVATE cuda_lib)
-  endif()
-
-  if(NOT CMAKE_BUILD_TYPE MATCHES Debug AND NOT CMAKE_BUILD_TYPE MATCHES Coverage)
-    add_test(NAME "${BENCH_NAME}" COMMAND $<TARGET_FILE:${BENCH_NAME}>)
-  elseif()
-    message(STATUS "Disable ${BENCH_NAME}, Performance benchmark test only run on Release/RelWithDebInfo/MinSizeRel")
-  endif()
-  #target_compile_features("${TEST_NAME}" PRIVATE cxx_std_20)
+    if (ADD_TO_TEST)
+        add_test(NAME "${TEST_BENCH_NAME}" COMMAND $<TARGET_FILE:${TEST_BENCH_NAME}>)
+    endif()
+    
 endfunction()
 
 if(NOT WIN32)
-include(../cmake/lib/gtest.cmake)
-include(../cmake/lib/benchmark.cmake)
+  include(../cmake/lib/gtest.cmake)
+  include(../cmake/lib/benchmark.cmake)
+  include(../cmake/lib/openmp.cmake)
+  include(../cmake/utile/ccache.cmake)
+
   # Add tests
-  add_test_fn(find_string_inv_test)
-  add_test_fn(jamcrc_test)
-  add_test_fn(gta_sa_test)
+  test_bench_generator(find_string_inv_test true true)
+  test_bench_generator(jamcrc_test true true)
+  test_bench_generator(gta_sa_test true true)
 
   # Add bench
-  add_bench_fn(find_string_inv_bench)
-  add_bench_fn(jamcrc_bench)
+  test_bench_generator(find_string_inv_bench false false)
+  test_bench_generator(jamcrc_bench false false)
+  
 endif()
-
 
 # ---- End-of-file commands ----
 

@@ -5,9 +5,9 @@ include(FetchContent)
 FetchContent_Declare(
   backward-cpp
   GIT_REPOSITORY https://github.com/bombela/backward-cpp.git
-  GIT_TAG 0ddfadc4b0f5c53e63259fe804ee595e6f01f4df) # 23-10-2022
+  GIT_TAG 65a769ffe77cf9d759d801bc792ac56af8e911a3) # 2023-10-12
 
 FetchContent_MakeAvailable(backward-cpp)
 
-# TODO: target_include_directories instead of include_directories
+# Add ${BACKWARD_ENABLE} to your executable and add add_backward(<executable>) to your CMakeLists.txt
 include_directories(${backward-cpp_SOURCE_DIR})

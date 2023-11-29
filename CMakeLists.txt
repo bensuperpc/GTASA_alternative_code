@@ -29,14 +29,14 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-#set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+find_package(QT NAMES Qt6 COMPONENTS Quick QuickControls2 Gui Core Qml Charts Multimedia Widgets Concurrent SerialPort)
+find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Quick QuickControls2 Gui Core Qml Charts Multimedia Widgets Concurrent SerialPort)
 
-# ---- Declare deps ----
-
-find_package(Qt6 6.4 COMPONENTS Quick QuickControls2 Gui Core Qml Charts Multimedia Widgets Concurrent SerialPort REQUIRED)
-#qt_standard_project_setup()
+if (Qt${QT_VERSION_MAJOR}_FOUND)
+    qt_standard_project_setup(REQUIRES 6.5)
+else()
+    message(WARNING "Qt${QT_VERSION_MAJOR} not found, project will be CLI only")
+endif()
 
 find_package(OpenMP 2.0)
 
@@ -47,115 +47,114 @@ find_package(CUDAToolkit 11.0)
 # Download ThreadPool
 include(cmake/lib/threadpool.cmake)
 
-if (CUDAToolkit_FOUND)
-  add_subdirectory(source/cuda)
-endif()
-
-add_subdirectory(source/utils)
-
-if (Qt6_FOUND)
-  add_subdirectory(source/qt-utils)
-  endif()
-
-# ---- Declare library ----
-
-if (Qt6_FOUND)
-message(STATUS "Qt6_FOUND")
-add_library(
-    GTA_SA_cheat_finder_lib OBJECT
-    source/GTA_SA_cheat_finder.cpp
-    source/GTA_SA_cheat_finder.hpp
-    source/gta_sa_ui.cpp
-    source/gta_sa_ui.h
-    source/about_compilation.cpp
-    source/about_compilation.h
-)
-else()
-message(STATUS "Qt6_NOT_FOUND")
-add_library(
-    GTA_SA_cheat_finder_lib OBJECT
-    source/GTA_SA_cheat_finder.cpp
-    source/GTA_SA_cheat_finder.hpp
-)
-endif()
-
-target_include_directories(
-    GTA_SA_cheat_finder_lib ${warning_guard}
-    PUBLIC
-    "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/source>"
-)
-
-target_include_directories(
-    GTA_SA_cheat_finder_lib ${warning_guard}
-    PUBLIC
-    "$<BUILD_INTERFACE:${thread-pool_SOURCE_DIR}>"
-)
-
-target_include_directories(
-    GTA_SA_cheat_finder_lib ${warning_guard}
-    PUBLIC
-    "$<BUILD_INTERFACE:${utils_lib_SOURCE_DIR}>"
-)
-
-if (Qt6_FOUND)
-target_include_directories(
-    GTA_SA_cheat_finder_lib ${warning_guard}
-    PUBLIC
-    "$<BUILD_INTERFACE:${qt_utils_lib_SOURCE_DIR}>"
-)
-endif()
-
-target_compile_features(GTA_SA_cheat_finder_lib PUBLIC cxx_std_20)
-
-if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
-  target_link_libraries(GTA_SA_cheat_finder_lib PUBLIC OpenMP::OpenMP_CXX)
-endif()
-
-
-if (CUDAToolkit_FOUND)
-  target_include_directories(GTA_SA_cheat_finder_lib PUBLIC ${CUDAToolkit_INCLUDE_DIRS})
-  target_link_libraries(GTA_SA_cheat_finder_lib PUBLIC CUDA::cudart)
-  target_link_libraries(GTA_SA_cheat_finder_lib PUBLIC cuda_lib)
-  # target_include_directories(GTA_SA_cheat_finder_lib PUBLIC "${PROJECT_SOURCE_DIR}/source/cuda")
-endif()
-
-if (Qt6_FOUND)
-  target_link_libraries(GTA_SA_cheat_finder_lib PUBLIC Qt${QT_VERSION_MAJOR}::Quick Qt${QT_VERSION_MAJOR}::QuickControls2 Qt${QT_VERSION_MAJOR}::Widgets 
-    Qt${QT_VERSION_MAJOR}::Charts Qt${QT_VERSION_MAJOR}::Concurrent Qt${QT_VERSION_MAJOR}::SerialPort)
-  target_link_libraries(GTA_SA_cheat_finder_lib PUBLIC qt_utils_lib)
-endif()
-
-target_link_libraries(GTA_SA_cheat_finder_lib PUBLIC utils_lib)
+add_subdirectory(source/gta_cheat_finder)
 
 # ---- Declare executable ----
-if (Qt6_FOUND)
-  qt_add_executable(GTA_SA_cheat_finder_exe source/main.cpp)
-  add_executable(GTA_SA_cheat_finder::exe ALIAS GTA_SA_cheat_finder_exe)
-else()
-  add_executable(GTA_SA_cheat_finder_exe source/main.cpp)
-  add_executable(GTA_SA_cheat_finder::exe ALIAS GTA_SA_cheat_finder_exe)
+
+set(SRCS
+    source/main.cpp
+	)
+	
+set(HEADERS
+    )
+
+if (Qt${QT_VERSION_MAJOR}_FOUND)
+    list(APPEND SRCS 
+        source/gta_sa_ui.cpp
+        source/imageprovider.cpp
+        source/application.cpp
+        source/lineseries.cpp
+        source/tablemodel.cpp
+        source/customlabel.cpp
+        )
+    list(APPEND HEADERS 
+        source/gta_sa_ui.hpp
+        source/asyncimageprovider.h
+        source/application.h 
+        source/lineseries.h 
+        source/tablemodel.h 
+        source/customlabel.h 
+        source/utils/about_compilation.h
+        source/utils/utils.h
+        )
 endif()
 
-if (Qt6_FOUND)
-# Resources:
-qt_add_qml_module(GTA_SA_cheat_finder_exe
-    URI qml_files
-    RESOURCE_PREFIX /bensuperpc.com
-    VERSION 1.0
-    QML_FILES
-    source/qml/main.qml 
-    source/qml/AboutPage.qml 
-    source/qml/GTA_SA.qml
-    RESOURCES
-    img/Profile_400x400.jpg
-)
+if (Qt${QT_VERSION_MAJOR}_FOUND)
+    qt_add_executable(GTA_SA_cheat_finder_exe
+        ${SRCS} ${HEADERS}
+    )
+else()
+    add_executable(GTA_SA_cheat_finder_exe
+        ${SRCS} ${HEADERS}
+    )
 endif()
+
+add_executable(GTA_SA_cheat_finder::exe ALIAS GTA_SA_cheat_finder_exe)
+
+
+if (Qt${QT_VERSION_MAJOR}_FOUND)
+    qt_add_qml_module(GTA_SA_cheat_finder_exe
+        URI bensuperpc
+        OUTPUT_DIRECTORY bensuperpc
+        RESOURCE_PREFIX /bensuperpc.org
+        VERSION 1.0
+        QML_FILES
+        qml/responsive.qml
+        qml/GTA_SA.qml
+        qml/main.qml
+        qml/home.qml qml/image.qml
+        qml/about.qml qml/graphic.qml
+        qml/table.qml
+        qml/settings.qml
+        qml/swipe.qml
+        qml/custom/ProportionalRect.qml
+        qml/custom/CustomMenuSeparator.qml
+        qml/custom/HorizontalLabelDelegateMenu.qml
+        qml/custom/VerticalLabelDelegateMenu.qml
+        IMPORT_PATH qml
+        RESOURCES
+        image/cat_sticking_out_its_tongue.jpg
+    )
+endif()
+
+set_target_properties(GTA_SA_cheat_finder_exe PROPERTIES
+    MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
+    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
+    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
+    MACOSX_BUNDLE TRUE
+    WIN32_EXECUTABLE TRUE
+)
+
+target_compile_features(GTA_SA_cheat_finder_exe PUBLIC cxx_std_20)
+
+if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
+  target_link_libraries(GTA_SA_cheat_finder_exe PUBLIC OpenMP::OpenMP_CXX)
+endif()
+
+
+if (CUDAToolkit_FOUND)
+  target_include_directories(GTA_SA_cheat_finder_exe PUBLIC ${CUDAToolkit_INCLUDE_DIRS})
+endif()
+
+target_link_libraries(GTA_SA_cheat_finder_exe PUBLIC GTA_SA_cheat_finder_lib)
 
 set_property(TARGET GTA_SA_cheat_finder_exe PROPERTY OUTPUT_NAME GTA_SA_cheat_finder)
 
 target_compile_features(GTA_SA_cheat_finder_exe PRIVATE cxx_std_20)
 
-target_link_libraries(GTA_SA_cheat_finder_exe PRIVATE GTA_SA_cheat_finder_lib)
+if (Qt${QT_VERSION_MAJOR}_FOUND)
+    target_link_libraries(GTA_SA_cheat_finder_exe
+        PRIVATE Qt${QT_VERSION_MAJOR}::Quick Qt${QT_VERSION_MAJOR}::QuickControls2 Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Charts Qt${QT_VERSION_MAJOR}::Concurrent Qt${QT_VERSION_MAJOR}::SerialPort)
+endif()
+
+target_compile_definitions(GTA_SA_cheat_finder_exe PUBLIC PROJECT_VERSION="${PROJECT_VERSION}")
+target_compile_definitions(GTA_SA_cheat_finder_exe PUBLIC CMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE}")
+target_compile_definitions(GTA_SA_cheat_finder_exe PUBLIC CMAKE_CXX_COMPILER_ID="${CMAKE_CXX_COMPILER_ID}")
+target_compile_definitions(GTA_SA_cheat_finder_exe PUBLIC CMAKE_C_COMPILER_ID="${CMAKE_C_COMPILER_ID}")
+target_compile_definitions(GTA_SA_cheat_finder_exe PUBLIC CMAKE_VERSION="${CMAKE_VERSION}")
+
+configure_file(image/cat_sticking_out_its_tongue.jpg ${CMAKE_BINARY_DIR}/image/cat_sticking_out_its_tongue.jpg COPYONLY)
+
 
 # ---- Install rules ----
 
