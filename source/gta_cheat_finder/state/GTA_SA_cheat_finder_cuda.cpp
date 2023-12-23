@@ -43,8 +43,16 @@ void GTA_SA_CUDA::run() {
     this->find_string_inv(tmp1.data(), min_range);
     this->find_string_inv(tmp2.data(), max_range);
     std::cout << "From: " << tmp1.data() << " to: " << tmp2.data() << " Alphabetic sequence" << std::endl;
-    begin_time = std::chrono::high_resolution_clock::now();
 
+    std::cout << "Rinimum range: " << std::dec << min_range << std::endl;
+    std::cout << "Maximum range: " << std::dec << max_range << std::endl;
+    std::cout << "Calculation range: " << std::dec << (max_range - min_range) << std::endl;
+
+    if ((max_range - min_range) < cuda_block_size) {
+        std::cout << "Number of calculations is less than cuda_block_size" << std::endl;
+    }    
+
+    begin_time = std::chrono::high_resolution_clock::now();
     runner(0);
     end_time = std::chrono::high_resolution_clock::now();
 
@@ -55,10 +63,6 @@ void GTA_SA_CUDA::run() {
 }
 
 void GTA_SA_CUDA::runner(const std::uint64_t) {
-    if ((max_range - min_range) < cuda_block_size) {
-        std::cout << "Number of calculations is less than cuda_block_size" << std::endl;
-    }
-
     std::vector<uint32_t> jamcrc_results;
     std::vector<uint64_t> index_results;
 

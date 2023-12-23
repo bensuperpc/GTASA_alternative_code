@@ -159,7 +159,7 @@ TEST(GTA_SA_CUDA, basic_calc_cuda_4) {
 TEST(GTA_SA_CUDA, basic_calc_cuda_5) {
     GTA_SA_CUDA gtaSA;
     gtaSA.min_range = 0;
-    gtaSA.max_range = 8031810176;
+    gtaSA.max_range = 8'031'810'176;
 
     gtaSA.run();
 

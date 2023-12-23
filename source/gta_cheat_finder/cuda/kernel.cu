@@ -31,7 +31,7 @@ __global__ void jamcrcKernelWrapper(const void* data, uint32_t* result, const ui
     uint64_t id = blockId * threadsPerBlock + threadIdx.z * blockDim.x * blockDim.y + threadIdx.y * blockDim.x + threadIdx.x;
 
     if (id == 0) {
-        *result = jamcrcKernel(data, length, previousCrc32);
+        *result = jamcrc1Byte(data, length, previousCrc32);
     }
 }
 
@@ -56,7 +56,7 @@ __global__ void FindAlternativeCheatKernel(uint32_t* crc_result,
         GenerateStringKernel(array, a, &size);
 
         // Calculate the JAMCRC
-        const uint32_t result = jamcrcKernel(array, size, 0);
+        const uint32_t result = jamcrc1Byte(array, size, 0);
         // printf("id: %llu, size: %llu, array: %s, crc: 0x%x\n", id, size, array, result);
 
         bool found = false;
@@ -70,11 +70,10 @@ __global__ void FindAlternativeCheatKernel(uint32_t* crc_result,
         if (!found) {
             return;
         }
-
-#if __CUDA_ARCH__ >= 600
-        uint32_t localArrayIndex = atomicAdd_system(arrayIndex, 1);
-#else
+#if defined(__CUDA_ARCH__) && (__CUDA_ARCH__ < 600)
         uint32_t localArrayIndex = atomicAdd(arrayIndex, 1);
+#else
+        uint32_t localArrayIndex = atomicAdd_system(arrayIndex, 1);
 #endif
 
         if (localArrayIndex >= array_size) {

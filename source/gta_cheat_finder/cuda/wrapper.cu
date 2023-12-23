@@ -75,11 +75,8 @@ __host__ void my::cuda::launch_kernel(std::vector<uint32_t>& jamcrc_results,
                                       const uint64_t max_range,
                                       const uint64_t cuda_block_size) {
     std::cout << "Launching kernel..." << std::endl;
-    std::cout << "Rinimum range: " << std::dec << min_range << std::endl;
-    std::cout << "Maximum range: " << std::dec << max_range << std::endl;
 
     uint64_t calcRange = max_range - min_range;
-    std::cout << "Calculation range: " << std::dec << calcRange << std::endl;
 
     // int device = -1;
     // cudaGetDevice(&device);
@@ -121,12 +118,6 @@ __host__ void my::cuda::launch_kernel(std::vector<uint32_t>& jamcrc_results,
     cudaMemPrefetchAsync(jamcrcResultsPtr, jamcrcResultsSize, device, stream);
     cudaMemPrefetchAsync(indexResultsPtr, indexResultsSize, device, stream);
     cudaMemPrefetchAsync(ResultsSize, 1 * sizeof(uint32_t), device, stream);
-
-    for (uint64_t i = 0; i < arrayLength; ++i) {
-        jamcrcResultsPtr[i] = 0;
-        indexResultsPtr[i] = 0;
-    }
-    *ResultsSize = 0;
 
     uint64_t rest = static_cast<uint64_t>((calcRange / cuda_block_size) + (calcRange % cuda_block_size));
     uint32_t cubeRoot = static_cast<uint32_t>(std::ceil(std::cbrt(static_cast<long double>(rest))));
