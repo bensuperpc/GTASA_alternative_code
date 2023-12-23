@@ -7,7 +7,6 @@
 #include <QQmlContext>
 #include <QQuickStyle>
 #include <QQuickWindow>
-#include <QSerialPortInfo>
 #include <QtGlobal>
 
 #include "application.h"
@@ -122,10 +121,6 @@ int main(int argc, char* argv[]) {
         if (!home.isNull()) {
             qDebug() << "HOME: " << home;
         }
-
-        for (auto& item : QSerialPortInfo::availablePorts()) {
-            qDebug() << item.portName();
-        }
         */
         // QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGL);
 
@@ -139,7 +134,9 @@ int main(int argc, char* argv[]) {
         QQuickStyle::setFallbackStyle("Material");
         QQmlApplicationEngine engine;
 
-        GTA_SA_UI gta_sa_ui(gtaSA);
+        TableModel tablemodel;
+
+        GTA_SA_UI gta_sa_ui(std::move(gtaSA), tablemodel);
 
         qmlRegisterSingletonType<GTA_SA_UI>("org.bensuperpc.GTA_SAObjects", 1, 0, "GTA_SASingleton",
                                             [&](QQmlEngine*, QJSEngine*) -> QObject* { return &gta_sa_ui; });
@@ -151,7 +148,7 @@ int main(int argc, char* argv[]) {
         application app_ui;
         QMLREGISTERSINGLETONTYPE(app_ui, "org.bensuperpc.application", 1, 0, "AppSingleton")
 
-        TableModel tablemodel;
+        
         QMLREGISTERSINGLETONTYPE(tablemodel, "org.bensuperpc.TableData", 1, 0, "TableDataModel")
 
         engine.addImageProvider(QLatin1String("sync"), new ImageProvider);

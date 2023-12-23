@@ -100,7 +100,6 @@ if (Qt${QT_VERSION_MAJOR}_FOUND)
         VERSION 1.0
         QML_FILES
         qml/responsive.qml
-        qml/GTA_SA.qml
         qml/main.qml
         qml/home.qml qml/image.qml
         qml/about.qml qml/graphic.qml

@@ -39,12 +39,12 @@ class GTA_SA_UI final : public QObject {
 
    public:
     GTA_SA_UI(QObject* parent = nullptr) = delete;
-    explicit GTA_SA_UI(std::unique_ptr<GTA_SA_Virtual>& _gta_sa, QObject* parent = nullptr);
+    explicit GTA_SA_UI(std::unique_ptr<GTA_SA_Virtual> _gta_sa, TableModel& tableModel, QObject* parent = nullptr);
 
     ~GTA_SA_UI();
 
     std::unique_ptr<GTA_SA_Virtual> selected_gta_sa;
-    TableModel tableModel;
+    TableModel& _tableModel;
 
     uint64_t minRangeValue() const { return selected_gta_sa->min_range; }
     uint64_t maxRangeValue() const { return selected_gta_sa->max_range; }

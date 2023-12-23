@@ -26,8 +26,8 @@ ApplicationWindow {
     //property bool inPortrait: window.width < window.height
 
     // List all pages and names
-    property var drawerPageFile: ["responsive.qml", "home.qml", "graphic.qml", "table.qml", "image.qml", "swipe.qml", "GTA_SA.qml", "settings.qml"]
-    property var drawerPageName: ["Responsive", "Home", "Graphic", "Table", "Image", "Swipe", "GTA_SA", "Settings"]
+    property var drawerPageFile: ["responsive.qml", "home.qml", "graphic.qml", "table.qml", "image.qml", "swipe.qml", "settings.qml"]
+    property var drawerPageName: ["GTA_SA", "Home", "Graphic", "Table", "Image", "Swipe", "Settings"]
     property int currentPageIndex: 0
 
     header: ToolBar {

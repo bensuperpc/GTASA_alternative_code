@@ -5,8 +5,6 @@ TableModel::TableModel(QObject* parent) : QAbstractTableModel(parent) {
     this->init(header);
     QVector<QString> data = {"data0", "data1", "data2", "data3"};
     this->addData(data);
-    data = {"data4", "data5", "data6", "data7"};
-    this->addData(data);
 }
 
 void TableModel::clear() {

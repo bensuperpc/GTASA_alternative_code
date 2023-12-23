@@ -1,6 +1,6 @@
 #include "gta_sa_ui.hpp"
 
-GTA_SA_UI::GTA_SA_UI(std::unique_ptr<GTA_SA_Virtual>& _gta_sa, QObject* parent) : QObject{parent}, selected_gta_sa{std::move(_gta_sa)} {}
+GTA_SA_UI::GTA_SA_UI(std::unique_ptr<GTA_SA_Virtual> _gta_sa, TableModel& tableModel, QObject* parent) : QObject{parent}, selected_gta_sa(std::move(_gta_sa)), _tableModel(tableModel) {}
 
 GTA_SA_UI::~GTA_SA_UI() {
     for (auto& thread : threads) {
@@ -146,16 +146,19 @@ void GTA_SA_UI::runOpThread() {
     std::cout << __FUNCTION_NAME__ << std::endl;
     // Clear old data
     selected_gta_sa->clear();
-    this->tableModel.clear();
+    _tableModel.clear();
 
     // Launch operation
     selected_gta_sa->run();
+
+    QVector<QString> header = {"Index", "Code", "JamCRC", "Associated code"};
+    _tableModel.addData(header);
 
     // Store results in TableView Data
     for (const auto& result : selected_gta_sa->results) {
         QVector<QString> vect = {QString::number(result.index), QString::fromStdString(result.code),
                                  QString("0x") + QString::number(result.jamcrc, 16), QString::fromStdString(result.associated_code)};
-        this->tableModel.addData(vect);
+        _tableModel.addData(vect);
     }
 
     this->setButtonValue("  Launch Bruteforce   ");

@@ -77,7 +77,7 @@ class GTA_SA_Virtual {
     static constexpr std::uint32_t string_size_alphabet = 27;
     static constexpr std::array<char, string_size_alphabet> alpha{"ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
 
-    std::array<const std::uint32_t, 87> cheatList{
+    std::array<const std::uint32_t, 87> cheatList {
         0xDE4B237D, 0xB22A28D1, 0x5A783FAE, 0xEECCEA2B, 0x42AF1E28, 0x555FC201, 0x2A845345, 0xE1EF01EA, 0x771B83FC, 0x5BF12848, 0x44453A17,
         0xFCFF1D08, 0xB69E8532, 0x8B828076, 0xDD6ED9E9, 0xA290FD8C, 0x3484B5A7, 0x43DB914E, 0xDBC0DD65, 0xD08A30FE, 0x37BF1B4E, 0xB5D40866,
         0xE63B0D99, 0x675B8945, 0x4987D5EE, 0x2E8F84E8, 0x1A9AA3D6, 0xE842F3BC, 0x0D5C6A4E, 0x74D4FCB1, 0xB01D13B8, 0x66516EBC, 0x4B137E45,

@@ -248,58 +248,55 @@ Page {
                 color: "red"
                 Layout.columnSpan: grid.columns
                 Layout.margins: 10
-                implicitHeight: tableResult.implicitHeight
-                implicitWidth: tableResult.implicitWidth
+                Layout.preferredHeight: 300
+                Layout.fillWidth: true
+                Layout.maximumWidth: 500
                 GroupBox {
                     title: qsTr("Result")
                     id: tableResult
                     anchors.fill: parent
-                    ColumnLayout {
+                    TableView {
+                        clip: true
+                        id: tableViewData
                         anchors.fill: parent
-                        RowLayout {
-                            TableView {
-                                clip: true
-                                id: tableViewData
-                                
-                                selectionModel: ItemSelectionModel {}
+                        
+                        selectionModel: ItemSelectionModel {}
 
-                                ScrollIndicator.horizontal: ScrollIndicator {}
-                                ScrollIndicator.vertical: ScrollIndicator {}
+                        ScrollIndicator.horizontal: ScrollIndicator {}
+                        ScrollIndicator.vertical: ScrollIndicator {}
 
-                                model: TableDataModel
-                                delegate: Component {
-                                    Rectangle {
-                                        implicitWidth: {
-                                            var caseWidth = (tableViewData.width - 2)
-                                                    / TableDataModel.columnCount()
-                                            if (caseWidth > 80 && caseWidth < 200) {
-                                                return caseWidth
-                                            } else {
-                                                return 80
-                                            }
-                                        }
-
-                                        implicitHeight: 20
-                                        border.color: window.Material.theme
-                                                    === Material.Dark ? "black" : "black"
-                                        border.width: 2
-                                        color: heading ? "antiquewhite" : "aliceblue"
-                                        Text {
-                                            text: tabledata
-                                            font.pointSize: 10
-                                            font.bold: heading ? true : false
-                                            anchors.centerIn: parent
-                                        }
-                                        
-                                        MouseArea {
-                                            anchors.fill: parent
-                                            onClicked: {
-                                                console.log("Clicked on " + tabledata)
-                                            }
-                                        }
-                                    }
+                        model: TableDataModel
+                        delegate: Component {
+                        Rectangle {
+                            implicitWidth: {
+                                var caseWidth = (tableViewData.width - 2)
+                                        / TableDataModel.columnCount()
+                                if (caseWidth > 80 && caseWidth < 200) {
+                                    return caseWidth
+                                } else {
+                                    return 80
                                 }
                             }
+
+                            implicitHeight: 20
+                            border.color: window.Material.theme
+                                        === Material.Dark ? "black" : "black"
+                            border.width: 2
+                            color: heading ? "antiquewhite" : "aliceblue"
+                            Text {
+                                text: tabledata
+                                font.pointSize: 10
+                                font.bold: heading ? true : false
+                                anchors.centerIn: parent
+                            }
+                            
+                            MouseArea {
+                                anchors.fill: parent
+                                onClicked: {
+                                    console.log("Clicked on " + tabledata)
+                                }
+                            }
+                        }
                         }
                     }
                 }

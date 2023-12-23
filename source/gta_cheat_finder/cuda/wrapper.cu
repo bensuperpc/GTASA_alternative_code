@@ -25,6 +25,8 @@
 
 #include "wrapper.hpp"
 
+#include <cstring>
+
 __host__ uint32_t my::cuda::jamcrc(const void* data, const uint64_t length, const uint32_t previousCrc32, const uint32_t cuda_block_size) {
     int device = 0;
     cudaGetDevice(&device);
@@ -124,14 +126,14 @@ __host__ void my::cuda::launch_kernel(std::vector<uint32_t>& jamcrc_results,
 
     dim3 grid = dim3(0, 0, 0);
 
-    if (rest > 2'000'000'000ULL) {
-        grid.x = cubeRoot;
-        grid.y = cubeRoot;
-        grid.z = cubeRoot;
-    } else {
+    if (rest < 2'000'000'000ULL) [[likely]] {
         grid.x = rest;
         grid.y = 1;
         grid.z = 1;
+    } else {
+        grid.x = cubeRoot;
+        grid.y = cubeRoot;
+        grid.z = cubeRoot;
     }
 
     uint64_t total_grid_size = grid.x * grid.y * grid.z;
@@ -156,15 +158,10 @@ __host__ void my::cuda::launch_kernel(std::vector<uint32_t>& jamcrc_results,
     FindAlternativeCheatKernel<<<grid, threads, device, stream>>>(jamcrcResultsPtr, indexResultsPtr, arrayLength, ResultsSize, min_range,
                                                                   max_range);
 
-    jamcrc_results.reserve(arrayLength);
-    index_results.reserve(arrayLength);
-
     cudaStreamSynchronize(stream);
 
-    for (uint64_t i = 0; i < *ResultsSize; ++i) {
-        jamcrc_results.emplace_back(jamcrcResultsPtr[i]);
-        index_results.emplace_back(indexResultsPtr[i]);
-    }
+    jamcrc_results.insert(jamcrc_results.end(), jamcrcResultsPtr, jamcrcResultsPtr + *ResultsSize);
+    index_results.insert(index_results.end(), indexResultsPtr, indexResultsPtr + *ResultsSize);
 
     cudaDeviceSynchronize();
     cudaFree(jamcrcResultsPtr);
