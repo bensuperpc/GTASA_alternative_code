@@ -38,6 +38,16 @@
 #include "cuda/wrapper.hpp"
 #endif
 
+#if __has_include("CL/cl.h") || __has_include("CL/cl.hpp")
+#ifndef BUILD_WITH_OPENCL
+#define BUILD_WITH_OPENCL
+#endif
+#endif
+
+#if defined(BUILD_WITH_OPENCL)
+#include "opencl/wrapper.hpp"
+#endif
+
 #include "GTA_SA_cheat_finder_result.hpp"
 
 enum class COMPUTE_TYPE { STD_THREAD, OPENMP, CUDA, OPENCL };
@@ -74,8 +84,7 @@ class GTA_SA_Virtual {
 
     uint32_t num_thread = GTA_SA_Virtual::max_thread_support();
 
-    static constexpr std::uint32_t string_size_alphabet = 27;
-    static constexpr std::array<char, string_size_alphabet> alpha{"ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
+    static constexpr std::array<char, 27> alpha{"ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
 
     std::array<const std::uint32_t, 87> cheatList {
         0xDE4B237D, 0xB22A28D1, 0x5A783FAE, 0xEECCEA2B, 0x42AF1E28, 0x555FC201, 0x2A845345, 0xE1EF01EA, 0x771B83FC, 0x5BF12848, 0x44453A17,
@@ -88,7 +97,7 @@ class GTA_SA_Virtual {
         0xCF5FDA18, 0xF01286E9, 0xA841CC0A, 0x31EA09CF, 0xE958788A, 0x02C83A7C, 0xE49C3ED4, 0x171BA8CC, 0x86988DAE, 0x2BDD2FA1};
 
     /// List of cheats codes names
-    std::array<std::string, 87> cheat_list_name{"Weapon Set 1",
+    std::array<std::string, 87> cheatListName{"Weapon Set 1",
                                                 "Weapon Set 2",
                                                 "Weapon Set 3",
                                                 "Health, Armor, $250k, Repairs car",
@@ -179,7 +188,7 @@ class GTA_SA_Virtual {
      * https://create.stephan-brumme.com/crc32/#slicing-by-8-overview
      */
 
-    std::array<const uint32_t, 256> crc32_lookup = {
+    std::array<const uint32_t, 256> crc32LookupTable = {
         0x00000000, 0x77073096, 0xEE0E612C, 0x990951BA, 0x076DC419, 0x706AF48F, 0xE963A535, 0x9E6495A3, 0x0EDB8832, 0x79DCB8A4, 0xE0D5E91E,
         0x97D2D988, 0x09B64C2B, 0x7EB17CBD, 0xE7B82D07, 0x90BF1D91, 0x1DB71064, 0x6AB020F2, 0xF3B97148, 0x84BE41DE, 0x1ADAD47D, 0x6DDDE4EB,
         0xF4D4B551, 0x83D385C7, 0x136C9856, 0x646BA8C0, 0xFD62F97A, 0x8A65C9EC, 0x14015C4F, 0x63066CD9, 0xFA0F3D63, 0x8D080DF5, 0x3B6E20C8,
@@ -225,6 +234,12 @@ class GTA_SA_Virtual {
     static constexpr bool builtWithCUDA = true;
 #else
     static constexpr bool builtWithCUDA = false;
+#endif
+
+#if defined(BUILD_WITH_OPENCL)
+    static constexpr bool builtWithOpenCL = true;
+#else
+    static constexpr bool builtWithOpenCL = false;
 #endif
 
     uint64_t min_range = 0;  // Alphabetic sequence range min

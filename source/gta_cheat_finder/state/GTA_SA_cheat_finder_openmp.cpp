@@ -83,7 +83,7 @@ void GTA_SA_OPENMP::runner(const std::uint64_t i) {
 
         const uint64_t index = static_cast<uint64_t>(it - std::begin(GTA_SA_OPENMP::cheatList));
         results.emplace_back(i, std::string(tmp.data()), crc,
-                             GTA_SA_Virtual::cheat_list_name.at(static_cast<std::size_t>(index)));  // Save result: calculation position,
+                             GTA_SA_Virtual::cheatListName.at(static_cast<std::size_t>(index)));  // Save result: calculation position,
                                                                                                     // Alphabetic sequence, CRC, Cheat name
     }
 }

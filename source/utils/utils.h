@@ -1,5 +1,5 @@
-#ifndef UTILS_H
-#define UTILS_H
+#ifndef UTILS_CPP_HPP
+#define UTILS_CPP_HPP
 
 #define KB 1024u
 #define MB 1024u * 1024u
@@ -18,5 +18,20 @@
 #define __FUNCTION_NAME__ __func__
 #endif
 #endif
+
+/*
+#if __cplusplus >= 202002L
+#include <source_location>
+#include <string>
+#include <iostream>
+void debugLog(const std::string& message, const std::source_location& location = std::source_location::current())
+{
+    std::cout << "Debug: "
+              << location.file_name() << ':'
+              << location.line() << ' '
+              << message << std::endl;
+}
+#endif
+*/
 
 #endif  // UTILS_H

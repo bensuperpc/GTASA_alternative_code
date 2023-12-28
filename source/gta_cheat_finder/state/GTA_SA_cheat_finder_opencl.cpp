@@ -1,10 +1,18 @@
-#include "GTA_SA_cheat_finder_cuda.hpp"
+#include "GTA_SA_cheat_finder_opencl.hpp"
 
-GTA_SA_CUDA::GTA_SA_CUDA() {}
+#include <tuple>        // std::pair
+#include <utility>      // std::make_pair
+#include <vector>       // std::vector
+#include <algorithm>    // std::find
+#include <array>        // std::array
+#include <chrono>       // std::chrono
+#include <cmath>        // std::ceil
 
-GTA_SA_CUDA::~GTA_SA_CUDA() {}
+GTA_SA_OPENCL::GTA_SA_OPENCL() {}
 
-GTA_SA_CUDA& GTA_SA_CUDA::operator=(const GTA_SA_CUDA& other) {
+GTA_SA_OPENCL::~GTA_SA_OPENCL() {}
+
+GTA_SA_OPENCL& GTA_SA_OPENCL::operator=(const GTA_SA_OPENCL& other) {
     if (this != &other) {
         this->min_range = other.min_range;
         this->max_range = other.max_range;
@@ -14,8 +22,8 @@ GTA_SA_CUDA& GTA_SA_CUDA::operator=(const GTA_SA_CUDA& other) {
     return *this;
 }
 
-void GTA_SA_CUDA::run() {
-    std::cout << "Running with CUDA mode" << std::endl;
+void GTA_SA_OPENCL::run() {
+    std::cout << "Running with Opencl mode" << std::endl;
 
     std::cout << "Max thread support: " << GTA_SA_Virtual::max_thread_support() << std::endl;
     std::cout << "Running with: " << num_thread << " threads" << std::endl;
@@ -62,11 +70,11 @@ void GTA_SA_CUDA::run() {
     IsRunning = false;
 }
 
-void GTA_SA_CUDA::runner(const std::uint64_t) {
+void GTA_SA_OPENCL::runner(const std::uint64_t) {
     std::vector<uint32_t> jamcrc_results;
     std::vector<uint64_t> index_results;
 
-    my::cuda::launchKernel(jamcrc_results, index_results, min_range, max_range, cuda_block_size);
+    my::opencl::launchKernel(jamcrc_results, index_results, min_range, max_range, cuda_block_size);
 
     for (uint64_t i = 0; i < jamcrc_results.size(); ++i) {
         std::array<char, 29> tmpCUDA = {0};
@@ -75,9 +83,9 @@ void GTA_SA_CUDA::runner(const std::uint64_t) {
         std::reverse(tmpCUDA.data(),
                      tmpCUDA.data() + std::strlen(tmpCUDA.data()));  // Invert char array
 
-        const auto&& it = std::find(std::begin(GTA_SA_CUDA::cheatList), std::end(GTA_SA_CUDA::cheatList), jamcrc_results[i]);
+        const auto&& it = std::find(std::begin(GTA_SA_OPENCL::cheatList), std::end(GTA_SA_OPENCL::cheatList), jamcrc_results[i]);
 
-        const uint64_t index = static_cast<uint64_t>(it - std::begin(GTA_SA_CUDA::cheatList));
+        const uint64_t index = static_cast<uint64_t>(it - std::begin(GTA_SA_OPENCL::cheatList));
         results.emplace_back(index_results[i], std::string(tmpCUDA.data()), jamcrc_results[i],
                              GTA_SA_Virtual::cheatListName.at(static_cast<std::size_t>(index)));  // Save result: calculation position,
                                                                                                     // Alphabetic sequence, CRC, Cheat name

@@ -49,7 +49,7 @@
 namespace my::cuda {
 __host__ uint32_t jamcrc(const void* data, const uint64_t length, const uint32_t previousCrc32, const uint32_t cuda_block_size = 32);
 
-__host__ void launch_kernel(std::vector<uint32_t>& jamcrc_results,
+__host__ void launchKernel(std::vector<uint32_t>& jamcrc_results,
                             std::vector<uint64_t>& index_results,
                             const uint64_t min_range,
                             const uint64_t max_range,

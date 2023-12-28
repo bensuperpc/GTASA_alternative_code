@@ -1,20 +1,8 @@
-#ifndef CUDA_JAMCRC_H
-#define CUDA_JAMCRC_H
+#include "kernel.hpp"
 
-#include <cuda.h>
-#include <cuda_runtime.h>
-#include <stdio.h>
-
-typedef long int int32_cu;
-typedef unsigned long int uint32_cu;
-
-typedef long long int int64_cu;
-typedef unsigned long long int uint64_cu;
-
-__device__ uint32_t jamcrc1Byte(const void* data, uint16_t length, const uint32_t previousCrc32);
-__device__ uint32_t jamcrc4Byte(const void* data, uint16_t length, const uint32_t previousCrc32);
-
-__device__ const uint32_t crc32LookupTable[4][256] = {
+std::string my::opencl::kernel::jamcrc_table() {
+    return R"(
+    __global const uint crc32LookupTable[4][256] = {
         {0x00000000, 0x77073096, 0xEE0E612C, 0x990951BA, 0x076DC419, 0x706AF48F, 0xE963A535, 0x9E6495A3, 0x0EDB8832, 0x79DCB8A4, 0xE0D5E91E,
         0x97D2D988, 0x09B64C2B, 0x7EB17CBD, 0xE7B82D07, 0x90BF1D91, 0x1DB71064, 0x6AB020F2, 0xF3B97148, 0x84BE41DE, 0x1ADAD47D, 0x6DDDE4EB,
         0xF4D4B551, 0x83D385C7, 0x136C9856, 0x646BA8C0, 0xFD62F97A, 0x8A65C9EC, 0x14015C4F, 0x63066CD9, 0xFA0F3D63, 0x8D080DF5, 0x3B6E20C8,
@@ -115,5 +103,69 @@ __device__ const uint32_t crc32LookupTable[4][256] = {
         0x2C6FDE2C, 0x94D3B949, 0x090481F0, 0xB1B8E695, 0xA30D497B, 0x1BB12E1E, 0x43D23E48, 0xFB6E592D, 0xE9DBF6C3, 0x516791A6, 0xCCB0A91F,
         0x740CCE7A, 0x66B96194, 0xDE0506F1}
         };
+    )";
+}
 
-#endif
+std::string my::opencl::kernel::jamcrc1Byte() {
+    return R"(
+        __kernel void jamcrc1Byte(__global void* data, __global ulong *length, __global uint *previousCrc32, __global uint *result)
+        {
+            //size_t i = get_global_id(0);
+            uint crc = ~previousCrc32[0];
+            uchar* current = (uchar*)data;
+            ulong len = length[0];
+            while (len--) {
+                crc = (crc >> 8) ^ crc32LookupTable[0][(crc & 0xFF) ^ *current++];
+            }
+            result[0] = crc;
+        }
+    )";
+}
+
+std::string my::opencl::kernel::jamcrc4Byte() {
+    return R"(
+        __kernel void jamcrc4Byte(__global void* data, __global ulong *length, __global uint *previousCrc32, __global uint *result) {
+            //size_t i = get_global_id(0);
+            uint crc = ~previousCrc32[0];
+            uint* current = (uint*)data;
+            ulong len = length[0];
+            while (len >= 4) {
+                uint one = *current++ ^ crc;
+                crc = crc32LookupTable[0][(one >> 24) & 0xFF]
+                    ^ crc32LookupTable[1][(one >> 16) & 0xFF]
+                    ^ crc32LookupTable[2][(one >> 8) & 0xFF]
+                    ^ crc32LookupTable[3][one & 0xFF];
+                len -= 4;
+            }
+
+            uchar* currentChar = (uchar*)(current);
+            while (len-- != 0)
+                crc =(crc >> 8) ^ crc32LookupTable[0][(crc & 0xFF) ^ *currentChar++];
+
+            result[0] = crc;
+        }
+    )";
+}
+
+std::string my::opencl::kernel::generateString() {
+    return R"(
+        __constant uchar alpha[27] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        __kernel void GenerateStringKernel(__global uchar* array, __global ulong* n, __global ulong* terminatorIndex) {
+            ulong index = n[0];
+            // If index < 27
+            if (index < 26) {
+                array[0] = alpha[index];
+                *terminatorIndex = 1;
+                return;
+            }
+            // If index > 27
+            ulong i = 0;
+            while (index > 0) {
+                array[i] = alpha[(--index) % 26];
+                index /= 26;
+                ++i;
+            }
+            *terminatorIndex = i;
+        }
+    )";
+}

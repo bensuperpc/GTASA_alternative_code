@@ -31,13 +31,17 @@ find_package(OpenMP 2.0)
 
 find_package(CUDAToolkit 11.0)
 
-#find_package(OpenCL 2.0)
+find_package(OpenCL 2.0)
 
 # Download ThreadPool
 include(../../cmake/lib/threadpool.cmake)
 
 if (CUDAToolkit_FOUND)
   add_subdirectory(cuda)
+endif()
+
+if (OpenCL_FOUND)
+  add_subdirectory(opencl)
 endif()
 
 set(SRCS
@@ -59,6 +63,11 @@ if (CUDAToolkit_FOUND)
   list(APPEND HEADERS state/GTA_SA_cheat_finder_cuda.hpp)
 endif()
 
+if (OpenCL_FOUND)
+  list(APPEND SRCS state/GTA_SA_cheat_finder_opencl.cpp)
+  list(APPEND HEADERS state/GTA_SA_cheat_finder_opencl.hpp)
+endif()
+  
 add_library(GTA_SA_cheat_finder_lib ${SRCS} ${HEADERS})
 
 target_compile_features(GTA_SA_cheat_finder_lib PUBLIC cxx_std_20)
@@ -75,9 +84,15 @@ if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
 endif()
 
 if (CUDAToolkit_FOUND)
-  target_include_directories(GTA_SA_cheat_finder_lib PUBLIC ${CUDAToolkit_INCLUDE_DIRS})
-  target_link_libraries(GTA_SA_cheat_finder_lib PUBLIC CUDA::cudart)
-  target_link_libraries(GTA_SA_cheat_finder_lib PUBLIC cuda_lib)
+  target_include_directories(GTA_SA_cheat_finder_lib PRIVATE ${CUDAToolkit_INCLUDE_DIRS})
+  target_link_libraries(GTA_SA_cheat_finder_lib PRIVATE CUDA::cudart)
+  target_link_libraries(GTA_SA_cheat_finder_lib PRIVATE cuda_lib)
+endif()
+
+if (OpenCL_FOUND)
+  target_include_directories(GTA_SA_cheat_finder_lib PRIVATE ${OpenCL_INCLUDE_DIRS})
+  target_link_libraries(GTA_SA_cheat_finder_lib PRIVATE ${OpenCL_LIBRARIES})
+  target_link_libraries(GTA_SA_cheat_finder_lib PRIVATE opencl_lib)
 endif()
 
 set_target_properties(GTA_SA_cheat_finder_lib

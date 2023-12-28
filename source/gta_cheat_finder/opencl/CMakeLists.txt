@@ -20,43 +20,35 @@
 
 cmake_minimum_required(VERSION 3.14)
 project(
-    cuda_lib
+    opencl_lib
     VERSION 0.1.0
     DESCRIPTION "Krack cuda lib"
     HOMEPAGE_URL "https://github.com/bensuperpc"
     LANGUAGES C CXX
 )
 
-include(CheckLanguage)
-check_language(CUDA)
-if(CMAKE_CUDA_COMPILER)
-	enable_language(CUDA)
-endif()
-
-find_package(CUDAToolkit 11.0 REQUIRED)
+find_package(OpenCL 2.0 REQUIRED)
 
 set(SRCS
-    kernel.cu
-    wrapper.cu
-    jamcrc.cu
+    wrapper.cpp
+    kernel.cpp
 	)
 	
 set(HEADERS
-    kernel.cuh
     wrapper.hpp
-    jamcrc.cuh
+    kernel.hpp
     )
 
-add_library(cuda_lib ${SRCS} ${HEADERS})
+add_library(opencl_lib ${SRCS} ${HEADERS})
 
-#if (CUDAToolkit_FOUND)
-#target_include_directories(cuda_lib PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
-target_include_directories(cuda_lib PRIVATE ${CUDAToolkit_INCLUDE_DIRS})
-target_link_libraries(cuda_lib PRIVATE CUDA::cudart)
-#target_compile_features(cuda_lib PUBLIC cuda_std_17)
-#endif()
+#target_include_directories(opencl_lib PUBLIC ${OpenCL_INCLUDE_DIRS})
+#target_link_libraries(opencl_lib PUBLIC ${OpenCL_LIBRARIES})
 
-set_target_properties(cuda_lib
+#target_include_directories(opencl_lib PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+target_link_libraries(opencl_lib PRIVATE OpenCL::OpenCL)
+#target_compile_features(opencl_lib PUBLIC cuda_std_17)
+
+set_target_properties(opencl_lib
     PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"

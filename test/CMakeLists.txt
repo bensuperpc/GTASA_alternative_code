@@ -26,9 +26,11 @@ function(test_bench_generator TEST_BENCH_NAME IS_TEST ADD_TO_TEST)
     endif()
   
     if (CUDAToolkit_FOUND)
-      target_include_directories("${TEST_BENCH_NAME}" PRIVATE ${CUDAToolkit_INCLUDE_DIRS})
-      target_link_libraries("${TEST_BENCH_NAME}" PRIVATE CUDA::cudart)
-      target_link_libraries("${TEST_BENCH_NAME}" PRIVATE cuda_lib)
+        target_link_libraries("${TEST_BENCH_NAME}" PRIVATE cuda_lib)
+    endif()
+
+    if (OpenCL_FOUND)
+        target_link_libraries("${TEST_BENCH_NAME}" PRIVATE opencl_lib)
     endif()
 
     set_target_properties("${TEST_BENCH_NAME}"
@@ -61,7 +63,7 @@ if(NOT WIN32)
   # Add tests
   test_bench_generator(find_string_inv_test true true)
   test_bench_generator(jamcrc_test true true)
-  test_bench_generator(gta_sa_test true true)
+  test_bench_generator(gta_sa_test true false)
 
   # Add bench
   test_bench_generator(find_string_inv_bench false false)

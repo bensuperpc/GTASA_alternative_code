@@ -4,7 +4,6 @@
 #include <QEventLoop>
 #include <QObject>
 #include <QString>
-#include <iostream>
 #include <memory>
 #include <mutex>
 #include <thread>
@@ -15,6 +14,10 @@
 #ifdef BUILD_WITH_CUDA
 #include "GTA_SA_cheat_finder_cuda.hpp"
 #endif  // BUILD_WITH_CUDA
+
+#ifdef BUILD_WITH_OPENCL
+#include "GTA_SA_cheat_finder_opencl.hpp"
+#endif  // BUILD_WITH_OPENCL
 
 #include "GTA_SA_cheat_finder_openmp.hpp"
 #include "GTA_SA_cheat_finder_stdthread.hpp"
@@ -36,6 +39,7 @@ class GTA_SA_UI final : public QObject {
 
     Q_PROPERTY(bool builtWithOpenMP READ builtWithOpenMP CONSTANT)
     Q_PROPERTY(bool builtWithCUDA READ builtWithCUDA CONSTANT)
+    Q_PROPERTY(bool builtWithOpenCL READ builtWithOpenCL CONSTANT)
 
    public:
     GTA_SA_UI(QObject* parent = nullptr) = delete;
@@ -69,6 +73,8 @@ class GTA_SA_UI final : public QObject {
     bool builtWithOpenMP() const { return GTA_SA_Virtual::builtWithOpenMP; }
 
     bool builtWithCUDA() const { return GTA_SA_Virtual::builtWithCUDA; }
+
+    bool builtWithOpenCL() const { return GTA_SA_Virtual::builtWithOpenCL; }
 
    public slots:
     void setMinRangeValue(uint64_t value);

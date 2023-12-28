@@ -97,7 +97,11 @@ void GTA_SA_UI::set_calc_mode(uint64_t value) {
         }
         case 3: {
             std::cout << "Switching to OPENCL" << std::endl;
-            // tmp = std::move(std::make_unique<GTA_SA_OPENCL>());
+#if defined(BUILD_WITH_OPENCL)
+            tmp = std::move(std::make_unique<GTA_SA_OPENCL>());
+#else
+            std::cout << "OPENCL not supported" << std::endl;
+#endif
             break;
         }
         default: {
@@ -135,6 +139,10 @@ uint64_t GTA_SA_UI::calc_mode() const {
 #if defined(BUILD_WITH_CUDA)
     } else if (typeid(*selected_gta_sa).hash_code() == typeid(GTA_SA_CUDA).hash_code()) {
         return 2;
+#endif
+#if defined(BUILD_WITH_OPENCL)
+    } else if (typeid(*selected_gta_sa).hash_code() == typeid(GTA_SA_OPENCL).hash_code()) {
+        return 3;
 #endif
     } else {
         return 0;

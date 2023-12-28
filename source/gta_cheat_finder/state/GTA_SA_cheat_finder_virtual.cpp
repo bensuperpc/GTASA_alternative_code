@@ -15,7 +15,7 @@ auto GTA_SA_Virtual::jamcrc(std::string_view my_string, const uint32_t previousC
     uint64_t length = my_string.length();
     // process eight bytes at once
     while (static_cast<bool>(length--)) {
-        crc = (crc >> 8) ^ crc32_lookup[(crc & 0xFF) ^ *current++];
+        crc = (crc >> 8) ^ crc32LookupTable[(crc & 0xFF) ^ *current++];
     }
     return crc;
 }

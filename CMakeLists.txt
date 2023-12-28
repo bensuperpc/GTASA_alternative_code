@@ -21,19 +21,20 @@ include(cmake/variables.cmake)
 
 # ---- Enable Utile ----
 include(cmake/utile/ccache.cmake)
-# include(cmake/utile/lto.cmake)
 # include(cmake/utile/ninja_color.cmake)
-
-# For Qt
-set(CMAKE_AUTOUIC ON)
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
 
 find_package(QT NAMES Qt6 COMPONENTS Quick QuickControls2 Gui Core Qml Charts Multimedia Widgets Concurrent SerialPort)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Quick QuickControls2 Gui Core Qml Charts Multimedia Widgets Concurrent SerialPort)
 
 if (Qt${QT_VERSION_MAJOR}_FOUND)
-    qt_standard_project_setup(REQUIRES 6.5)
+    if (Qt${QT_VERSION_MAJOR}_VERSION VERSION_GREATER_EQUAL 6.5)
+        qt_standard_project_setup()
+    else()
+        set(CMAKE_AUTOMOC ON)
+        set(CMAKE_AUTORCC ON)
+        set(CMAKE_AUTOUIC ON)
+        set(CMAKE_AUTOSRC ON)
+    endif()
 else()
     message(WARNING "Qt${QT_VERSION_MAJOR} not found, project will be CLI only")
 endif()
@@ -42,7 +43,7 @@ find_package(OpenMP 2.0)
 
 find_package(CUDAToolkit 11.0)
 
-#find_package(OpenCL 2.0)
+find_package(OpenCL 2.0)
 
 # Download ThreadPool
 include(cmake/lib/threadpool.cmake)

@@ -34,7 +34,6 @@ __host__ uint32_t my::cuda::jamcrc(const void* data, const uint64_t length, cons
     cudaStream_t stream;
     cudaStreamCreateWithFlags(&stream, cudaStreamNonBlocking);
 
-    // Calculate length of the array with max_range and min_range
     uint64_t data_size = (length) * sizeof(char);
     uint32_t* data_cuda = nullptr;
 
@@ -53,25 +52,23 @@ __host__ uint32_t my::cuda::jamcrc(const void* data, const uint64_t length, cons
     memcpy(data_cuda, data, data_size);
     *result_cuda = 0;
 
-    uint64_t grid_size = static_cast<uint64_t>(ceil(static_cast<double>(1) / cuda_block_size));
-
-    dim3 threads(static_cast<uint32_t>(cuda_block_size), 1, 1);
-    dim3 grid(static_cast<uint32_t>(grid_size), 1, 1);
+    dim3 threads(1, 1, 1);
+    dim3 grid(1, 1, 1);
 
     jamcrcKernelWrapper<<<grid, threads, device, stream>>>(data_cuda, result_cuda, length, previousCrc32);
 
     cudaStreamSynchronize(stream);
     cudaDeviceSynchronize();
 
-    // std::cout << "result_cuda: " << *result_cuda << std::endl;
-
+    uint32_t result = *result_cuda;
     cudaFree(data_cuda);
+    cudaFree(result_cuda);
     cudaStreamDestroy(stream);
 
-    return *result_cuda;
+    return result;
 }
 
-__host__ void my::cuda::launch_kernel(std::vector<uint32_t>& jamcrc_results,
+__host__ void my::cuda::launchKernel(std::vector<uint32_t>& jamcrc_results,
                                       std::vector<uint64_t>& index_results,
                                       const uint64_t min_range,
                                       const uint64_t max_range,
@@ -120,6 +117,11 @@ __host__ void my::cuda::launch_kernel(std::vector<uint32_t>& jamcrc_results,
     cudaMemPrefetchAsync(jamcrcResultsPtr, jamcrcResultsSize, device, stream);
     cudaMemPrefetchAsync(indexResultsPtr, indexResultsSize, device, stream);
     cudaMemPrefetchAsync(ResultsSize, 1 * sizeof(uint32_t), device, stream);
+
+    if (jamcrcResultsPtr == nullptr || indexResultsPtr == nullptr || ResultsSize == nullptr) {
+        std::cout << "Error: Could not allocate memory on GPU" << std::endl;
+        return;
+    }
 
     uint64_t rest = static_cast<uint64_t>((calcRange / cuda_block_size) + (calcRange % cuda_block_size));
     uint32_t cubeRoot = static_cast<uint32_t>(std::ceil(std::cbrt(static_cast<long double>(rest))));
