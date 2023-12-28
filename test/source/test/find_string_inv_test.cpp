@@ -16,7 +16,7 @@ TEST(jamcrc, basic1) {
 
     GTA_SA_OPENMP gtaSA = GTA_SA_OPENMP();
 
-    gtaSA.find_string_inv(tmp1.data(), 0);
+    gtaSA.generateString(tmp1.data(), 0);
 
     EXPECT_NE("", static_cast<std::string>(tmp1.data()));
     EXPECT_NE("", static_cast<std::string>(tmp1.data()));
@@ -32,7 +32,7 @@ TEST(jamcrc, basic2) {
 
     GTA_SA_OPENMP gtaSA = GTA_SA_OPENMP();
 
-    gtaSA.find_string_inv(tmp1.data(), 255);
+    gtaSA.generateString(tmp1.data(), 255);
 
     EXPECT_NE("", static_cast<std::string>(tmp1.data()));
     EXPECT_NE("A", static_cast<std::string>(tmp1.data()));
@@ -48,7 +48,7 @@ TEST(jamcrc, basic3) {
 
     GTA_SA_OPENMP gtaSA = GTA_SA_OPENMP();
 
-    gtaSA.find_string_inv(tmp1.data(), 40000);
+    gtaSA.generateString(tmp1.data(), 40000);
 
     EXPECT_NE("", static_cast<std::string>(tmp1.data()));
     EXPECT_NE("A", static_cast<std::string>(tmp1.data()));
@@ -64,7 +64,7 @@ TEST(jamcrc, basic4) {
 
     GTA_SA_OPENMP gtaSA = GTA_SA_OPENMP();
 
-    gtaSA.find_string_inv(tmp1.data(), 1000000000);
+    gtaSA.generateString(tmp1.data(), 1000000000);
 
     EXPECT_NE("", static_cast<std::string>(tmp1.data()));
     EXPECT_NE("A", static_cast<std::string>(tmp1.data()));
@@ -80,7 +80,7 @@ TEST(jamcrc, basic5) {
 
     GTA_SA_OPENMP gtaSA = GTA_SA_OPENMP();
 
-    gtaSA.find_string_inv(tmp1.data(), 1000000000000);
+    gtaSA.generateString(tmp1.data(), 1000000000000);
 
     EXPECT_NE("", static_cast<std::string>(tmp1.data()));
     EXPECT_NE("A", static_cast<std::string>(tmp1.data()));

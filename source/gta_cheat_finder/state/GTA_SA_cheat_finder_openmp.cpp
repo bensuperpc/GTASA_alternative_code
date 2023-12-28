@@ -6,10 +6,10 @@ GTA_SA_OPENMP::~GTA_SA_OPENMP() {}
 
 GTA_SA_OPENMP& GTA_SA_OPENMP::operator=(const GTA_SA_OPENMP& other) {
     if (this != &other) {
-        this->min_range = other.min_range;
-        this->max_range = other.max_range;
-        this->num_thread = other.num_thread;
-        this->cuda_block_size = other.cuda_block_size;
+        this->minRange = other.minRange;
+        this->maxRange = other.maxRange;
+        this->threadCount = other.threadCount;
+        this->cudaBlockSize = other.cudaBlockSize;
     }
     return *this;
 }
@@ -17,50 +17,50 @@ GTA_SA_OPENMP& GTA_SA_OPENMP::operator=(const GTA_SA_OPENMP& other) {
 void GTA_SA_OPENMP::run() {
     std::cout << "Running with OpenMP mode" << std::endl;
 
-    std::cout << "Max thread support: " << GTA_SA_Virtual::max_thread_support() << std::endl;
-    std::cout << "Running with: " << num_thread << " threads" << std::endl;
+    std::cout << "Max thread support: " << GTA_SA_Virtual::maxThreadSupport() << std::endl;
+    std::cout << "Running with: " << threadCount << " threads" << std::endl;
 
-    if (min_range > max_range) {
-        std::cout << "Min range value: '" << min_range << "' can't be greater than Max range value: '" << max_range << "'" << std::endl;
+    if (minRange > maxRange) {
+        std::cout << "Min range value: '" << minRange << "' can't be greater than Max range value: '" << maxRange << "'" << std::endl;
         return;
     }
 
-    if ((max_range - min_range) < 1) {
+    if ((maxRange - minRange) < 1) {
         std::cout << "Search range is too small." << std::endl;
-        std::cout << "Min range value: '" << min_range << "' Max range value: '" << max_range << "'" << std::endl;
+        std::cout << "Min range value: '" << minRange << "' Max range value: '" << maxRange << "'" << std::endl;
         return;
     }
-    std::cout << "Number of calculations: " << (max_range - min_range) << std::endl;
+    std::cout << "Number of calculations: " << (maxRange - minRange) << std::endl;
 
     IsRunning = true;
 
     std::array<char, 29> tmp1 = {0};
     std::array<char, 29> tmp2 = {0};
 
-    results.reserve((max_range - min_range) / 20000000 + 1);
+    results.reserve((maxRange - minRange) / 20000000 + 1);
 
-    this->find_string_inv(tmp1.data(), min_range);
-    this->find_string_inv(tmp2.data(), max_range);
+    this->generateString(tmp1.data(), minRange);
+    this->generateString(tmp2.data(), maxRange);
     std::cout << "From: " << tmp1.data() << " to: " << tmp2.data() << " Alphabetic sequence" << std::endl;
-    begin_time = std::chrono::high_resolution_clock::now();
+    beginTime = std::chrono::high_resolution_clock::now();
 
-    omp_set_num_threads(static_cast<int>(num_thread));
+    omp_set_num_threads(static_cast<int>(threadCount));
 
 #ifdef _MSC_VER
     static std::int64_t i = 0;  // OpenMP (2.0) on Windows doesn't support unsigned variable
 #pragma omp parallel for shared(results) schedule(dynamic)
-    for (i = static_cast<std::int64_t>(min_range); i <= static_cast<std::int64_t>(max_range); i++) {
+    for (i = static_cast<std::int64_t>(minRange); i <= static_cast<std::int64_t>(maxRange); i++) {
         cpu_runner(static_cast<std::int64_t>(i));
     }
 #else
     std::uint64_t i = 0;
 #pragma omp parallel for schedule(auto) shared(results)
-    for (i = min_range; i <= max_range; i++) {
+    for (i = minRange; i <= maxRange; i++) {
         runner(i);
     }
 #endif
 
-    end_time = std::chrono::high_resolution_clock::now();
+    endTime = std::chrono::high_resolution_clock::now();
 
     std::sort(results.begin(), results.end(), [](const result& a, const result& b) { return a.index < b.index; });
 
@@ -70,7 +70,7 @@ void GTA_SA_OPENMP::run() {
 
 void GTA_SA_OPENMP::runner(const std::uint64_t i) {
     std::array<char, 29> tmp = {0};
-    this->find_string_inv(tmp.data(),
+    this->generateString(tmp.data(),
                           i);                       // Generate Alphabetic sequence from uint64_t
                                                     // value, A=1, Z=27, AA = 28, AB = 29
     const uint32_t crc = this->jamcrc(tmp.data());  // JAMCRC

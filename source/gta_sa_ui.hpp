@@ -31,7 +31,7 @@ class GTA_SA_UI final : public QObject {
     Q_PROPERTY(uint64_t maxRangeValue READ maxRangeValue WRITE setMaxRangeValue NOTIFY maxRangeValueChanged)
 
     Q_PROPERTY(uint32_t nbrThreadValue READ nbrThreadValue WRITE setNbrThreadValue NOTIFY nbrThreadValueChanged)
-    Q_PROPERTY(uint64_t cuda_block_size READ cuda_block_size WRITE set_cuda_block_size NOTIFY cuda_block_size_changed)
+    Q_PROPERTY(uint64_t cudaBlockSize READ cudaBlockSize WRITE set_cuda_block_size NOTIFY cuda_block_size_changed)
 
     Q_PROPERTY(QString buttonValue READ buttonValue WRITE setButtonValue NOTIFY buttonValueChanged)
 
@@ -50,12 +50,12 @@ class GTA_SA_UI final : public QObject {
     std::unique_ptr<GTA_SA_Virtual> selected_gta_sa;
     TableModel& _tableModel;
 
-    uint64_t minRangeValue() const { return selected_gta_sa->min_range; }
-    uint64_t maxRangeValue() const { return selected_gta_sa->max_range; }
+    uint64_t minRangeValue() const { return selected_gta_sa->minRange; }
+    uint64_t maxRangeValue() const { return selected_gta_sa->maxRange; }
 
-    uint32_t nbrThreadValue() const { return selected_gta_sa->num_thread; }
+    uint32_t nbrThreadValue() const { return selected_gta_sa->threadCount; }
 
-    uint64_t cuda_block_size() const { return selected_gta_sa->cuda_block_size; }
+    uint64_t cudaBlockSize() const { return selected_gta_sa->cudaBlockSize; }
 
     uint64_t calc_mode() const;
 
@@ -68,7 +68,7 @@ class GTA_SA_UI final : public QObject {
     void runOpThread();
 
     Q_INVOKABLE
-    uint64_t max_thread_support() { return GTA_SA_Virtual::max_thread_support(); }
+    uint64_t maxThreadSupport() { return GTA_SA_Virtual::maxThreadSupport(); }
 
     bool builtWithOpenMP() const { return GTA_SA_Virtual::builtWithOpenMP; }
 

@@ -31,7 +31,7 @@ static void find_string_inv_bench(benchmark::State& state) {
     benchmark::DoNotOptimize(tmp);
     benchmark::DoNotOptimize(gtaSA);
     for (auto _ : state) {
-        gtaSA.find_string_inv(tmp.data(), range);
+        gtaSA.generateString(tmp.data(), range);
         benchmark::ClobberMemory();
     }
     state.SetItemsProcessed(state.iterations() * 1);

@@ -6,10 +6,10 @@ GTA_SA_CUDA::~GTA_SA_CUDA() {}
 
 GTA_SA_CUDA& GTA_SA_CUDA::operator=(const GTA_SA_CUDA& other) {
     if (this != &other) {
-        this->min_range = other.min_range;
-        this->max_range = other.max_range;
-        this->num_thread = other.num_thread;
-        this->cuda_block_size = other.cuda_block_size;
+        this->minRange = other.minRange;
+        this->maxRange = other.maxRange;
+        this->threadCount = other.threadCount;
+        this->cudaBlockSize = other.cudaBlockSize;
     }
     return *this;
 }
@@ -17,17 +17,17 @@ GTA_SA_CUDA& GTA_SA_CUDA::operator=(const GTA_SA_CUDA& other) {
 void GTA_SA_CUDA::run() {
     std::cout << "Running with CUDA mode" << std::endl;
 
-    std::cout << "Max thread support: " << GTA_SA_Virtual::max_thread_support() << std::endl;
-    std::cout << "Running with: " << num_thread << " threads" << std::endl;
+    std::cout << "Max thread support: " << GTA_SA_Virtual::maxThreadSupport() << std::endl;
+    std::cout << "Running with: " << threadCount << " threads" << std::endl;
 
-    if (min_range > max_range) {
-        std::cout << "Min range value: '" << min_range << "' can't be greater than Max range value: '" << max_range << "'" << std::endl;
+    if (minRange > maxRange) {
+        std::cout << "Min range value: '" << minRange << "' can't be greater than Max range value: '" << maxRange << "'" << std::endl;
         return;
     }
 
-    if ((max_range - min_range) < 1) {
+    if ((maxRange - minRange) < 1) {
         std::cout << "Search range is too small." << std::endl;
-        std::cout << "Min range value: '" << min_range << "' Max range value: '" << max_range << "'" << std::endl;
+        std::cout << "Min range value: '" << minRange << "' Max range value: '" << maxRange << "'" << std::endl;
         return;
     }
 
@@ -36,25 +36,25 @@ void GTA_SA_CUDA::run() {
     std::array<char, 29> tmp1 = {0};
     std::array<char, 29> tmp2 = {0};
 
-    results.reserve((max_range - min_range) / 20000000 + 1);
+    results.reserve((maxRange - minRange) / 20000000 + 1);
 
-    std::cout << "Number of calculations: " << (max_range - min_range) << std::endl;
+    std::cout << "Number of calculations: " << (maxRange - minRange) << std::endl;
 
-    this->find_string_inv(tmp1.data(), min_range);
-    this->find_string_inv(tmp2.data(), max_range);
+    this->generateString(tmp1.data(), minRange);
+    this->generateString(tmp2.data(), maxRange);
     std::cout << "From: " << tmp1.data() << " to: " << tmp2.data() << " Alphabetic sequence" << std::endl;
 
-    std::cout << "Rinimum range: " << std::dec << min_range << std::endl;
-    std::cout << "Maximum range: " << std::dec << max_range << std::endl;
-    std::cout << "Calculation range: " << std::dec << (max_range - min_range) << std::endl;
+    std::cout << "Rinimum range: " << std::dec << minRange << std::endl;
+    std::cout << "Maximum range: " << std::dec << maxRange << std::endl;
+    std::cout << "Calculation range: " << std::dec << (maxRange - minRange) << std::endl;
 
-    if ((max_range - min_range) < cuda_block_size) {
-        std::cout << "Number of calculations is less than cuda_block_size" << std::endl;
+    if ((maxRange - minRange) < cudaBlockSize) {
+        std::cout << "Number of calculations is less than cudaBlockSize" << std::endl;
     }    
 
-    begin_time = std::chrono::high_resolution_clock::now();
+    beginTime = std::chrono::high_resolution_clock::now();
     runner(0);
-    end_time = std::chrono::high_resolution_clock::now();
+    endTime = std::chrono::high_resolution_clock::now();
 
     std::sort(results.begin(), results.end(), [](const result& a, const result& b) { return a.index < b.index; });
 
@@ -66,12 +66,12 @@ void GTA_SA_CUDA::runner(const std::uint64_t) {
     std::vector<uint32_t> jamcrc_results;
     std::vector<uint64_t> index_results;
 
-    my::cuda::launchKernel(jamcrc_results, index_results, min_range, max_range, cuda_block_size);
+    my::cuda::launchKernel(jamcrc_results, index_results, minRange, maxRange, cudaBlockSize);
 
     for (uint64_t i = 0; i < jamcrc_results.size(); ++i) {
         std::array<char, 29> tmpCUDA = {0};
 
-        this->find_string_inv(tmpCUDA.data(), index_results[i]);
+        this->generateString(tmpCUDA.data(), index_results[i]);
         std::reverse(tmpCUDA.data(),
                      tmpCUDA.data() + std::strlen(tmpCUDA.data()));  // Invert char array
 

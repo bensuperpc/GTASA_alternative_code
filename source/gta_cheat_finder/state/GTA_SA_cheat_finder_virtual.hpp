@@ -78,11 +78,11 @@ class GTA_SA_Virtual {
      * \brief Generate Alphabetic sequence from uint64_t value, A=1, Z=27, AA =
      * 28, AB = 29 \param n index in base 26 \param array return array
      */
-    void find_string_inv(char* array, uint64_t n) const noexcept;
+    void generateString(char* array, uint64_t n) const noexcept;
 
-    static uint32_t max_thread_support();
+    static uint32_t maxThreadSupport();
 
-    uint32_t num_thread = GTA_SA_Virtual::max_thread_support();
+    uint32_t threadCount = GTA_SA_Virtual::maxThreadSupport();
 
     static constexpr std::array<char, 27> alpha{"ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
 
@@ -217,12 +217,12 @@ class GTA_SA_Virtual {
 
     std::vector<result> results = {};
 
-    std::chrono::high_resolution_clock::time_point begin_time = std::chrono::high_resolution_clock::now();
+    std::chrono::high_resolution_clock::time_point beginTime = std::chrono::high_resolution_clock::now();
 
-    std::chrono::high_resolution_clock::time_point end_time = std::chrono::high_resolution_clock::now();
+    std::chrono::high_resolution_clock::time_point endTime = std::chrono::high_resolution_clock::now();
 
     // Max 1024 threads per block with CUDA 2.0 and above
-    uint64_t cuda_block_size = 64;
+    uint64_t cudaBlockSize = 64;
 
 #if defined(_OPENMP)
     static constexpr bool builtWithOpenMP = true;
@@ -242,8 +242,8 @@ class GTA_SA_Virtual {
     static constexpr bool builtWithOpenCL = false;
 #endif
 
-    uint64_t min_range = 0;  // Alphabetic sequence range min
-    uint64_t max_range = 0;
+    uint64_t minRange = 0;
+    uint64_t maxRange = 0;
 
     bool IsRunning = false;
 };

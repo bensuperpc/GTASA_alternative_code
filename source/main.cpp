@@ -44,8 +44,8 @@ int main(int argc, char* argv[]) {
     std::vector<std::string> args(argv + 1, argv + argc);
 
     uint64_t calc_mode = 0;
-    uint64_t min_range = 0;
-    uint64_t max_range = 0;
+    uint64_t minRange = 0;
+    uint64_t maxRange = 0;
 
     for (auto i = args.begin(); i != args.end(); ++i) {
         if (*i == "-h" || *i == "--help") {
@@ -57,13 +57,13 @@ int main(int argc, char* argv[]) {
         }
         if (*i == "--min") {
             std::istringstream iss(*++i);
-            if (!(iss >> min_range)) {
+            if (!(iss >> minRange)) {
                 std::cout << "Error, non-numeric character !" << std::endl;
                 return EXIT_FAILURE;
             }
         } else if (*i == "--max") {
             std::istringstream iss(*++i);
-            if (!(iss >> max_range)) {
+            if (!(iss >> maxRange)) {
                 std::cout << "Error, non-numeric character !" << std::endl;
                 return EXIT_FAILURE;
             }
@@ -110,8 +110,8 @@ int main(int argc, char* argv[]) {
         return EXIT_FAILURE;
     }
 
-    // gtaSA->num_thread
-    // gtaSA->cuda_block_size
+    // gtaSA->threadCount
+    // gtaSA->cudaBlockSize
 
 #if __has_include(<QString>)
     if (cli_only == false) {

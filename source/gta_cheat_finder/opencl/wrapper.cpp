@@ -161,9 +161,9 @@ uint32_t my::opencl::jamcrc(const void* data, const uint64_t length, const uint3
 
 void my::opencl::launchKernel(std::vector<uint32_t>& jamcrc_results,
                                 std::vector<uint64_t>& index_results,
-                                const uint64_t min_range,
-                                const uint64_t max_range,
-                                const uint64_t cuda_block_size) {
+                                const uint64_t minRange,
+                                const uint64_t maxRange,
+                                const uint64_t cudaBlockSize) {
     
     
     }

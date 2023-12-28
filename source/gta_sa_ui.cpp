@@ -17,7 +17,7 @@ void GTA_SA_UI::setMinRangeValue(uint64_t value) {
         return;
     }
 
-    selected_gta_sa->min_range = value;
+    selected_gta_sa->minRange = value;
     emit minRangeValueChanged(value);
 }
 
@@ -29,7 +29,7 @@ void GTA_SA_UI::setMaxRangeValue(uint64_t value) {
         return;
     }
 
-    selected_gta_sa->max_range = value;
+    selected_gta_sa->maxRange = value;
     emit maxRangeValueChanged(value);
 }
 
@@ -41,7 +41,7 @@ void GTA_SA_UI::setNbrThreadValue(uint32_t value) {
         return;
     }
 
-    selected_gta_sa->num_thread = value;
+    selected_gta_sa->threadCount = value;
     emit nbrThreadValueChanged(value);
 }
 
@@ -53,7 +53,7 @@ void GTA_SA_UI::set_cuda_block_size(uint64_t value) {
         return;
     }
 
-    selected_gta_sa->cuda_block_size = value;
+    selected_gta_sa->cudaBlockSize = value;
     emit cuda_block_size_changed(value);
 }
 
@@ -121,10 +121,10 @@ void GTA_SA_UI::set_calc_mode(uint64_t value) {
         return;
     }
 
-    tmp->min_range = selected_gta_sa->min_range;
-    tmp->max_range = selected_gta_sa->max_range;
-    tmp->num_thread = selected_gta_sa->num_thread;
-    tmp->cuda_block_size = selected_gta_sa->cuda_block_size;
+    tmp->minRange = selected_gta_sa->minRange;
+    tmp->maxRange = selected_gta_sa->maxRange;
+    tmp->threadCount = selected_gta_sa->threadCount;
+    tmp->cudaBlockSize = selected_gta_sa->cudaBlockSize;
 
     this->selected_gta_sa = std::move(tmp);
 

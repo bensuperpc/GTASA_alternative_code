@@ -151,7 +151,7 @@ Page {
                                         value: GTA_SASingleton.nbrThreadValue
                                         stepSize: 1
                                         from: 1
-                                        to: GTA_SASingleton.max_thread_support()
+                                        to: GTA_SASingleton.maxThreadSupport()
                                         snapMode: Slider.SnapAlways
                                     }
 
@@ -181,13 +181,13 @@ Page {
                                     }
                                     Binding {
                                         target: GTA_SASingleton
-                                        property: "cuda_block_size"
+                                        property: "cudaBlockSize"
                                         value: cuda_block_size_slider.value
                                     }
                                     Label {
-                                        text: (GTA_SASingleton.cuda_block_size
-                                            >= 100) ? GTA_SASingleton.cuda_block_size : " "
-                                                        + GTA_SASingleton.cuda_block_size
+                                        text: (GTA_SASingleton.cudaBlockSize
+                                            >= 100) ? GTA_SASingleton.cudaBlockSize : " "
+                                                        + GTA_SASingleton.cudaBlockSize
                                     }
                                 }
                             }

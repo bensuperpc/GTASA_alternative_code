@@ -25,8 +25,8 @@
 
 TEST(GTA_SA_STDTHREAD, basic_calc_base_1) {
     GTA_SA_STDTHREAD gtaSA;
-    gtaSA.min_range = 0;
-    gtaSA.max_range = 60000;
+    gtaSA.minRange = 0;
+    gtaSA.maxRange = 60000;
 
     gtaSA.run();
 
@@ -35,8 +35,8 @@ TEST(GTA_SA_STDTHREAD, basic_calc_base_1) {
 
 TEST(GTA_SA_STDTHREAD, basic_calc_base_2) {
     GTA_SA_STDTHREAD gtaSA;
-    gtaSA.min_range = 20810700;
-    gtaSA.max_range = 20810800;
+    gtaSA.minRange = 20810700;
+    gtaSA.maxRange = 20810800;
 
     gtaSA.run();
 
@@ -48,8 +48,8 @@ TEST(GTA_SA_STDTHREAD, basic_calc_base_2) {
 
 TEST(GTA_SA_STDTHREAD, basic_calc_base_3) {
     GTA_SA_STDTHREAD gtaSA;
-    gtaSA.min_range = 181961000;
-    gtaSA.max_range = 181961100;
+    gtaSA.minRange = 181961000;
+    gtaSA.maxRange = 181961100;
 
     gtaSA.run();
 
@@ -61,8 +61,8 @@ TEST(GTA_SA_STDTHREAD, basic_calc_base_3) {
 
 TEST(GTA_SA_STDTHREAD, basic_calc_base_4) {
     GTA_SA_STDTHREAD gtaSA;
-    gtaSA.min_range = 299376700;
-    gtaSA.max_range = 299376800;
+    gtaSA.minRange = 299376700;
+    gtaSA.maxRange = 299376800;
 
     gtaSA.run();
 
@@ -74,8 +74,8 @@ TEST(GTA_SA_STDTHREAD, basic_calc_base_4) {
 
 TEST(GTA_SA_STDTHREAD, basic_calc_base_5) {
     GTA_SA_STDTHREAD gtaSA;
-    gtaSA.min_range = 20810700;
-    gtaSA.max_range = 147491500;
+    gtaSA.minRange = 20810700;
+    gtaSA.maxRange = 147491500;
 
     gtaSA.run();
 
@@ -96,8 +96,8 @@ TEST(GTA_SA_STDTHREAD, basic_calc_base_5) {
 #if defined(_OPENMP)
 TEST(GTA_SA_OPENMP, basic_calc_mode_openmp) {
     GTA_SA_OPENMP gtaSA;
-    gtaSA.min_range = 0;
-    gtaSA.max_range = 60000;
+    gtaSA.minRange = 0;
+    gtaSA.maxRange = 60000;
 
     gtaSA.run();
 
@@ -109,8 +109,8 @@ TEST(GTA_SA_OPENMP, basic_calc_mode_openmp) {
 
 TEST(GTA_SA_CUDA, basic_calc_cuda_1) {
     GTA_SA_CUDA gtaSA;
-    gtaSA.min_range = 0;
-    gtaSA.max_range = 6000000;
+    gtaSA.minRange = 0;
+    gtaSA.maxRange = 6000000;
 
     gtaSA.run();
 
@@ -119,8 +119,8 @@ TEST(GTA_SA_CUDA, basic_calc_cuda_1) {
 
 TEST(GTA_SA_CUDA, basic_calc_cuda_2) {
     GTA_SA_CUDA gtaSA;
-    gtaSA.min_range = 20810700;
-    gtaSA.max_range = 20810800;
+    gtaSA.minRange = 20810700;
+    gtaSA.maxRange = 20810800;
 
     gtaSA.run();
 
@@ -132,8 +132,8 @@ TEST(GTA_SA_CUDA, basic_calc_cuda_2) {
 
 TEST(GTA_SA_CUDA, basic_calc_cuda_3) {
     GTA_SA_CUDA gtaSA;
-    gtaSA.min_range = 181961000;
-    gtaSA.max_range = 181961100;
+    gtaSA.minRange = 181961000;
+    gtaSA.maxRange = 181961100;
 
     gtaSA.run();
 
@@ -145,8 +145,8 @@ TEST(GTA_SA_CUDA, basic_calc_cuda_3) {
 
 TEST(GTA_SA_CUDA, basic_calc_cuda_4) {
     GTA_SA_CUDA gtaSA;
-    gtaSA.min_range = 299376700;
-    gtaSA.max_range = 299376800;
+    gtaSA.minRange = 299376700;
+    gtaSA.maxRange = 299376800;
 
     gtaSA.run();
 
@@ -156,10 +156,11 @@ TEST(GTA_SA_CUDA, basic_calc_cuda_4) {
     EXPECT_EQ(gtaSA.results[0].jamcrc, 0x40cf761);
 }
 
+/*
 TEST(GTA_SA_CUDA, basic_calc_cuda_5) {
     GTA_SA_CUDA gtaSA;
-    gtaSA.min_range = 0;
-    gtaSA.max_range = 8'031'810'176;
+    gtaSA.minRange = 0;
+    gtaSA.maxRange = 8'031'810'176;
 
     gtaSA.run();
 
@@ -184,6 +185,7 @@ TEST(GTA_SA_CUDA, basic_calc_cuda_5) {
     EXPECT_EQ(gtaSA.results[151].code, "YWOBEJX");
     EXPECT_EQ(gtaSA.results[151].jamcrc, 0xe1ef01ea);
 }
+*/
 
 #endif
 

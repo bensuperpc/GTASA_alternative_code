@@ -12,8 +12,8 @@ static void find_string_inv_bench(benchmark::State& state) {
     auto range = state.range(0);
 
     GTA_SA gtaSA;
-    gtaSA.min_range = 0;
-    gtaSA.max_range = 0x1000;
+    gtaSA.minRange = 0;
+    gtaSA.maxRange = 0x1000;
     gtaSA.calc_mode = 2;
 
     gtaSA.run();

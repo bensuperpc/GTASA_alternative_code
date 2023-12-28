@@ -24,7 +24,7 @@ auto GTA_SA_Virtual::jamcrc(std::string_view my_string, const uint32_t previousC
  * \brief Generate Alphabetic sequence from uint64_t value, A=1, Z=27, AA =
  * 28, AB = 29 \param n index in base 26 \param array return array
  */
-void GTA_SA_Virtual::find_string_inv(char* array, uint64_t n) const noexcept {
+void GTA_SA_Virtual::generateString(char* array, uint64_t n) const noexcept {
     // If n < 27
     if (n < 26) [[unlikely]] {
         array[0] = alpha[static_cast<std::size_t>(n)];
@@ -43,7 +43,7 @@ void GTA_SA_Virtual::clear() {
     results.clear();
 }
 
-uint32_t GTA_SA_Virtual::max_thread_support() {
+uint32_t GTA_SA_Virtual::maxThreadSupport() {
 #if defined(_OPENMP)
     return static_cast<uint32_t>(omp_get_max_threads());
 #else
@@ -64,12 +64,12 @@ void GTA_SA_Virtual::printResult() const {
                   << std::setw(display_val) << "0x" << std::hex << result.jamcrc << std::setw(display_val + 20) << result.associated_code
                   << std::endl;
     }
-    std::cout << "Time: " << std::chrono::duration_cast<std::chrono::duration<double>>(end_time - begin_time).count() << " sec"
+    std::cout << "Time: " << std::chrono::duration_cast<std::chrono::duration<double>>(endTime - beginTime).count() << " sec"
               << std::endl;  // Display time
 
     std::cout << "This program execute: " << std::fixed
-              << (static_cast<double>(max_range - min_range) /
-                  std::chrono::duration_cast<std::chrono::duration<double>>(end_time - begin_time).count()) /
+              << (static_cast<double>(maxRange - minRange) /
+                  std::chrono::duration_cast<std::chrono::duration<double>>(endTime - beginTime).count()) /
                      1000000
               << " MOps/sec" << std::endl;  // Display perf
     std::cout << "" << std::endl;
