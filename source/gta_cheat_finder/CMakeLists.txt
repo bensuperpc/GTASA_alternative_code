@@ -84,15 +84,15 @@ if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
 endif()
 
 if (CUDAToolkit_FOUND)
-  target_include_directories(GTA_SA_cheat_finder_lib PRIVATE ${CUDAToolkit_INCLUDE_DIRS})
-  target_link_libraries(GTA_SA_cheat_finder_lib PRIVATE CUDA::cudart)
-  target_link_libraries(GTA_SA_cheat_finder_lib PRIVATE cuda_lib)
+  target_include_directories(GTA_SA_cheat_finder_lib PUBLIC ${CUDAToolkit_INCLUDE_DIRS})
+  target_link_libraries(GTA_SA_cheat_finder_lib PUBLIC CUDA::cudart)
+  target_link_libraries(GTA_SA_cheat_finder_lib PUBLIC cuda_lib)
 endif()
 
 if (OpenCL_FOUND)
-  target_include_directories(GTA_SA_cheat_finder_lib PRIVATE ${OpenCL_INCLUDE_DIRS})
-  target_link_libraries(GTA_SA_cheat_finder_lib PRIVATE ${OpenCL_LIBRARIES})
-  target_link_libraries(GTA_SA_cheat_finder_lib PRIVATE opencl_lib)
+  target_include_directories(GTA_SA_cheat_finder_lib PUBLIC ${OpenCL_INCLUDE_DIRS})
+  target_link_libraries(GTA_SA_cheat_finder_lib PUBLIC ${OpenCL_LIBRARIES})
+  target_link_libraries(GTA_SA_cheat_finder_lib PUBLIC opencl_lib)
 endif()
 
 set_target_properties(GTA_SA_cheat_finder_lib

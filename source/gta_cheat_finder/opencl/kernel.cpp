@@ -110,10 +110,11 @@ std::string my::opencl::kernel::jamcrc1Byte() {
     return R"(
         __kernel void jamcrc1Byte(__global void* data, __global ulong *length, __global uint *previousCrc32, __global uint *result)
         {
-            //size_t i = get_global_id(0);
-            uint crc = ~previousCrc32[0];
+            __local uint crc;
+            crc = ~previousCrc32[0];
             uchar* current = (uchar*)data;
-            ulong len = length[0];
+            __local ulong len;
+            len = length[0];
             while (len--) {
                 crc = (crc >> 8) ^ crc32LookupTable[0][(crc & 0xFF) ^ *current++];
             }
@@ -126,9 +127,11 @@ std::string my::opencl::kernel::jamcrc4Byte() {
     return R"(
         __kernel void jamcrc4Byte(__global void* data, __global ulong *length, __global uint *previousCrc32, __global uint *result) {
             //size_t i = get_global_id(0);
-            uint crc = ~previousCrc32[0];
+            __local uint crc;
+            crc = ~previousCrc32[0];
             uint* current = (uint*)data;
-            ulong len = length[0];
+            __local ulong len;
+            len = length[0];
             while (len >= 4) {
                 uint one = *current++ ^ crc;
                 crc = crc32LookupTable[0][(one >> 24) & 0xFF]
@@ -150,7 +153,7 @@ std::string my::opencl::kernel::jamcrc4Byte() {
 std::string my::opencl::kernel::generateString() {
     return R"(
         __constant uchar alpha[27] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        __kernel void GenerateStringKernel(__global uchar* array, __global ulong* n, __global ulong* terminatorIndex) {
+        __kernel void GenerateStringKernel(__local uchar* array, __local ulong* n, __local ulong* terminatorIndex) {
             ulong index = n[0];
             // If index < 27
             if (index < 26) {
@@ -169,3 +172,24 @@ std::string my::opencl::kernel::generateString() {
         }
     )";
 }
+
+std::string my::opencl::kernel::FindAlternativeCheat() {
+    return R"(
+        __kernel void FindAlternativeCheat(__global uint* crc_result, __global ulong* index_result, __global ulong* array_size, __global uint* arrayIndex, __global ulong* a, __global ulong* b) {
+            __local ulong index;
+            index = get_global_id(0) + a[0];
+            
+            if (index >= b[0]) {
+                return;
+            }
+
+            __local uchar array[29];
+
+            __local ulong terminatorIndex;
+            terminatorIndex = 0;
+
+            GenerateStringKernel(array, &index, &terminatorIndex);
+        }
+    )";
+}
+

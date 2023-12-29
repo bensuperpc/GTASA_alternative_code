@@ -8,6 +8,7 @@ namespace my::opencl::kernel
     std::string jamcrc1Byte();
     std::string jamcrc4Byte();
     std::string generateString();
+    std::string FindAlternativeCheat();
 }
 
 #endif  // JAMCRC_OPENCL_HPP

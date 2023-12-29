@@ -1,12 +1,17 @@
 #include <string>
 #include "GTA_SA_cheat_finder_openmp.hpp"
 #include "GTA_SA_cheat_finder_stdthread.hpp"
+
 #if defined(BUILD_WITH_CUDA)
 #include "GTA_SA_cheat_finder_cuda.hpp"
 #include "cuda/wrapper.hpp"
 #endif  // BUILD_WITH_CUDA
 
+#if defined(BUILD_WITH_OPENCL)
+#include "GTA_SA_cheat_finder_opencl.hpp"
 #include "opencl/wrapper.hpp"
+#endif  // BUILD_WITH_OPENCL
+
 
 #include "gtest/gtest.h"
 
@@ -151,6 +156,7 @@ TEST(jamcrc, cuda_basic6) {
 
 #endif
 
+#if defined(BUILD_WITH_OPENCL)
 TEST(jamcrc, opencl_basic1) {
     std::string str = "";
     uint32_t expected_crc = 0xffffffff;
@@ -222,6 +228,7 @@ TEST(jamcrc, opencl_basic6) {
     EXPECT_NE(0x0, crc);
     EXPECT_EQ(expected_crc, crc);
 }
+#endif
 
 auto main(int argc, char** argv) -> int {
     ::testing::InitGoogleTest(&argc, argv);

@@ -1,9 +1,27 @@
 #include <string>
+#include "GTA_SA_cheat_finder_virtual.hpp"
 #include "GTA_SA_cheat_finder_openmp.hpp"
 #include "GTA_SA_cheat_finder_stdthread.hpp"
+
 #if defined(BUILD_WITH_CUDA)
 #include "GTA_SA_cheat_finder_cuda.hpp"
+#else
+#if _MSC_VER && !__INTEL_COMPILER
+#pragma message("CUDA test disabled.")
+#else
+#warning CUDA test disabled.
+#endif
 #endif  // BUILD_WITH_CUDA
+
+#if defined(BUILD_WITH_OPENCL)
+#include "GTA_SA_cheat_finder_opencl.hpp"
+#else
+#if _MSC_VER && !__INTEL_COMPILER
+#pragma message("OpenCL test disabled.")
+#else
+#warning OpenCL test disabled.
+#endif
+#endif  // BUILD_WITH_OPENCL
 
 #include "gtest/gtest.h"
 
@@ -106,7 +124,6 @@ TEST(GTA_SA_OPENMP, basic_calc_mode_openmp) {
 #endif
 
 #if defined(BUILD_WITH_CUDA)
-
 TEST(GTA_SA_CUDA, basic_calc_cuda_1) {
     GTA_SA_CUDA gtaSA;
     gtaSA.minRange = 0;
@@ -186,7 +203,89 @@ TEST(GTA_SA_CUDA, basic_calc_cuda_5) {
     EXPECT_EQ(gtaSA.results[151].jamcrc, 0xe1ef01ea);
 }
 */
+#endif
 
+#if defined(BUILD_WITH_OPENCL)
+
+TEST(GTA_SA_OPENCL, basic_calc_opencl_1) {
+    GTA_SA_OPENCL gtaSA;
+    gtaSA.minRange = 0;
+    gtaSA.maxRange = 6000000;
+
+    gtaSA.run();
+
+    EXPECT_EQ(gtaSA.results.size(), 0);
+}
+/*
+TEST(GTA_SA_OPENCL, basic_calc_opencl_2) {
+    GTA_SA_OPENCL gtaSA;
+    gtaSA.minRange = 20810700;
+    gtaSA.maxRange = 20810800;
+
+    gtaSA.run();
+
+    EXPECT_EQ(gtaSA.results.size(), 1);
+    EXPECT_EQ(gtaSA.results[0].index, 20810792);
+    EXPECT_EQ(gtaSA.results[0].code, "ASNAEB");
+    EXPECT_EQ(gtaSA.results[0].jamcrc, 0x555fc201);
+}
+
+TEST(GTA_SA_OPENCL, basic_calc_opencl_3) {
+    GTA_SA_OPENCL gtaSA;
+    gtaSA.minRange = 181961000;
+    gtaSA.maxRange = 181961100;
+
+    gtaSA.run();
+
+    EXPECT_EQ(gtaSA.results.size(), 1);
+    EXPECT_EQ(gtaSA.results[0].index, 181961057);
+    EXPECT_EQ(gtaSA.results[0].code, "OHDUDE");
+    EXPECT_EQ(gtaSA.results[0].jamcrc, 0xe958788a);
+}
+
+TEST(GTA_SA_OPENCL, basic_calc_opencl_4) {
+    GTA_SA_OPENCL gtaSA;
+    gtaSA.minRange = 299376700;
+    gtaSA.maxRange = 299376800;
+
+    gtaSA.run();
+
+    EXPECT_EQ(gtaSA.results.size(), 1);
+    EXPECT_EQ(gtaSA.results[0].index, 299376767);
+    EXPECT_EQ(gtaSA.results[0].code, "YECGAA");
+    EXPECT_EQ(gtaSA.results[0].jamcrc, 0x40cf761);
+}
+*/
+/*
+TEST(GTA_SA_OPENCL, basic_calc_cuda_5) {
+    GTA_SA_OPENCL gtaSA;
+    gtaSA.minRange = 0;
+    gtaSA.maxRange = 8'031'810'176;
+
+    gtaSA.run();
+
+    EXPECT_EQ(gtaSA.results.size(), 152);
+    EXPECT_EQ(gtaSA.results[0].index, 20810792);
+    EXPECT_EQ(gtaSA.results[0].code, "ASNAEB");
+    EXPECT_EQ(gtaSA.results[0].jamcrc, 0x555fc201);
+
+    EXPECT_EQ(gtaSA.results[50].index, 2746380464);
+    EXPECT_EQ(gtaSA.results[50].code, "HWCWJYV");
+    EXPECT_EQ(gtaSA.results[50].jamcrc, 0xb2Afe368);
+
+    EXPECT_EQ(gtaSA.results[100].index, 5151099438);
+    EXPECT_EQ(gtaSA.results[100].code, "PQNCSOD");
+    EXPECT_EQ(gtaSA.results[100].jamcrc, 0x680416b1);
+
+    EXPECT_EQ(gtaSA.results[125].index, 6668091073);
+    EXPECT_EQ(gtaSA.results[125].code, "UOETDAG");
+    EXPECT_EQ(gtaSA.results[125].jamcrc, 0xd4966d59);
+
+    EXPECT_EQ(gtaSA.results[151].index, 8003059504);
+    EXPECT_EQ(gtaSA.results[151].code, "YWOBEJX");
+    EXPECT_EQ(gtaSA.results[151].jamcrc, 0xe1ef01ea);
+}
+*/
 #endif
 
 auto main(int argc, char** argv) -> int {

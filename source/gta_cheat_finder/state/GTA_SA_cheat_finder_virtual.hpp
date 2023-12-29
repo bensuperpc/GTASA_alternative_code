@@ -32,6 +32,12 @@
 #ifndef BUILD_WITH_CUDA
 #define BUILD_WITH_CUDA
 #endif
+#else 
+#if _MSC_VER && !__INTEL_COMPILER
+#pragma message("CUDA disabled.")
+#else
+#warning CUDA disabled.
+#endif
 #endif
 
 #if defined(BUILD_WITH_CUDA)
@@ -41,6 +47,12 @@
 #if __has_include("CL/cl.h") || __has_include("CL/cl.hpp")
 #ifndef BUILD_WITH_OPENCL
 #define BUILD_WITH_OPENCL
+#endif
+#else
+#if _MSC_VER && !__INTEL_COMPILER
+#pragma message("OpenCL disabled.")
+#else
+#warning OpenCL disabled.
 #endif
 #endif
 
