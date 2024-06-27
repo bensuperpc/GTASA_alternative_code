@@ -75,3 +75,35 @@ void GTA_SA_Virtual::printResult() const {
     std::cout << "" << std::endl;
     std::cout << "Number of results: " << std::dec << results.size() << std::endl;
 }
+
+void GTA_SA_Virtual::setThreadCount(uint32_t value) {
+    threadCount = value;
+}
+
+void GTA_SA_Virtual::setCudaBlockSize(uint64_t value) {
+    cudaBlockSize = value;
+}
+
+void GTA_SA_Virtual::setMinRange(uint64_t value) {
+    minRange = value;
+}
+
+void GTA_SA_Virtual::setMaxRange(uint64_t value) {
+    maxRange = value;
+}
+
+uint64_t GTA_SA_Virtual::getMinRange() const {
+    return minRange;
+}
+
+uint64_t GTA_SA_Virtual::getMaxRange() const {
+    return maxRange;
+}
+
+uint32_t GTA_SA_Virtual::getThreadCount() const {
+    return threadCount;
+}
+
+uint64_t GTA_SA_Virtual::getCudaBlockSize() const {
+    return cudaBlockSize;
+}

@@ -50,7 +50,7 @@ void GTA_SA_CUDA::run() {
 
     if ((maxRange - minRange) < cudaBlockSize) {
         std::cout << "Number of calculations is less than cudaBlockSize" << std::endl;
-    }    
+    }
 
     beginTime = std::chrono::high_resolution_clock::now();
     runner(0);
@@ -80,6 +80,6 @@ void GTA_SA_CUDA::runner(const std::uint64_t) {
         const uint64_t index = static_cast<uint64_t>(it - std::begin(GTA_SA_CUDA::cheatList));
         results.emplace_back(index_results[i], std::string(tmpCUDA.data()), jamcrc_results[i],
                              GTA_SA_Virtual::cheatListName.at(static_cast<std::size_t>(index)));  // Save result: calculation position,
-                                                                                                    // Alphabetic sequence, CRC, Cheat name
+                                                                                                  // Alphabetic sequence, CRC, Cheat name
     }
 }

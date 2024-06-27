@@ -14,9 +14,9 @@
 #include <utility>      // std::make_pair
 #include <vector>       // std::vector
 
-//#define BS_THREAD_POOL_ENABLE_PAUSE
-//#define BS_THREAD_POOL_ENABLE_PRIORITY
-//#define BS_THREAD_POOL_ENABLE_WAIT_DEADLOCK_CHECK
+// #define BS_THREAD_POOL_ENABLE_PAUSE
+// #define BS_THREAD_POOL_ENABLE_PRIORITY
+// #define BS_THREAD_POOL_ENABLE_WAIT_DEADLOCK_CHECK
 #include "BS_thread_pool.hpp"
 
 #include "GTA_SA_cheat_finder_virtual.hpp"

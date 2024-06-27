@@ -9,18 +9,7 @@
 #include <thread>
 #include <vector>
 
-#include "GTA_SA_cheat_finder_virtual.hpp"
-
-#ifdef BUILD_WITH_CUDA
-#include "GTA_SA_cheat_finder_cuda.hpp"
-#endif  // BUILD_WITH_CUDA
-
-#ifdef BUILD_WITH_OPENCL
-#include "GTA_SA_cheat_finder_opencl.hpp"
-#endif  // BUILD_WITH_OPENCL
-
-#include "GTA_SA_cheat_finder_openmp.hpp"
-#include "GTA_SA_cheat_finder_stdthread.hpp"
+#include "GTA_SA_cheat_finder_main.hpp"
 
 #include "tablemodel.h"
 #include "utils/utils.h"
@@ -43,25 +32,23 @@ class GTA_SA_UI final : public QObject {
 
    public:
     GTA_SA_UI(QObject* parent = nullptr) = delete;
-    explicit GTA_SA_UI(std::unique_ptr<GTA_SA_Virtual> _gta_sa, TableModel& tableModel, QObject* parent = nullptr);
+    explicit GTA_SA_UI(std::unique_ptr<GTA_SA_MAIN> _gta_sa, TableModel& tableModel, QObject* parent = nullptr);
 
     ~GTA_SA_UI();
 
-    std::unique_ptr<GTA_SA_Virtual> selected_gta_sa;
+    std::unique_ptr<GTA_SA_MAIN> selected_gta_sa;
     TableModel& _tableModel;
 
-    uint64_t minRangeValue() const { return selected_gta_sa->minRange; }
-    uint64_t maxRangeValue() const { return selected_gta_sa->maxRange; }
+    uint64_t minRangeValue() const { return selected_gta_sa->getMinRange(); }
+    uint64_t maxRangeValue() const { return selected_gta_sa->getMaxRange(); }
 
-    uint32_t nbrThreadValue() const { return selected_gta_sa->threadCount; }
+    uint32_t nbrThreadValue() const { return selected_gta_sa->getThreadCount(); }
 
-    uint64_t cudaBlockSize() const { return selected_gta_sa->cudaBlockSize; }
+    uint64_t cudaBlockSize() const { return selected_gta_sa->getCudaBlockSize(); }
 
     uint64_t calc_mode() const;
 
     QString buttonValue() const { return _buttonValue; }
-
-    void set_gta_sa(std::unique_ptr<GTA_SA_Virtual>& _gta_sa) { this->selected_gta_sa = std::move(_gta_sa); }
 
     Q_INVOKABLE
     void runOp();

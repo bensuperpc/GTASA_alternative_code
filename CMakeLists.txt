@@ -64,17 +64,13 @@ if (Qt${QT_VERSION_MAJOR}_FOUND)
         source/gta_sa_ui.cpp
         source/imageprovider.cpp
         source/application.cpp
-        source/lineseries.cpp
         source/tablemodel.cpp
-        source/customlabel.cpp
         )
     list(APPEND HEADERS 
         source/gta_sa_ui.hpp
         source/asyncimageprovider.h
         source/application.h 
-        source/lineseries.h 
         source/tablemodel.h 
-        source/customlabel.h 
         source/utils/about_compilation.h
         source/utils/utils.h
         )
@@ -103,7 +99,6 @@ if (Qt${QT_VERSION_MAJOR}_FOUND)
         qml/responsive.qml
         qml/main.qml
         qml/home.qml qml/image.qml
-        qml/about.qml qml/graphic.qml
         qml/table.qml
         qml/settings.qml
         qml/swipe.qml

@@ -1,7 +1,7 @@
 #include <string>
-#include "GTA_SA_cheat_finder_virtual.hpp"
 #include "GTA_SA_cheat_finder_openmp.hpp"
 #include "GTA_SA_cheat_finder_stdthread.hpp"
+#include "GTA_SA_cheat_finder_virtual.hpp"
 
 #if defined(BUILD_WITH_CUDA)
 #include "GTA_SA_cheat_finder_cuda.hpp"

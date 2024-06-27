@@ -1,12 +1,12 @@
 #include "GTA_SA_cheat_finder_opencl.hpp"
 
-#include <tuple>        // std::pair
-#include <utility>      // std::make_pair
-#include <vector>       // std::vector
-#include <algorithm>    // std::find
-#include <array>        // std::array
-#include <chrono>       // std::chrono
-#include <cmath>        // std::ceil
+#include <algorithm>  // std::find
+#include <array>      // std::array
+#include <chrono>     // std::chrono
+#include <cmath>      // std::ceil
+#include <tuple>      // std::pair
+#include <utility>    // std::make_pair
+#include <vector>     // std::vector
 
 GTA_SA_OPENCL::GTA_SA_OPENCL() {}
 
@@ -58,7 +58,7 @@ void GTA_SA_OPENCL::run() {
 
     if ((maxRange - minRange) < cudaBlockSize) {
         std::cout << "Number of calculations is less than cudaBlockSize" << std::endl;
-    }    
+    }
 
     beginTime = std::chrono::high_resolution_clock::now();
     runner(0);
@@ -88,6 +88,6 @@ void GTA_SA_OPENCL::runner(const std::uint64_t) {
         const uint64_t index = static_cast<uint64_t>(it - std::begin(GTA_SA_OPENCL::cheatList));
         results.emplace_back(index_results[i], std::string(tmpCUDA.data()), jamcrc_results[i],
                              GTA_SA_Virtual::cheatListName.at(static_cast<std::size_t>(index)));  // Save result: calculation position,
-                                                                                                    // Alphabetic sequence, CRC, Cheat name
+                                                                                                  // Alphabetic sequence, CRC, Cheat name
     }
 }

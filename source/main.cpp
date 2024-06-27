@@ -11,10 +11,8 @@
 
 #include "application.h"
 #include "asyncimageprovider.h"
-#include "customlabel.h"
 #include "gta_sa_ui.hpp"
 #include "imageprovider.h"
-#include "lineseries.h"
 #include "tablemodel.h"
 #include "utils/utils.h"
 #else
@@ -24,17 +22,9 @@
 #include <sstream>
 #include <string>
 #include <vector>
-
-#include "gta_cheat_finder/state/GTA_SA_cheat_finder_virtual.hpp"
-
-#include "gta_cheat_finder/state/GTA_SA_cheat_finder_openmp.hpp"
-#include "gta_cheat_finder/state/GTA_SA_cheat_finder_stdthread.hpp"
-
-#if defined(BUILD_WITH_CUDA)
-#include "gta_cheat_finder/state/GTA_SA_cheat_finder_cuda.hpp"
 #endif
 
-#endif
+#include "gta_cheat_finder/GTA_SA_cheat_finder_main.hpp"
 
 int main(int argc, char* argv[]) {
     bool cli_only = false;
@@ -80,38 +70,48 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    std::unique_ptr<GTA_SA_Virtual> gtaSA;
+    std::unique_ptr<GTA_SA_MAIN> gta_sa_main = std::make_unique<GTA_SA_MAIN>();
 
-    switch (calc_mode) {
-        case 0: {
-            gtaSA = std::move(std::make_unique<GTA_SA_STDTHREAD>());
-            break;
-        }
-        case 1: {
-            gtaSA = std::move(std::make_unique<GTA_SA_OPENMP>());
-            break;
-        }
-        case 2: {
-#ifdef BUILD_WITH_CUDA
-            gtaSA = std::move(std::make_unique<GTA_SA_CUDA>());
-#else
-            std::cout << "CUDA not supported" << std::endl;
-#endif
-            break;
-        }
-        default: {
-            gtaSA = std::move(std::make_unique<GTA_SA_STDTHREAD>());
-            break;
-        }
-    }
-
-    if (gtaSA == nullptr) {
+    if (gta_sa_main == nullptr) {
         std::cout << "Error, gtaSA == nullptr" << std::endl;
         return EXIT_FAILURE;
     }
 
-    // gtaSA->threadCount
-    // gtaSA->cudaBlockSize
+    switch (calc_mode) {
+        case 0: {
+            gta_sa_main->swichMode(COMPUTE_TYPE::STDTHREAD);
+            break;
+        }
+        case 1: {
+            gta_sa_main->swichMode(COMPUTE_TYPE::OPENMP);
+            break;
+        }
+        case 2: {
+#ifdef BUILD_WITH_CUDA
+            gta_sa_main->swichMode(COMPUTE_TYPE::CUDA);
+#else
+            std::cout << "CUDA not supported, switching to STDTHREAD" << std::endl;
+            gta_sa_main->swichMode(COMPUTE_TYPE::STDTHREAD);
+#endif
+            break;
+        }
+        case 3: {
+#ifdef BUILD_WITH_OPENCL
+            gta_sa_main->swichMode(COMPUTE_TYPE::OPENCL);
+#else
+            std::cout << "OPENCL not supported, switching to STDTHREAD" << std::endl;
+            gta_sa_main->swichMode(COMPUTE_TYPE::STDTHREAD);
+#endif
+            break;
+        }
+        default: {
+            std::cout << "Unknown calc mode: " << calc_mode << std::endl;
+            break;
+        }
+    }
+
+        // gtaSA->threadCount
+        // gtaSA->cudaBlockSize
 
 #if __has_include(<QString>)
     if (cli_only == false) {
@@ -136,7 +136,7 @@ int main(int argc, char* argv[]) {
 
         TableModel tablemodel;
 
-        GTA_SA_UI gta_sa_ui(std::move(gtaSA), tablemodel);
+        GTA_SA_UI gta_sa_ui(std::move(gta_sa_main), tablemodel);
 
         qmlRegisterSingletonType<GTA_SA_UI>("org.bensuperpc.GTA_SAObjects", 1, 0, "GTA_SASingleton",
                                             [&](QQmlEngine*, QJSEngine*) -> QObject* { return &gta_sa_ui; });
@@ -148,23 +148,16 @@ int main(int argc, char* argv[]) {
         application app_ui;
         QMLREGISTERSINGLETONTYPE(app_ui, "org.bensuperpc.application", 1, 0, "AppSingleton")
 
-        
         QMLREGISTERSINGLETONTYPE(tablemodel, "org.bensuperpc.TableData", 1, 0, "TableDataModel")
 
         engine.addImageProvider(QLatin1String("sync"), new ImageProvider);
         engine.addImageProvider("async", new AsyncImageProvider);
-
-        LineSeries uiData;
-        QMLREGISTERSINGLETONTYPE(uiData, "org.bensuperpc.lineseries", 1, 0, "UIData")
 
         QStringList monModele;
         for (int i = 0; i < 10; i++) {
             monModele.append("Data " + QString::number(i));
         }
         engine.rootContext()->setContextProperty("monModele", QVariant::fromValue(monModele));
-
-        qmlRegisterType<MyLabel>("org.bensuperpc.MyLabelLib", 1, 0, "MyLabel");
-
         const QUrl url(u"qrc:/bensuperpc.org/bensuperpc/qml/main.qml"_qs);
 
         QObject::connect(
@@ -181,7 +174,7 @@ int main(int argc, char* argv[]) {
 #endif
 
     // Launch operation
-    gtaSA->run();
+    gta_sa_main->run();
 
     // Clear old data
     // gtaSA->clear();

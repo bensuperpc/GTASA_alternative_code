@@ -69,10 +69,10 @@ __host__ uint32_t my::cuda::jamcrc(const void* data, const uint64_t length, cons
 }
 
 __host__ void my::cuda::launchKernel(std::vector<uint32_t>& jamcrc_results,
-                                      std::vector<uint64_t>& index_results,
-                                      const uint64_t minRange,
-                                      const uint64_t maxRange,
-                                      const uint64_t cudaBlockSize) {
+                                     std::vector<uint64_t>& index_results,
+                                     const uint64_t minRange,
+                                     const uint64_t maxRange,
+                                     const uint64_t cudaBlockSize) {
     std::cout << "Launching kernel..." << std::endl;
 
     uint64_t calcRange = maxRange - minRange;

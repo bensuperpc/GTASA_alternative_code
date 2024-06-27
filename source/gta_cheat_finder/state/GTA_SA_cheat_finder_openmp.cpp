@@ -71,7 +71,7 @@ void GTA_SA_OPENMP::run() {
 void GTA_SA_OPENMP::runner(const std::uint64_t i) {
     std::array<char, 29> tmp = {0};
     this->generateString(tmp.data(),
-                          i);                       // Generate Alphabetic sequence from uint64_t
+                         i);                        // Generate Alphabetic sequence from uint64_t
                                                     // value, A=1, Z=27, AA = 28, AB = 29
     const uint32_t crc = this->jamcrc(tmp.data());  // JAMCRC
     const auto it = std::find(std::begin(GTA_SA_OPENMP::cheatList), std::end(GTA_SA_OPENMP::cheatList), crc);
@@ -84,6 +84,6 @@ void GTA_SA_OPENMP::runner(const std::uint64_t i) {
         const uint64_t index = static_cast<uint64_t>(it - std::begin(GTA_SA_OPENMP::cheatList));
         results.emplace_back(i, std::string(tmp.data()), crc,
                              GTA_SA_Virtual::cheatListName.at(static_cast<std::size_t>(index)));  // Save result: calculation position,
-                                                                                                    // Alphabetic sequence, CRC, Cheat name
+                                                                                                  // Alphabetic sequence, CRC, Cheat name
     }
 }

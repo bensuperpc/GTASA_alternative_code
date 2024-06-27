@@ -1,6 +1,6 @@
 #include "kernel.hpp"
 
-std::string my::opencl::kernel::jamcrc_table() {
+std::string my::opencl::kernel::jamcrcTable() {
     return R"(
     __global const uint crc32LookupTable[4][256] = {
         {0x00000000, 0x77073096, 0xEE0E612C, 0x990951BA, 0x076DC419, 0x706AF48F, 0xE963A535, 0x9E6495A3, 0x0EDB8832, 0x79DCB8A4, 0xE0D5E91E,
@@ -123,6 +123,23 @@ std::string my::opencl::kernel::jamcrc1Byte() {
     )";
 }
 
+std::string my::opencl::kernel::jamcrc1ByteLocal() {
+    return R"(
+        void jamcrc1Byte(void* data, ulong *length, uint *previousCrc32, uint *result)
+        {
+            uint crc;
+            crc = ~previousCrc32[0];
+            uchar* current = (uchar*)data;
+            ulong len;
+            len = length[0];
+            while (len--) {
+                crc = (crc >> 8) ^ crc32LookupTable[0][(crc & 0xFF) ^ *current++];
+            }
+            result[0] = crc;
+        }
+    )";
+}
+
 std::string my::opencl::kernel::jamcrc4Byte() {
     return R"(
         __kernel void jamcrc4Byte(__global void* data, __global ulong *length, __global uint *previousCrc32, __global uint *result) {
@@ -150,7 +167,7 @@ std::string my::opencl::kernel::jamcrc4Byte() {
     )";
 }
 
-std::string my::opencl::kernel::generateString() {
+std::string my::opencl::kernel::generateStringLocal() {
     return R"(
         __constant uchar alpha[27] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         __kernel void GenerateStringKernel(__local uchar* array, __local ulong* n, __local ulong* terminatorIndex) {
@@ -173,9 +190,23 @@ std::string my::opencl::kernel::generateString() {
     )";
 }
 
-std::string my::opencl::kernel::FindAlternativeCheat() {
+std::string my::opencl::kernel::cheatListTable() {
     return R"(
-        __kernel void FindAlternativeCheat(__global uint* crc_result, __global ulong* index_result, __global ulong* array_size, __global uint* arrayIndex, __global ulong* a, __global ulong* b) {
+        __global const uint cheatList[87] = {
+        0xDE4B237D, 0xB22A28D1, 0x5A783FAE, 0xEECCEA2B, 0x42AF1E28, 0x555FC201, 0x2A845345, 0xE1EF01EA, 0x771B83FC, 0x5BF12848, 0x44453A17,
+        0xFCFF1D08, 0xB69E8532, 0x8B828076, 0xDD6ED9E9, 0xA290FD8C, 0x3484B5A7, 0x43DB914E, 0xDBC0DD65, 0xD08A30FE, 0x37BF1B4E, 0xB5D40866,
+        0xE63B0D99, 0x675B8945, 0x4987D5EE, 0x2E8F84E8, 0x1A9AA3D6, 0xE842F3BC, 0x0D5C6A4E, 0x74D4FCB1, 0xB01D13B8, 0x66516EBC, 0x4B137E45,
+        0x78520E33, 0x3A577325, 0xD4966D59, 0x5FD1B49D, 0xA7613F99, 0x1792D871, 0xCBC579DF, 0x4FEDCCFF, 0x44B34866, 0x2EF877DB, 0x2781E797,
+        0x2BC1A045, 0xB2AFE368, 0xFA8DD45B, 0x8DED75BD, 0x1A5526BC, 0xA48A770B, 0xB07D3B32, 0x80C1E54B, 0x5DAD0087, 0x7F80B950, 0x6C0FA650,
+        0xF46F2FA4, 0x70164385, 0x885D0B50, 0x151BDCB3, 0xADFA640A, 0xE57F96CE, 0x040CF761, 0xE1B33EB9, 0xFEDA77F7, 0x8CA870DD, 0x9A629401,
+        0xF53EF5A5, 0xF2AA0C1D, 0xF36345A8, 0x8990D5E1, 0xB7013B1B, 0xCAEC94EE, 0x31F0C3CC, 0xB3B3E72A, 0xC25CDBFF, 0xD5CF4EFF, 0x680416B1,
+        0xCF5FDA18, 0xF01286E9, 0xA841CC0A, 0x31EA09CF, 0xE958788A, 0x02C83A7C, 0xE49C3ED4, 0x171BA8CC, 0x86988DAE, 0x2BDD2FA1};
+    )";
+}
+
+std::string my::opencl::kernel::findAlternativeCheat() {
+    return R"(
+        __kernel void findAlternativeCheat(__global uint* crc_result, __global ulong* index_result, __global ulong* array_size, __global uint* arrayIndex, __global ulong* a, __global ulong* b) {
             __local ulong index;
             index = get_global_id(0) + a[0];
             
@@ -188,8 +219,11 @@ std::string my::opencl::kernel::FindAlternativeCheat() {
             __local ulong terminatorIndex;
             terminatorIndex = 0;
 
-            GenerateStringKernel(array, &index, &terminatorIndex);
+            GenerateStringKernel(array, index, terminatorIndex);
+
+            __local uint crc;
+            crc = 0;
+            //jamcrc1Byte(array, terminatorIndex, crc, crc);
         }
     )";
 }
-

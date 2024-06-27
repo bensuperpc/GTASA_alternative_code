@@ -45,18 +45,23 @@ if (OpenCL_FOUND)
 endif()
 
 set(SRCS
-    state/GTA_SA_cheat_finder_openmp.cpp
+    GTA_SA_cheat_finder_main.cpp
     state/GTA_SA_cheat_finder_stdthread.cpp
     state/GTA_SA_cheat_finder_virtual.cpp
     GTA_SA_cheat_finder_result.cpp
 	)
 	
 set(HEADERS
-    state/GTA_SA_cheat_finder_openmp.hpp
+    GTA_SA_cheat_finder_main.hpp
     state/GTA_SA_cheat_finder_stdthread.hpp
     state/GTA_SA_cheat_finder_virtual.hpp
     GTA_SA_cheat_finder_result.hpp
     )
+
+if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
+  list(APPEND SRCS state/GTA_SA_cheat_finder_openmp.cpp)
+  list(APPEND HEADERS state/GTA_SA_cheat_finder_openmp.hpp)
+endif()
 
 if (CUDAToolkit_FOUND)
   list(APPEND SRCS state/GTA_SA_cheat_finder_cuda.cpp)

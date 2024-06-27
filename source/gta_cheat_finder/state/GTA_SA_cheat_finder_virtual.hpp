@@ -32,7 +32,7 @@
 #ifndef BUILD_WITH_CUDA
 #define BUILD_WITH_CUDA
 #endif
-#else 
+#else
 #if _MSC_VER && !__INTEL_COMPILER
 #pragma message("CUDA disabled.")
 #else
@@ -62,7 +62,7 @@
 
 #include "GTA_SA_cheat_finder_result.hpp"
 
-enum class COMPUTE_TYPE { STD_THREAD, OPENMP, CUDA, OPENCL };
+enum class COMPUTE_TYPE { STDTHREAD, OPENMP, CUDA, OPENCL };
 
 class GTA_SA_Virtual {
    protected:
@@ -78,6 +78,15 @@ class GTA_SA_Virtual {
     virtual void clear();
 
     virtual void printResult() const;
+
+    void setMinRange(std::uint64_t minRange);
+    uint64_t getMinRange() const;
+    void setMaxRange(std::uint64_t maxRange);
+    uint64_t getMaxRange() const;
+    void setThreadCount(std::uint32_t threadCount);
+    uint32_t getThreadCount() const;
+    void setCudaBlockSize(std::uint64_t cudaBlockSize);
+    uint64_t getCudaBlockSize() const;
 
     /**
      * @brief To get JAMCRC with boost libs
@@ -98,7 +107,7 @@ class GTA_SA_Virtual {
 
     static constexpr std::array<char, 27> alpha{"ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
 
-    std::array<const std::uint32_t, 87> cheatList {
+    std::array<const std::uint32_t, 87> cheatList{
         0xDE4B237D, 0xB22A28D1, 0x5A783FAE, 0xEECCEA2B, 0x42AF1E28, 0x555FC201, 0x2A845345, 0xE1EF01EA, 0x771B83FC, 0x5BF12848, 0x44453A17,
         0xFCFF1D08, 0xB69E8532, 0x8B828076, 0xDD6ED9E9, 0xA290FD8C, 0x3484B5A7, 0x43DB914E, 0xDBC0DD65, 0xD08A30FE, 0x37BF1B4E, 0xB5D40866,
         0xE63B0D99, 0x675B8945, 0x4987D5EE, 0x2E8F84E8, 0x1A9AA3D6, 0xE842F3BC, 0x0D5C6A4E, 0x74D4FCB1, 0xB01D13B8, 0x66516EBC, 0x4B137E45,
@@ -110,90 +119,90 @@ class GTA_SA_Virtual {
 
     /// List of cheats codes names
     std::array<std::string, 87> cheatListName{"Weapon Set 1",
-                                                "Weapon Set 2",
-                                                "Weapon Set 3",
-                                                "Health, Armor, $250k, Repairs car",
-                                                "Increase Wanted Level +2",
-                                                "Clear Wanted Level",
-                                                "Sunny Weather",
-                                                "Very Sunny Weather",
-                                                "Overcast Weather",
-                                                "Rainy Weather",
-                                                "Foggy Weather",
-                                                "Faster Clock",
-                                                "N°12",
-                                                "N°13",
-                                                "People attack each other with golf clubs",
-                                                "Have a bounty on your head",
-                                                "Everyone is armed",
-                                                "Spawn Rhino",
-                                                "Spawn Bloodring Banger",
-                                                "Spawn Rancher",
-                                                "Spawn Racecar",
-                                                "Spawn Racecar",
-                                                "Spawn Romero",
-                                                "Spawn Stretch",
-                                                "Spawn Trashmaster",
-                                                "Spawn Caddy",
-                                                "Blow Up All Cars",
-                                                "Invisible car",
-                                                "All green lights",
-                                                "Aggressive Drivers",
-                                                "Pink CArs",
-                                                "Black Cars",
-                                                "Fat Body",
-                                                "Muscular Body",
-                                                "Skinny Body",
-                                                "People attack with Rocket Launchers",
-                                                "N°41",
-                                                "N°42",
-                                                "Gangs Control the Streets",
-                                                "N°44",
-                                                "Slut Magnet",
-                                                "N°46",
-                                                "N°47",
-                                                "Cars Fly",
-                                                "N°49",
-                                                "N°50",
-                                                "Spawn Vortex Hovercraft",
-                                                "Smash n' Boom",
-                                                "N°53",
-                                                "N°54",
-                                                "N°55",
-                                                "Orange Sky",
-                                                "Thunderstorm",
-                                                "Sandstorm",
-                                                "N°59",
-                                                "N°60",
-                                                "Infinite Health",
-                                                "Infinite Oxygen",
-                                                "Have Parachute",
-                                                "N°64",
-                                                "Never Wanted",
-                                                "N°66",
-                                                "Mega Punch",
-                                                "Never Get Hungry",
-                                                "N°69",
-                                                "N°70",
-                                                "N°71",
-                                                "N°72",
-                                                "Full Weapon Aiming While Driving",
-                                                "N°74",
-                                                "Traffic is Country Vehicles",
-                                                "Recruit Anyone (9mm)",
-                                                "Get Born 2 Truck Outfit",
-                                                "N°78",
-                                                "N°79",
-                                                "N°80",
-                                                "L3 Bunny Hop",
-                                                "N°82",
-                                                "N°83",
-                                                "N°84",
-                                                "Spawn Quad",
-                                                "Spawn Tanker Truck",
-                                                "Spawn Dozer",
-                                                "pawn Stunt Plane",
-                                                "Spawn Monster"};
+                                              "Weapon Set 2",
+                                              "Weapon Set 3",
+                                              "Health, Armor, $250k, Repairs car",
+                                              "Increase Wanted Level +2",
+                                              "Clear Wanted Level",
+                                              "Sunny Weather",
+                                              "Very Sunny Weather",
+                                              "Overcast Weather",
+                                              "Rainy Weather",
+                                              "Foggy Weather",
+                                              "Faster Clock",
+                                              "N°12",
+                                              "N°13",
+                                              "People attack each other with golf clubs",
+                                              "Have a bounty on your head",
+                                              "Everyone is armed",
+                                              "Spawn Rhino",
+                                              "Spawn Bloodring Banger",
+                                              "Spawn Rancher",
+                                              "Spawn Racecar",
+                                              "Spawn Racecar",
+                                              "Spawn Romero",
+                                              "Spawn Stretch",
+                                              "Spawn Trashmaster",
+                                              "Spawn Caddy",
+                                              "Blow Up All Cars",
+                                              "Invisible car",
+                                              "All green lights",
+                                              "Aggressive Drivers",
+                                              "Pink CArs",
+                                              "Black Cars",
+                                              "Fat Body",
+                                              "Muscular Body",
+                                              "Skinny Body",
+                                              "People attack with Rocket Launchers",
+                                              "N°41",
+                                              "N°42",
+                                              "Gangs Control the Streets",
+                                              "N°44",
+                                              "Slut Magnet",
+                                              "N°46",
+                                              "N°47",
+                                              "Cars Fly",
+                                              "N°49",
+                                              "N°50",
+                                              "Spawn Vortex Hovercraft",
+                                              "Smash n' Boom",
+                                              "N°53",
+                                              "N°54",
+                                              "N°55",
+                                              "Orange Sky",
+                                              "Thunderstorm",
+                                              "Sandstorm",
+                                              "N°59",
+                                              "N°60",
+                                              "Infinite Health",
+                                              "Infinite Oxygen",
+                                              "Have Parachute",
+                                              "N°64",
+                                              "Never Wanted",
+                                              "N°66",
+                                              "Mega Punch",
+                                              "Never Get Hungry",
+                                              "N°69",
+                                              "N°70",
+                                              "N°71",
+                                              "N°72",
+                                              "Full Weapon Aiming While Driving",
+                                              "N°74",
+                                              "Traffic is Country Vehicles",
+                                              "Recruit Anyone (9mm)",
+                                              "Get Born 2 Truck Outfit",
+                                              "N°78",
+                                              "N°79",
+                                              "N°80",
+                                              "L3 Bunny Hop",
+                                              "N°82",
+                                              "N°83",
+                                              "N°84",
+                                              "Spawn Quad",
+                                              "Spawn Tanker Truck",
+                                              "Spawn Dozer",
+                                              "pawn Stunt Plane",
+                                              "Spawn Monster"};
 
     /**
      * \brief Source:

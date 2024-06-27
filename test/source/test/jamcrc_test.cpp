@@ -12,7 +12,6 @@
 #include "opencl/wrapper.hpp"
 #endif  // BUILD_WITH_OPENCL
 
-
 #include "gtest/gtest.h"
 
 TEST(jamcrc, basic1) {
