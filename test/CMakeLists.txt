@@ -30,7 +30,7 @@ function(test_bench_generator TEST_BENCH_NAME IS_TEST ADD_TO_TEST)
     endif()
 
     if (OpenCL_FOUND)
-        target_link_libraries("${TEST_BENCH_NAME}" PRIVATE opencl_lib)
+        #target_link_libraries("${TEST_BENCH_NAME}" PRIVATE opencl_lib)
     endif()
 
     set_target_properties("${TEST_BENCH_NAME}"
@@ -40,7 +40,7 @@ function(test_bench_generator TEST_BENCH_NAME IS_TEST ADD_TO_TEST)
         ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
         PDB_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
     )
-    target_compile_features("${TEST_BENCH_NAME}" PRIVATE cxx_std_17)
+    #target_compile_features("${TEST_BENCH_NAME}" PRIVATE cxx_std_17)
 
     #if(NOT CMAKE_BUILD_TYPE MATCHES Debug AND NOT CMAKE_BUILD_TYPE MATCHES Coverage)
     #  add_test(NAME "${TEST_BENCH_NAME}" COMMAND $<TARGET_FILE:${TEST_BENCH_NAME}>)
@@ -55,8 +55,20 @@ function(test_bench_generator TEST_BENCH_NAME IS_TEST ADD_TO_TEST)
 endfunction()
 
 if(NOT WIN32)
-  include(../cmake/lib/gtest.cmake)
-  include(../cmake/lib/benchmark.cmake)
+    add_subdirectory(../external/googletest external/googletest)
+    set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "" FORCE)
+    set(BENCHMARK_ENABLE_TESTING OFF)
+    set(BENCHMARK_ENABLE_WERROR OFF CACHE BOOL "" FORCE)
+    set(BENCHMARK_FORCE_WERROR OFF CACHE BOOL "" FORCE)
+    set(BENCHMARK_ENABLE_INSTALL OFF CACHE BOOL "" FORCE)
+    set(BENCHMARK_DOWNLOAD_DEPENDENCIES OFF CACHE BOOL "" FORCE)
+    set(BENCHMARK_CXX_LINKER_FLAGS "" CACHE STRING "" FORCE)
+    set(BENCHMARK_CXX_LIBRARIES "" CACHE STRING "" FORCE)
+    set(BENCHMARK_CXX_FLAGS "" CACHE STRING "" FORCE)
+    set(CMAKE_CXX_FLAGS_COVERAGE "" CACHE STRING "" FORCE)
+    set(CMAKE_REQUIRED_FLAGS "" CACHE STRING "" FORCE)
+    add_subdirectory(../external/benchmark external/benchmark)
+
   include(../cmake/lib/openmp.cmake)
   include(../cmake/utile/ccache.cmake)
 

@@ -20,10 +20,10 @@
 #include "GTA_SA_cheat_finder_openmp.hpp"
 #include "GTA_SA_cheat_finder_stdthread.hpp"
 
-class GTA_SA_MAIN {
+class GTA_SA_ENGINE {
    public:
-    explicit GTA_SA_MAIN();
-    ~GTA_SA_MAIN();
+    explicit GTA_SA_ENGINE();
+    ~GTA_SA_ENGINE();
 
     void swichMode(COMPUTE_TYPE type);
     void swichMode(uint64_t type);
@@ -42,15 +42,15 @@ class GTA_SA_MAIN {
     void run();
 
    private:
-    std::unique_ptr<GTA_SA_Virtual> constructGTA_SA(COMPUTE_TYPE type);
-    COMPUTE_TYPE _currentMode = COMPUTE_TYPE::STDTHREAD;
     //std::vector<std::unique_ptr<GTA_SA_Virtual>> _gTA_SA_list;
     uint64_t _minRange = 0;
     uint64_t _maxRange = 0;
-    uint32_t _threadCount;
-    uint64_t _cudaBlockSize;
+    uint32_t _threadCount = 1;
+    uint64_t _cudaBlockSize = 64;
 
     std::mutex _mtx;
+
+    std::unique_ptr<GTA_SA_Virtual> _currentGTA_SA = nullptr;
 };
 
 #endif  // GTA_SA_MAIN_HPP

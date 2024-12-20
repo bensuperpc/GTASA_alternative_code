@@ -4,6 +4,8 @@ import QtQuick.Controls.Material
 import QtQuick.Layouts
 import QtQuick.Window
 
+import AppLib 1.0
+
 ApplicationWindow {
     width: 720
     height: 1280

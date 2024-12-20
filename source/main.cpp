@@ -13,7 +13,6 @@
 #include "asyncimageprovider.h"
 #include "gta_sa_ui.hpp"
 #include "imageprovider.h"
-#include "tablemodel.h"
 #include "utils/utils.h"
 #else
 #include <cstdint>
@@ -24,7 +23,7 @@
 #include <vector>
 #endif
 
-#include "gta_cheat_finder/GTA_SA_cheat_finder_main.hpp"
+#include "gta_cheat_finder/GTA_SA_engine.hpp"
 
 int main(int argc, char* argv[]) {
     bool cli_only = false;
@@ -70,7 +69,7 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    std::unique_ptr<GTA_SA_MAIN> gta_sa_main = std::make_unique<GTA_SA_MAIN>();
+    std::unique_ptr<GTA_SA_ENGINE> gta_sa_main = std::make_unique<GTA_SA_ENGINE>();
 
     if (gta_sa_main == nullptr) {
         std::cout << "Error, gtaSA == nullptr" << std::endl;
@@ -134,9 +133,7 @@ int main(int argc, char* argv[]) {
         QQuickStyle::setFallbackStyle("Material");
         QQmlApplicationEngine engine;
 
-        TableModel tablemodel;
-
-        GTA_SA_UI gta_sa_ui(std::move(gta_sa_main), tablemodel);
+        GTA_SA_UI gta_sa_ui(std::move(gta_sa_main));
 
         qmlRegisterSingletonType<GTA_SA_UI>("org.bensuperpc.GTA_SAObjects", 1, 0, "GTA_SASingleton",
                                             [&](QQmlEngine*, QJSEngine*) -> QObject* { return &gta_sa_ui; });
@@ -147,8 +144,6 @@ int main(int argc, char* argv[]) {
 
         application app_ui;
         QMLREGISTERSINGLETONTYPE(app_ui, "org.bensuperpc.application", 1, 0, "AppSingleton")
-
-        QMLREGISTERSINGLETONTYPE(tablemodel, "org.bensuperpc.TableData", 1, 0, "TableDataModel")
 
         engine.addImageProvider(QLatin1String("sync"), new ImageProvider);
         engine.addImageProvider("async", new AsyncImageProvider);

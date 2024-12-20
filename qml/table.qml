@@ -4,9 +4,7 @@ import QtQuick.Controls.Material
 import QtQuick.Layouts
 import QtQuick.Window
 
-import org.bensuperpc.TableData 1.0
-
-import "custom/"
+import AppLib 1.0
 
 Page {
     title: qsTr("About")

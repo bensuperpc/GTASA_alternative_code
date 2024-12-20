@@ -31,7 +31,7 @@ find_package(OpenMP 2.0)
 
 find_package(CUDAToolkit 11.0)
 
-find_package(OpenCL 2.0)
+#find_package(OpenCL 2.0)
 
 # Download ThreadPool
 include(../../cmake/lib/threadpool.cmake)
@@ -41,21 +41,25 @@ if (CUDAToolkit_FOUND)
 endif()
 
 if (OpenCL_FOUND)
-  add_subdirectory(opencl)
+  #add_subdirectory(opencl)
 endif()
 
 set(SRCS
-    GTA_SA_cheat_finder_main.cpp
+    GTA_SA_engine.cpp
     state/GTA_SA_cheat_finder_stdthread.cpp
     state/GTA_SA_cheat_finder_virtual.cpp
-    GTA_SA_cheat_finder_result.cpp
+    GTASAResult.cpp
+    GTASARequest.cpp
+    module/GTASAModuleVirtual.cpp
 	)
 	
 set(HEADERS
-    GTA_SA_cheat_finder_main.hpp
+    GTA_SA_engine.hpp
     state/GTA_SA_cheat_finder_stdthread.hpp
     state/GTA_SA_cheat_finder_virtual.hpp
-    GTA_SA_cheat_finder_result.hpp
+    GTASAResult.hpp
+    GTASARequest.hpp
+    module/GTASAModuleVirtual.hpp
     )
 
 if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
@@ -69,13 +73,11 @@ if (CUDAToolkit_FOUND)
 endif()
 
 if (OpenCL_FOUND)
-  list(APPEND SRCS state/GTA_SA_cheat_finder_opencl.cpp)
-  list(APPEND HEADERS state/GTA_SA_cheat_finder_opencl.hpp)
+  #list(APPEND SRCS state/GTA_SA_cheat_finder_opencl.cpp)
+  #list(APPEND HEADERS state/GTA_SA_cheat_finder_opencl.hpp)
 endif()
   
 add_library(GTA_SA_cheat_finder_lib ${SRCS} ${HEADERS})
-
-target_compile_features(GTA_SA_cheat_finder_lib PUBLIC cxx_std_20)
 
 target_include_directories(
     GTA_SA_cheat_finder_lib ${warning_guard}
@@ -95,9 +97,9 @@ if (CUDAToolkit_FOUND)
 endif()
 
 if (OpenCL_FOUND)
-  target_include_directories(GTA_SA_cheat_finder_lib PUBLIC ${OpenCL_INCLUDE_DIRS})
-  target_link_libraries(GTA_SA_cheat_finder_lib PUBLIC ${OpenCL_LIBRARIES})
-  target_link_libraries(GTA_SA_cheat_finder_lib PUBLIC opencl_lib)
+  #target_include_directories(GTA_SA_cheat_finder_lib PUBLIC ${OpenCL_INCLUDE_DIRS})
+  #target_link_libraries(GTA_SA_cheat_finder_lib PUBLIC ${OpenCL_LIBRARIES})
+  #target_link_libraries(GTA_SA_cheat_finder_lib PUBLIC opencl_lib)
 endif()
 
 set_target_properties(GTA_SA_cheat_finder_lib

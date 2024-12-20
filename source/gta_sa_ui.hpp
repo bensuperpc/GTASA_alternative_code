@@ -9,9 +9,8 @@
 #include <thread>
 #include <vector>
 
-#include "GTA_SA_cheat_finder_main.hpp"
+#include "GTA_SA_engine.hpp"
 
-#include "tablemodel.h"
 #include "utils/utils.h"
 
 class GTA_SA_UI final : public QObject {
@@ -32,19 +31,18 @@ class GTA_SA_UI final : public QObject {
 
    public:
     GTA_SA_UI(QObject* parent = nullptr) = delete;
-    explicit GTA_SA_UI(std::unique_ptr<GTA_SA_MAIN> _gta_sa, TableModel& tableModel, QObject* parent = nullptr);
+    explicit GTA_SA_UI(std::unique_ptr<GTA_SA_ENGINE> _gta_sa, QObject* parent = nullptr);
 
     ~GTA_SA_UI();
 
-    std::unique_ptr<GTA_SA_MAIN> selected_gta_sa;
-    TableModel& _tableModel;
+    std::unique_ptr<GTA_SA_ENGINE> _mainCalculator;
 
-    uint64_t minRangeValue() const { return selected_gta_sa->getMinRange(); }
-    uint64_t maxRangeValue() const { return selected_gta_sa->getMaxRange(); }
+    uint64_t minRangeValue() const { return _mainCalculator->getMinRange(); }
+    uint64_t maxRangeValue() const { return _mainCalculator->getMaxRange(); }
 
-    uint32_t nbrThreadValue() const { return selected_gta_sa->getThreadCount(); }
+    uint32_t nbrThreadValue() const { return _mainCalculator->getThreadCount(); }
 
-    uint64_t cudaBlockSize() const { return selected_gta_sa->getCudaBlockSize(); }
+    uint64_t cudaBlockSize() const { return _mainCalculator->getCudaBlockSize(); }
 
     uint64_t calc_mode() const;
 

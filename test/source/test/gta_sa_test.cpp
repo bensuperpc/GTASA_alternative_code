@@ -206,7 +206,7 @@ TEST(GTA_SA_CUDA, basic_calc_cuda_5) {
 #endif
 
 #if defined(BUILD_WITH_OPENCL)
-
+/*
 TEST(GTA_SA_OPENCL, basic_calc_opencl_1) {
     GTA_SA_OPENCL gtaSA;
     gtaSA.minRange = 0;
@@ -216,7 +216,7 @@ TEST(GTA_SA_OPENCL, basic_calc_opencl_1) {
 
     EXPECT_EQ(gtaSA.results.size(), 0);
 }
-/*
+
 TEST(GTA_SA_OPENCL, basic_calc_opencl_2) {
     GTA_SA_OPENCL gtaSA;
     gtaSA.minRange = 20810700;

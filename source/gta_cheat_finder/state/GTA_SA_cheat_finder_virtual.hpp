@@ -46,7 +46,7 @@
 
 #if __has_include("CL/cl.h") || __has_include("CL/cl.hpp")
 #ifndef BUILD_WITH_OPENCL
-#define BUILD_WITH_OPENCL
+//#define BUILD_WITH_OPENCL
 #endif
 #else
 #if _MSC_VER && !__INTEL_COMPILER
@@ -60,9 +60,9 @@
 #include "opencl/wrapper.hpp"
 #endif
 
-#include "GTA_SA_cheat_finder_result.hpp"
+#include "GTASAResult.hpp"
 
-enum class COMPUTE_TYPE { STDTHREAD, OPENMP, CUDA, OPENCL };
+enum class COMPUTE_TYPE { NONE, STDTHREAD, OPENMP, CUDA, OPENCL };
 
 class GTA_SA_Virtual {
    protected:
@@ -74,6 +74,8 @@ class GTA_SA_Virtual {
     virtual void runner(const std::uint64_t i) = 0;
 
     virtual void run() = 0;
+
+    virtual COMPUTE_TYPE type() const = 0;
 
     virtual void clear();
 
@@ -100,6 +102,7 @@ class GTA_SA_Virtual {
      * 28, AB = 29 \param n index in base 26 \param array return array
      */
     void generateString(char* array, uint64_t n) const noexcept;
+    void generateStringV2(char* array, uint64_t n) const noexcept;
 
     static uint32_t maxThreadSupport();
 
@@ -236,7 +239,7 @@ class GTA_SA_Virtual {
         0xC30C8EA1, 0x5A05DF1B, 0x2D02EF8D,
     };
 
-    std::vector<result> results = {};
+    std::vector<GTASAResult> results = {};
 
     std::chrono::high_resolution_clock::time_point beginTime = std::chrono::high_resolution_clock::now();
 

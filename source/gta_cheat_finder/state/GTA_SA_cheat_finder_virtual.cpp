@@ -25,18 +25,20 @@ auto GTA_SA_Virtual::jamcrc(std::string_view my_string, const uint32_t previousC
  * 28, AB = 29 \param n index in base 26 \param array return array
  */
 void GTA_SA_Virtual::generateString(char* array, uint64_t n) const noexcept {
-    // If n < 27
-    if (n < 26) [[unlikely]] {
-        array[0] = alpha[static_cast<std::size_t>(n)];
-        return;
-    }
-    // If n > 27
     std::uint64_t i = 0;
     while (n) {
         array[i] = alpha[(--n) % 26];
         n /= 26;
         ++i;
     }
+}
+
+void GTA_SA_Virtual::generateStringV2(char* array, uint64_t n) const noexcept {
+    std::uint64_t i = 0;
+    do {
+        array[i++] = alpha[--n % 26];
+        n /= 26;
+    } while (n > 0);
 }
 
 void GTA_SA_Virtual::clear() {

@@ -21,23 +21,18 @@ include(cmake/variables.cmake)
 
 # ---- Enable Utile ----
 include(cmake/utile/ccache.cmake)
-# include(cmake/utile/ninja_color.cmake)
+#include(cmake/utile/sccache.cmake)
 
-find_package(QT NAMES Qt6 COMPONENTS Quick QuickControls2 Gui Core Qml Charts Multimedia Widgets Concurrent SerialPort)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Quick QuickControls2 Gui Core Qml Charts Multimedia Widgets Concurrent SerialPort)
+# ---- Qt ----
+option(ENABLE_DEBUG_QT "Enable debug messages for Qt" OFF)
+set(QT_VERSION_MAJOR 6 CACHE BOOL "" FORCE)
+set(QT_VERSION_MINOR 8 CACHE BOOL "" FORCE)
 
-if (Qt${QT_VERSION_MAJOR}_FOUND)
-    if (Qt${QT_VERSION_MAJOR}_VERSION VERSION_GREATER_EQUAL 6.5)
-        qt_standard_project_setup()
-    else()
-        set(CMAKE_AUTOMOC ON)
-        set(CMAKE_AUTORCC ON)
-        set(CMAKE_AUTOUIC ON)
-        set(CMAKE_AUTOSRC ON)
-    endif()
-else()
-    message(WARNING "Qt${QT_VERSION_MAJOR} not found, project will be CLI only")
-endif()
+find_package(QT NAMES Qt6 COMPONENTS Quick QuickControls2 Gui Core Qml Charts Multimedia Concurrent VirtualKeyboard REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} ${QT_VERSION_MAJOR}.${QT_VERSION_MINOR} COMPONENTS Quick QuickControls2 Gui Core 
+    3DCore Qml Charts Multimedia Concurrent VirtualKeyboard)
+
+qt_standard_project_setup(REQUIRES ${QT_VERSION_MAJOR}.${QT_VERSION_MINOR})
 
 find_package(OpenMP 2.0)
 
@@ -48,7 +43,10 @@ find_package(OpenCL 2.0)
 # Download ThreadPool
 include(cmake/lib/threadpool.cmake)
 
+# TODO: Change to target_include_directories
 add_subdirectory(source/gta_cheat_finder)
+
+add_subdirectory(qml/AppLib)
 
 # ---- Declare executable ----
 
@@ -64,13 +62,11 @@ if (Qt${QT_VERSION_MAJOR}_FOUND)
         source/gta_sa_ui.cpp
         source/imageprovider.cpp
         source/application.cpp
-        source/tablemodel.cpp
         )
     list(APPEND HEADERS 
         source/gta_sa_ui.hpp
         source/asyncimageprovider.h
         source/application.h 
-        source/tablemodel.h 
         source/utils/about_compilation.h
         source/utils/utils.h
         )
@@ -102,10 +98,6 @@ if (Qt${QT_VERSION_MAJOR}_FOUND)
         qml/table.qml
         qml/settings.qml
         qml/swipe.qml
-        qml/custom/ProportionalRect.qml
-        qml/custom/CustomMenuSeparator.qml
-        qml/custom/HorizontalLabelDelegateMenu.qml
-        qml/custom/VerticalLabelDelegateMenu.qml
         IMPORT_PATH qml
         RESOURCES
         image/cat_sticking_out_its_tongue.jpg
@@ -120,12 +112,18 @@ set_target_properties(GTA_SA_cheat_finder_exe PROPERTIES
     WIN32_EXECUTABLE TRUE
 )
 
-target_compile_features(GTA_SA_cheat_finder_exe PUBLIC cxx_std_20)
+if (Qt${QT_VERSION_MAJOR}_FOUND)
+    target_link_libraries(GTA_SA_cheat_finder_exe PUBLIC Qt${QT_VERSION_MAJOR}::Quick
+            Qt${QT_VERSION_MAJOR}::QuickControls2
+            Qt${QT_VERSION_MAJOR}::Charts Qt${QT_VERSION_MAJOR}::Concurrent
+            Qt${QT_VERSION_MAJOR}::3DCore Qt${QT_VERSION_MAJOR}::VirtualKeyboard)
+
+    target_link_libraries(GTA_SA_cheat_finder_exe PUBLIC AppLib AppLibplugin)
+endif()
 
 if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
   target_link_libraries(GTA_SA_cheat_finder_exe PUBLIC OpenMP::OpenMP_CXX)
 endif()
-
 
 if (CUDAToolkit_FOUND)
   target_include_directories(GTA_SA_cheat_finder_exe PUBLIC ${CUDAToolkit_INCLUDE_DIRS})
@@ -135,18 +133,13 @@ target_link_libraries(GTA_SA_cheat_finder_exe PUBLIC GTA_SA_cheat_finder_lib)
 
 set_property(TARGET GTA_SA_cheat_finder_exe PROPERTY OUTPUT_NAME GTA_SA_cheat_finder)
 
-target_compile_features(GTA_SA_cheat_finder_exe PRIVATE cxx_std_20)
-
-if (Qt${QT_VERSION_MAJOR}_FOUND)
-    target_link_libraries(GTA_SA_cheat_finder_exe
-        PRIVATE Qt${QT_VERSION_MAJOR}::Quick Qt${QT_VERSION_MAJOR}::QuickControls2 Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Charts Qt${QT_VERSION_MAJOR}::Concurrent Qt${QT_VERSION_MAJOR}::SerialPort)
-endif()
-
 target_compile_definitions(GTA_SA_cheat_finder_exe PUBLIC PROJECT_VERSION="${PROJECT_VERSION}")
 target_compile_definitions(GTA_SA_cheat_finder_exe PUBLIC CMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE}")
 target_compile_definitions(GTA_SA_cheat_finder_exe PUBLIC CMAKE_CXX_COMPILER_ID="${CMAKE_CXX_COMPILER_ID}")
 target_compile_definitions(GTA_SA_cheat_finder_exe PUBLIC CMAKE_C_COMPILER_ID="${CMAKE_C_COMPILER_ID}")
 target_compile_definitions(GTA_SA_cheat_finder_exe PUBLIC CMAKE_VERSION="${CMAKE_VERSION}")
+
+#target_compile_definitions(GTA_SA_cheat_finder_exe PUBLIC QT_MESSAGELOGCONTEXT="1")
 
 configure_file(image/cat_sticking_out_its_tongue.jpg ${CMAKE_BINARY_DIR}/image/cat_sticking_out_its_tongue.jpg COPYONLY)
 
