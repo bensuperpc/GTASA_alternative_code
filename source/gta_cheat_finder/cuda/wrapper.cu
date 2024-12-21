@@ -77,19 +77,8 @@ __host__ void my::cuda::launchKernel(std::vector<uint32_t>& jamcrc_results,
 
     uint64_t calcRange = maxRange - minRange;
 
-    // int device = -1;
-    // cudaGetDevice(&device);
-
     int device = 0;
     cudaGetDevice(&device);
-
-    /*
-    int priority_high, priority_low;
-    cudaDeviceGetStreamPriorityRange(&priority_low, &priority_high);
-    cudaStream_t st_high, st_low;
-    cudaStreamCreateWithPriority(&st_high, cudaStreamNonBlocking, priority_high);
-    cudaStreamCreateWithPriority(&st_low, cudaStreamNonBlocking, priority_low);
-    */
 
     cudaStream_t stream;
     cudaStreamCreateWithFlags(&stream, cudaStreamNonBlocking);
@@ -157,7 +146,7 @@ __host__ void my::cuda::launchKernel(std::vector<uint32_t>& jamcrc_results,
         return;
     }
 
-    FindAlternativeCheatKernel<<<grid, threads, device, stream>>>(jamcrcResultsPtr, indexResultsPtr, arrayLength, ResultsSize, minRange,
+    findAlternativeCheatKernel<<<grid, threads, device, stream>>>(jamcrcResultsPtr, indexResultsPtr, arrayLength, ResultsSize, minRange,
                                                                   maxRange);
 
     cudaStreamSynchronize(stream);
@@ -171,8 +160,6 @@ __host__ void my::cuda::launchKernel(std::vector<uint32_t>& jamcrc_results,
     cudaFree(ResultsSize);
 
     cudaStreamDestroy(stream);
-    // cudaStreamDestroy(st_high);
-    // cudaStreamDestroy(st_low);
 
     std::cout << "CUDA Kernel finished" << std::endl;
 }

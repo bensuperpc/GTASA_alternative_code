@@ -21,8 +21,6 @@ TEST(jamcrc, basic1) {
         gtaSA.generateString(result.data(), i);
         std::string expected = str.substr(i - 1, 1);
         EXPECT_EQ(static_cast<std::string>(result.data()), expected);
-        std::cout << "Expected: " << expected << " Result: " << static_cast<std::string>(result.data()) << "For i: " << i << std::endl;
-
         result.fill(0);
     }
 }

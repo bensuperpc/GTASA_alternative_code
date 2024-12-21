@@ -170,7 +170,7 @@ std::string my::opencl::kernel::jamcrc4Byte() {
 std::string my::opencl::kernel::generateStringLocal() {
     return R"(
         __constant uchar alpha[27] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        __kernel void GenerateStringKernel(__local uchar* array, __local ulong* n, __local ulong* terminatorIndex) {
+        __kernel void generateStringKernel(__local uchar* array, __local ulong* n, __local ulong* terminatorIndex) {
             ulong index = n[0];
             // If index < 27
             if (index < 26) {
@@ -219,7 +219,7 @@ std::string my::opencl::kernel::findAlternativeCheat() {
             __local ulong terminatorIndex;
             terminatorIndex = 0;
 
-            GenerateStringKernel(array, index, terminatorIndex);
+            generateStringKernel(array, index, terminatorIndex);
 
             __local uint crc;
             crc = 0;

@@ -53,6 +53,8 @@ set(SRCS
     module/GTASAModuleVirtual.cpp
     module/GTASAModuleThreadpool.cpp
     module/GTASAModuleOpenMP.cpp
+    module/GTASAModuleCUDA.cpp
+    #module/GTASAModuleOpenCL.cpp
 	)
 	
 set(HEADERS
@@ -64,6 +66,8 @@ set(HEADERS
     module/GTASAModuleVirtual.hpp
     module/GTASAModuleThreadpool.hpp
     module/GTASAModuleOpenMP.hpp
+    module/GTASAModuleCUDA.hpp
+    #module/GTASAModuleOpenCL.hpp
     )
 
 if (OpenMP_FOUND OR OpenMP_CXX_FOUND)

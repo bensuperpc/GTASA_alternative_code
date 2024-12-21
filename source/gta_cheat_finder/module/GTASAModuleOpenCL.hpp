@@ -1,5 +1,5 @@
-#ifndef GTASAMODULETHREADPOOL_HPP
-#define GTASAMODULETHREADPOOL_HPP
+#ifndef GTASAMODULEOPENMP_HPP
+#define GTASAMODULEOPENMP_HPP
 
 #include <algorithm>    // std::find
 #include <array>        // std::array
@@ -16,18 +16,31 @@
 
 #include "GTASAModuleVirtual.hpp"
 
-#include "BS_thread_pool.hpp"
+#if __has_include("CL/cl.h") || __has_include("CL/cl.hpp")
+#ifndef BUILD_WITH_OPENCL
+#define BUILD_WITH_OPENCL
+#endif
+#else
+#if _MSC_VER && !__INTEL_COMPILER
+#pragma message("OpenCL disabled.")
+#else
+#warning OpenCL disabled.
+#endif
+#endif
 
-class GTASAModuleThreadpool final : public GTASAModuleVirtual {
+#if defined(BUILD_WITH_OPENCL)
+#include "opencl/wrapper.hpp"
+#endif
+
+class GTASAModuleOpenCL final : public GTASAModuleVirtual {
    public:
-    explicit GTASAModuleThreadpool();
-    ~GTASAModuleThreadpool();
+    explicit GTASAModuleOpenCL();
+    ~GTASAModuleOpenCL();
 
     std::vector<GTASAResult> run(std::uint64_t startRange, std::uint64_t endRange) override;
-    
+
     private:
-     GTASAResult runner(const std::uint64_t i);
-     BS::thread_pool<BS::tp::none> _pool = BS::thread_pool<BS::tp::none>(0);
+     uint64_t _openCLBlockSize = 64;
 };
 
-#endif  // GTA_SA_STDTHREAD_HPP
+#endif  // GTASAMODULEOPENMP_HPP

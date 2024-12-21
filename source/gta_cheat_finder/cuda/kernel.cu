@@ -35,7 +35,7 @@ __global__ void jamcrcKernelWrapper(const void* data, uint32_t* result, const ui
     }
 }
 
-__global__ void FindAlternativeCheatKernel(uint32_t* crc_result,
+__global__ void findAlternativeCheatKernel(uint32_t* crc_result,
                                            uint64_t* index_result,
                                            uint64_t array_size,
                                            uint32_t* arrayIndex,
@@ -53,7 +53,7 @@ __global__ void FindAlternativeCheatKernel(uint32_t* crc_result,
 
         uint64_t size = 0;
         // Generate the array from index (a)
-        GenerateStringKernel(array, a, &size);
+        generateStringKernel(array, a, &size);
 
         // Calculate the JAMCRC
         const uint32_t result = jamcrc1Byte(array, size, 0);
@@ -85,13 +85,7 @@ __global__ void FindAlternativeCheatKernel(uint32_t* crc_result,
     //__syncthreads();
 }
 
-__device__ void GenerateStringKernel(uint8_t* array, uint64_t n, uint64_t* terminatorIndex) {
-    // If n < 27
-    if (n < 26) {
-        array[0] = alpha[n];
-        *terminatorIndex = 1;
-        return;
-    }
+__device__ void generateStringKernel(uint8_t* array, uint64_t n, uint64_t* terminatorIndex) {
     // If n > 27
     uint64_t i = 0;
     while (n > 0) {
@@ -99,5 +93,15 @@ __device__ void GenerateStringKernel(uint8_t* array, uint64_t n, uint64_t* termi
         n /= 26;
         ++i;
     }
+    *terminatorIndex = i;
+}
+
+__device__ void generateStringKernelV2(uint8_t* array, uint64_t n, uint64_t* terminatorIndex) {
+    uint64_t i = 0;
+    do {
+        array[i++] = alpha[--n % 26];
+        n /= 26;
+    } while (n > 0);
+
     *terminatorIndex = i;
 }

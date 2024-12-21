@@ -1,4 +1,6 @@
 #include "GTASARequest.hpp"
+#include "module/GTASAModuleThreadpool.hpp"
+#include "module/GTASAModuleOpenMP.hpp"
 
 GTASARequest::GTASARequest(std::uint64_t startRange, std::uint64_t endRange, COMPUTE_TYPE type) :
     _startRange(startRange), _endRange(endRange), _type(type), _status(RequestStatus::IDLE) {}
@@ -9,7 +11,7 @@ void GTASARequest::start() {
         return;
     }
 
-    run();
+    _future = std::async(std::launch::async, &GTASARequest::run, this);
 }
 
 void GTASARequest::run() {

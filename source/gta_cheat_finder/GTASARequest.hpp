@@ -7,6 +7,8 @@
 #include <shared_mutex> // std::shared_mutex
 #include <mutex> // std::mutex
 #include <iostream> // std::cerr
+#include <future>
+#include <functional>
 
 #include "module/GTASAModuleVirtual.hpp"
 
@@ -29,6 +31,9 @@ class GTASARequest {
 
     private:
      void run();
+     std::future<void> _future;
+
+
      mutable std::shared_mutex _mutex = std::shared_mutex();
 
      std::uint64_t _startRange = 0;
