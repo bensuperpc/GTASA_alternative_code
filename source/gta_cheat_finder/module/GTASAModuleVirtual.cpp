@@ -7,3 +7,7 @@ GTASAModuleVirtual::~GTASAModuleVirtual() {}
 COMPUTE_TYPE GTASAModuleVirtual::type() const {
     return _type;
 }
+
+std::uint64_t GTASAModuleVirtual::runningInstance() const {
+    return _runningInstance;
+}

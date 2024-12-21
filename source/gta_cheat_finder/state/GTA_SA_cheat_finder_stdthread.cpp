@@ -15,35 +15,6 @@ GTA_SA_STDTHREAD& GTA_SA_STDTHREAD::operator=(const GTA_SA_STDTHREAD& other) {
 }
 
 void GTA_SA_STDTHREAD::run() {
-    std::cout << "Running with std::thread mode" << std::endl;
-
-    std::cout << "Max thread support: " << GTA_SA_Virtual::maxThreadSupport() << std::endl;
-    std::cout << "Running with: " << threadCount << " threads" << std::endl;
-
-    if (minRange > maxRange) {
-        std::cout << "Min range value: '" << minRange << "' can't be greater than Max range value: '" << maxRange << "'" << std::endl;
-        return;
-    }
-
-    if ((maxRange - minRange) < 1) {
-        std::cout << "Search range is too small." << std::endl;
-        std::cout << "Min range value: '" << minRange << "' Max range value: '" << maxRange << "'" << std::endl;
-        return;
-    }
-    std::cout << "Number of calculations: " << (maxRange - minRange) << std::endl;
-
-    IsRunning = true;
-
-    std::array<char, 29> tmp1 = {0};
-    std::array<char, 29> tmp2 = {0};
-
-    results.reserve((maxRange - minRange) / 20'000'000 + 1);
-
-    this->generateString(tmp1.data(), minRange);
-    this->generateString(tmp2.data(), maxRange);
-    std::cout << "From: " << tmp1.data() << " to: " << tmp2.data() << " Alphabetic sequence" << std::endl;
-    beginTime = std::chrono::high_resolution_clock::now();
-
     BS::thread_pool pool(threadCount);
 
     auto future = pool.submit_blocks(minRange, maxRange, [&](const std::uint64_t& _min_range, const std::uint64_t& _max_range) {
@@ -64,7 +35,6 @@ void GTA_SA_STDTHREAD::run() {
     std::sort(results.begin(), results.end(), [](const GTASAResult& a, const GTASAResult& b) { return a.index < b.index; });
 
     printResult();
-    IsRunning = false;
 }
 
 void GTA_SA_STDTHREAD::runner(const std::uint64_t i) {

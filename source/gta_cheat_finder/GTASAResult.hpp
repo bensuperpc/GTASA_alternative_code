@@ -6,7 +6,12 @@
 
 class GTASAResult {
    public:
+    explicit GTASAResult(std::uint64_t, std::string&, std::uint32_t, std::uint64_t);
+    explicit GTASAResult(std::uint64_t, std::string&&, std::uint32_t, std::uint64_t);
+
+    //TODO: Removed it after rewrite
     explicit GTASAResult(std::uint64_t, std::string, std::uint32_t, std::string);
+    
     GTASAResult();
     ~GTASAResult();
 
@@ -16,7 +21,9 @@ class GTASAResult {
     std::uint64_t index = 0;
     std::string code = "";
     std::uint32_t jamcrc = 0;
-    std::string associated_code;
+    std::uint64_t codeIndex = 0;
+
+    std::string associated_code = "";
 };
 
 #endif  // GTASARESULT_HPP

@@ -51,6 +51,8 @@ set(SRCS
     GTASAResult.cpp
     GTASARequest.cpp
     module/GTASAModuleVirtual.cpp
+    module/GTASAModuleThreadpool.cpp
+    module/GTASAModuleOpenMP.cpp
 	)
 	
 set(HEADERS
@@ -60,6 +62,8 @@ set(HEADERS
     GTASAResult.hpp
     GTASARequest.hpp
     module/GTASAModuleVirtual.hpp
+    module/GTASAModuleThreadpool.hpp
+    module/GTASAModuleOpenMP.hpp
     )
 
 if (OpenMP_FOUND OR OpenMP_CXX_FOUND)

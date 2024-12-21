@@ -40,8 +40,7 @@ find_package(CUDAToolkit 11.0)
 
 find_package(OpenCL 2.0)
 
-# Download ThreadPool
-include(cmake/lib/threadpool.cmake)
+include_directories(external/thread-pool/include)
 
 # TODO: Change to target_include_directories
 add_subdirectory(source/gta_cheat_finder)
