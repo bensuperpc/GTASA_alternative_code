@@ -35,8 +35,8 @@ __global__ void jamcrcKernelWrapper(const void* data, uint32_t* result, const ui
     }
 }
 
-__global__ void findAlternativeCheatKernel(uint32_t* crc_result,
-                                           uint64_t* index_result,
+__global__ void findAlternativeCheatKernel(uint64_t* index_result,
+                                           uint32_t* crc_result,
                                            uint64_t array_size,
                                            uint32_t* arrayIndex,
                                            uint64_t a,

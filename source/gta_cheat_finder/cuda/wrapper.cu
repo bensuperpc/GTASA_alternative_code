@@ -118,7 +118,7 @@ __host__ void my::cuda::launchKernel(std::vector<uint32_t>& jamcrc_results,
     dim3 grid = dim3(0, 0, 0);
 
     if (rest < 2'000'000'000ULL) [[likely]] {
-        grid.x = rest;
+        grid.x = static_cast<unsigned int>(rest);
         grid.y = 1;
         grid.z = 1;
     } else {
@@ -130,7 +130,7 @@ __host__ void my::cuda::launchKernel(std::vector<uint32_t>& jamcrc_results,
     uint64_t total_grid_size = grid.x * grid.y * grid.z;
 
     dim3 threads = dim3(0, 0, 0);
-    threads.x = cudaBlockSize;
+    threads.x = static_cast<unsigned int>(cudaBlockSize);
     threads.y = 1;
     threads.z = 1;
     uint64_t total_cuda_block_size = threads.x * threads.y * threads.z;
@@ -146,7 +146,7 @@ __host__ void my::cuda::launchKernel(std::vector<uint32_t>& jamcrc_results,
         return;
     }
 
-    findAlternativeCheatKernel<<<grid, threads, device, stream>>>(jamcrcResultsPtr, indexResultsPtr, arrayLength, ResultsSize, minRange,
+    findAlternativeCheatKernel<<<grid, threads, device, stream>>>(indexResultsPtr, jamcrcResultsPtr, arrayLength, ResultsSize, minRange,
                                                                   maxRange);
 
     cudaStreamSynchronize(stream);

@@ -36,8 +36,8 @@ __global__ void jamcrcKernelWrapper(const void* data, uint32_t* result, uint64_t
 __device__ void generateStringKernel(uint8_t* array, uint64_t n, uint64_t* terminatorIndex);
 __device__ void generateStringKernelV2(uint8_t* array, uint64_t n, uint64_t* terminatorIndex);
 
-__global__ void findAlternativeCheatKernel(uint32_t* crc_result,
-                                           uint64_t* index_result,
+__global__ void findAlternativeCheatKernel(uint64_t* index_result,
+                                           uint32_t* crc_result,
                                            uint64_t array_size,
                                            uint32_t* arrayIndex,
                                            uint64_t a,
