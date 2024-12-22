@@ -1,5 +1,8 @@
 #include "GTASAModuleOpenMP.hpp"
 
+#include <algorithm> // std::find
+#include <cstring> // strlen
+
 GTASAModuleOpenMP::GTASAModuleOpenMP():
     GTASAModuleVirtual(COMPUTE_TYPE::OPENMP) {
 }

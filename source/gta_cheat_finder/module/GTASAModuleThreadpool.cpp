@@ -1,5 +1,8 @@
 #include "GTASAModuleThreadpool.hpp"
 
+#include <algorithm> // std::find
+#include <cstring> // strlen
+
 GTASAModuleThreadpool::GTASAModuleThreadpool():
     GTASAModuleVirtual(COMPUTE_TYPE::STDTHREAD),
     _pool(BS::thread_pool<BS::tp::none>(0)) {

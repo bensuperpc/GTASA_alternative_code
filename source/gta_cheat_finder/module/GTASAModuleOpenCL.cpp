@@ -1,5 +1,8 @@
 #include "GTASAModuleOpenCL.hpp"
 
+#include <algorithm> // std::find
+#include <cstring> // strlen
+
 GTASAModuleOpenCL::GTASAModuleOpenCL():
     GTASAModuleVirtual(COMPUTE_TYPE::CUDA) {
 }

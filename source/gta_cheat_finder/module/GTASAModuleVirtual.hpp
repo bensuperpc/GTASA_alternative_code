@@ -5,6 +5,8 @@
 #include <vector>   // std::vector
 #include <atomic>   // std::atomic
 #include <array>    // std::array
+#include <shared_mutex> // std::shared_mutex
+
 #include "GTASAResult.hpp"
 
 enum class COMPUTE_TYPE { NONE, STDTHREAD, OPENMP, CUDA, OPENCL };
@@ -19,8 +21,8 @@ class GTASAModuleVirtual {
     explicit GTASAModuleVirtual(COMPUTE_TYPE type);
 
     const COMPUTE_TYPE _type = COMPUTE_TYPE::NONE;
-
     std::atomic<std::uint64_t> _runningInstance = 0;
+    mutable std::shared_mutex _mutex = std::shared_mutex();
 
     auto jamcrc(std::string_view my_string, const uint32_t previousCrc32 = 0) const noexcept -> std::uint32_t;
     void generateString(char* array, uint64_t n) const noexcept;

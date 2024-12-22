@@ -15,11 +15,12 @@
 class GTASARequest {
    public:
     enum class RequestStatus { IDLE, RUNNING, FINISHED, ERROR };
-    explicit GTASARequest(std::uint64_t startRange, std::uint64_t endRange, COMPUTE_TYPE type);
+    explicit GTASARequest(GTASAModuleVirtual& module, std::uint64_t startRange, std::uint64_t endRange);
     ~GTASARequest();
 
     void start();
 
+    bool isStarted() const;
     bool isRunning() const;
     bool isFinished() const;
     bool isError() const;
@@ -38,8 +39,8 @@ class GTASARequest {
 
      std::uint64_t _startRange = 0;
      std::uint64_t _endRange = 0;
-     COMPUTE_TYPE _type = COMPUTE_TYPE::NONE;
      RequestStatus _status = RequestStatus::IDLE;
+     GTASAModuleVirtual& _module;
      std::vector<GTASAResult> _results = {};
 };
 

@@ -50,6 +50,7 @@ set(SRCS
     state/GTA_SA_cheat_finder_virtual.cpp
     GTASAResult.cpp
     GTASARequest.cpp
+    GTASAEngine.cpp
     module/GTASAModuleVirtual.cpp
     module/GTASAModuleThreadpool.cpp
     module/GTASAModuleOpenMP.cpp
@@ -63,6 +64,7 @@ set(HEADERS
     state/GTA_SA_cheat_finder_virtual.hpp
     GTASAResult.hpp
     GTASARequest.hpp
+    GTASAEngine.hpp
     module/GTASAModuleVirtual.hpp
     module/GTASAModuleThreadpool.hpp
     module/GTASAModuleOpenMP.hpp
