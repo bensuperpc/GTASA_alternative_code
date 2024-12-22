@@ -1,5 +1,5 @@
-#ifndef CUDA_JAMCRC_H
-#define CUDA_JAMCRC_H
+#ifndef CUDA_JAMCRC_CUH
+#define CUDA_JAMCRC_CUH
 
 #include <cuda.h>
 #include <cuda_runtime.h>

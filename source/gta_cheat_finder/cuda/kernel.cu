@@ -48,16 +48,12 @@ __global__ void findAlternativeCheatKernel(uint64_t* index_result,
     a = id + a;
 
     if (a <= b) {
-        //  Allocate memory for the array
         uint8_t array[29] = {0};
-
         uint64_t size = 0;
-        // Generate the array from index (a)
+
         generateStringKernel(array, a, &size);
 
-        // Calculate the JAMCRC
         const uint32_t result = jamcrc1Byte(array, size, 0);
-        // printf("id: %llu, size: %llu, array: %s, crc: 0x%x\n", id, size, array, result);
 
         bool found = false;
         for (uint8_t i = 0; i < 87; i += 3) {
@@ -70,6 +66,7 @@ __global__ void findAlternativeCheatKernel(uint64_t* index_result,
         if (!found) {
             return;
         }
+
 #if defined(__CUDA_ARCH__) && (__CUDA_ARCH__ < 600)
         uint32_t localArrayIndex = atomicAdd(arrayIndex, 1);
 #else
@@ -79,29 +76,9 @@ __global__ void findAlternativeCheatKernel(uint64_t* index_result,
         if (localArrayIndex >= array_size) {
             return;
         }
+        
         crc_result[localArrayIndex] = result;
         index_result[localArrayIndex] = a;
     }
     //__syncthreads();
-}
-
-__device__ void generateStringKernel(uint8_t* array, uint64_t n, uint64_t* terminatorIndex) {
-    // If n > 27
-    uint64_t i = 0;
-    while (n > 0) {
-        array[i] = alpha[(--n) % 26];
-        n /= 26;
-        ++i;
-    }
-    *terminatorIndex = i;
-}
-
-__device__ void generateStringKernelV2(uint8_t* array, uint64_t n, uint64_t* terminatorIndex) {
-    uint64_t i = 0;
-    do {
-        array[i++] = alpha[--n % 26];
-        n /= 26;
-    } while (n > 0);
-
-    *terminatorIndex = i;
 }

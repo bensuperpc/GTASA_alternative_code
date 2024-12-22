@@ -30,11 +30,9 @@
 #include <stdio.h>
 
 #include "jamcrc.cuh"
+#include "generateString.cuh"
 
 __global__ void jamcrcKernelWrapper(const void* data, uint32_t* result, uint64_t length, const uint32_t previousCrc32);
-
-__device__ void generateStringKernel(uint8_t* array, uint64_t n, uint64_t* terminatorIndex);
-__device__ void generateStringKernelV2(uint8_t* array, uint64_t n, uint64_t* terminatorIndex);
 
 __global__ void findAlternativeCheatKernel(uint64_t* index_result,
                                            uint32_t* crc_result,
@@ -53,6 +51,5 @@ __device__ const uint32_t cheatList[87] = {
     0xF53EF5A5, 0xF2AA0C1D, 0xF36345A8, 0x8990D5E1, 0xB7013B1B, 0xCAEC94EE, 0x31F0C3CC, 0xB3B3E72A, 0xC25CDBFF, 0xD5CF4EFF, 0x680416B1,
     0xCF5FDA18, 0xF01286E9, 0xA841CC0A, 0x31EA09CF, 0xE958788A, 0x02C83A7C, 0xE49C3ED4, 0x171BA8CC, 0x86988DAE, 0x2BDD2FA1};
 
-__device__ const uint8_t alpha[27] = {"ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
 
 #endif

@@ -39,12 +39,14 @@ set(SRCS
     kernel.cu
     wrapper.cu
     jamcrc.cu
+    generateString.cu
 	)
 	
 set(HEADERS
     kernel.cuh
     wrapper.hpp
     jamcrc.cuh
+    generateString.cuh
     )
 
 add_library(cuda_lib ${SRCS} ${HEADERS})
