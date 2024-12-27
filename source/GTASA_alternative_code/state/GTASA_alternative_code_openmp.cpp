@@ -1,4 +1,4 @@
-#include "GTA_SA_cheat_finder_openmp.hpp"
+#include "GTASA_alternative_code_openmp.hpp"
 
 GTA_SA_OPENMP::GTA_SA_OPENMP() {}
 

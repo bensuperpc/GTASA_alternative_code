@@ -1,15 +1,15 @@
-#include "GTASAModuleOpenCL.hpp"
+#include "GTASAModuleCUDA.hpp"
 
 #include <algorithm> // std::find
 #include <cstring> // strlen
 
-GTASAModuleOpenCL::GTASAModuleOpenCL():
-    GTASAModuleVirtual(COMPUTE_TYPE::CUDA) {
+GTASAModuleCUDA::GTASAModuleCUDA():
+    GTASAModule(COMPUTE_TYPE::CUDA) {
 }
 
-GTASAModuleOpenCL::~GTASAModuleOpenCL() {}
+GTASAModuleCUDA::~GTASAModuleCUDA() {}
 
-std::vector<GTASAResult> GTASAModuleOpenCL::run(std::uint64_t startRange, std::uint64_t endRange)  {
+std::vector<GTASAResult> GTASAModuleCUDA::run(std::uint64_t startRange, std::uint64_t endRange)  {
     _runningInstance++;
 
     std::vector<uint32_t> jamcrc_results = {};
@@ -17,7 +17,7 @@ std::vector<GTASAResult> GTASAModuleOpenCL::run(std::uint64_t startRange, std::u
 
     std::vector<GTASAResult> results = {};
 
-    my::opencl::launchKernel(jamcrc_results, index_results, startRange, endRange, _openCLBlockSize);
+    my::cuda::launchKernel(jamcrc_results, index_results, startRange, endRange, _cudaBlockSize);
 
     for (uint64_t i = 0; i < jamcrc_results.size(); ++i) {
         std::array<char, 29> tmpCUDA = {0};
@@ -26,9 +26,9 @@ std::vector<GTASAResult> GTASAModuleOpenCL::run(std::uint64_t startRange, std::u
         std::reverse(tmpCUDA.data(),
                      tmpCUDA.data() + std::strlen(tmpCUDA.data()));
 
-        const auto&& it = std::find(std::begin(GTASAModuleOpenCL::cheatList), std::end(GTASAModuleOpenCL::cheatList), jamcrc_results[i]);
-
-        const uint64_t index = static_cast<uint64_t>(it - std::begin(GTASAModuleOpenCL::cheatList));
+        const auto&& it = std::find(std::begin(GTASAModuleCUDA::cheatList), std::end(GTASAModuleCUDA::cheatList), jamcrc_results[i]);
+        const uint64_t index = static_cast<uint64_t>(it - std::begin(GTASAModuleCUDA::cheatList));
+        
         results.emplace_back(index_results[i], std::string(tmpCUDA.data()), jamcrc_results[i], index);                                                                                       
     }
 

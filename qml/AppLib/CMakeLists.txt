@@ -62,8 +62,8 @@ qt_add_qml_module(
     QML_FILES
     ${QML_PLUGIN_FILES}
     SOURCES
-    ${SOURCES}
-    ${HEADER}
+    ${LIB_SOURCES}
+    ${LIB_HEADER}
     RESOURCES
     ${QML_PLUGIN_RESOURCES}
 )

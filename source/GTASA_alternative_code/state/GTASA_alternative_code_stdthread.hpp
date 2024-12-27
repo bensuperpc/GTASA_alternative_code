@@ -1,5 +1,5 @@
-#ifndef GTA_SA_OPENMP_HPP
-#define GTA_SA_OPENMP_HPP
+#ifndef GTA_SA_STDTHREAD_HPP
+#define GTA_SA_STDTHREAD_HPP
 
 #include <algorithm>    // std::find
 #include <array>        // std::array
@@ -14,19 +14,19 @@
 #include <utility>      // std::make_pair
 #include <vector>       // std::vector
 
+// #define BS_THREAD_POOL_ENABLE_PAUSE
+// #define BS_THREAD_POOL_ENABLE_PRIORITY
+// #define BS_THREAD_POOL_ENABLE_WAIT_DEADLOCK_CHECK
 #include "BS_thread_pool.hpp"
-#include "GTA_SA_cheat_finder_virtual.hpp"
 
-#if __has_include("omp.h")
-#include <omp.h>
-#endif
+#include "GTASA_alternative_code_virtual.hpp"
 
-class GTA_SA_OPENMP final : public GTA_SA_Virtual {
+class GTA_SA_STDTHREAD final : public GTA_SA_Virtual {
    public:
-    explicit GTA_SA_OPENMP();
-    ~GTA_SA_OPENMP();
+    explicit GTA_SA_STDTHREAD();
+    ~GTA_SA_STDTHREAD();
 
-    GTA_SA_OPENMP& operator=(const GTA_SA_OPENMP& other);
+    GTA_SA_STDTHREAD& operator=(const GTA_SA_STDTHREAD& other);
 
     void inline runner(const std::uint64_t i) override;
     COMPUTE_TYPE type() const override;
@@ -34,4 +34,4 @@ class GTA_SA_OPENMP final : public GTA_SA_Virtual {
     void run() override;
 };
 
-#endif  // GTA_SA_OPENMP_HPP
+#endif  // GTA_SA_STDTHREAD_HPP

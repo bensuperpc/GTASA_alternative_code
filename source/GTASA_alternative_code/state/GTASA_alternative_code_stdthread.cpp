@@ -1,4 +1,4 @@
-#include "GTA_SA_cheat_finder_stdthread.hpp"
+#include "GTASA_alternative_code_stdthread.hpp"
 
 GTA_SA_STDTHREAD::GTA_SA_STDTHREAD() {}
 

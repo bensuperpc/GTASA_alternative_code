@@ -7,18 +7,18 @@
 #include <string>   // std::string
 #include <vector>   // std::vector
 
-#include "GTA_SA_cheat_finder_virtual.hpp"
+#include "GTASA_alternative_code_virtual.hpp"
 
 #ifdef BUILD_WITH_CUDA
-#include "GTA_SA_cheat_finder_cuda.hpp"
+#include "GTASA_alternative_code_cuda.hpp"
 #endif  // BUILD_WITH_CUDA
 
 #ifdef BUILD_WITH_OPENCL
-#include "GTA_SA_cheat_finder_opencl.hpp"
+#include "GTASA_alternative_code_opencl.hpp"
 #endif  // BUILD_WITH_OPENCL
 
-#include "GTA_SA_cheat_finder_openmp.hpp"
-#include "GTA_SA_cheat_finder_stdthread.hpp"
+#include "GTASA_alternative_code_openmp.hpp"
+#include "GTASA_alternative_code_stdthread.hpp"
 
 class GTA_SA_ENGINE {
    public:

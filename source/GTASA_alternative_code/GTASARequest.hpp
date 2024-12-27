@@ -10,12 +10,12 @@
 #include <future>
 #include <functional>
 
-#include "module/GTASAModuleVirtual.hpp"
+#include "module/GTASAModule.hpp"
 
 class GTASARequest {
    public:
     enum class RequestStatus { IDLE, RUNNING, FINISHED, ERROR };
-    explicit GTASARequest(GTASAModuleVirtual& module, std::uint64_t startRange, std::uint64_t endRange);
+    explicit GTASARequest(GTASAModule& module, std::uint64_t startRange, std::uint64_t endRange);
     ~GTASARequest();
 
     void start();
@@ -27,7 +27,7 @@ class GTASARequest {
 
     std::uint64_t getStartRange() const;
     std::uint64_t getEndRange() const;
-    COMPUTE_TYPE getType() const;
+    GTASAModule::COMPUTE_TYPE getType() const;
     std::vector<GTASAResult>& getResults();
 
     private:
@@ -40,7 +40,7 @@ class GTASARequest {
      std::uint64_t _startRange = 0;
      std::uint64_t _endRange = 0;
      RequestStatus _status = RequestStatus::IDLE;
-     GTASAModuleVirtual& _module;
+     GTASAModule& _module;
      std::vector<GTASAResult> _results = {};
 };
 

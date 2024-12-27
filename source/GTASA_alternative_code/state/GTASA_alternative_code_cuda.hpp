@@ -7,7 +7,7 @@
 #include <string>       // std::string
 #include <string_view>  // std::string_view
 
-#include "GTA_SA_cheat_finder_virtual.hpp"
+#include "GTASA_alternative_code_virtual.hpp"
 
 class GTA_SA_CUDA final : public GTA_SA_Virtual {
    public:

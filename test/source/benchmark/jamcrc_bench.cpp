@@ -8,10 +8,10 @@
 
 #include <benchmark/benchmark.h>
 
-#include "GTA_SA_cheat_finder_openmp.hpp"
-#include "GTA_SA_cheat_finder_stdthread.hpp"
+#include "GTASA_alternative_code_openmp.hpp"
+#include "GTASA_alternative_code_stdthread.hpp"
 #if defined(BUILD_WITH_CUDA)
-#include "GTA_SA_cheat_finder_cuda.hpp"
+#include "GTASA_alternative_code_cuda.hpp"
 #endif  // BUILD_WITH_CUDA
 
 static constexpr int64_t multiplier = 16;

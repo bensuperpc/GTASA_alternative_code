@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.14)
 include(cmake/prelude.cmake)
 
 project(
-    GTA_SA_cheat_finder
+    GTASA_alternative_code
     VERSION 2.0.0
     DESCRIPTION "Find alternative cheat code in Grand Theft Auto San Andreas (2004) by bruteforce"
     HOMEPAGE_URL "https://github.com/bensuperpc"
@@ -23,17 +23,7 @@ include(cmake/variables.cmake)
 include(cmake/utile/ccache.cmake)
 #include(cmake/utile/sccache.cmake)
 
-# ---- Qt ----
-option(ENABLE_DEBUG_QT "Enable debug messages for Qt" OFF)
-set(QT_VERSION_MAJOR 6 CACHE BOOL "" FORCE)
-set(QT_VERSION_MINOR 8 CACHE BOOL "" FORCE)
-
-find_package(QT NAMES Qt6 COMPONENTS Quick QuickControls2 Gui Core Qml Charts Multimedia Concurrent VirtualKeyboard REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} ${QT_VERSION_MAJOR}.${QT_VERSION_MINOR} COMPONENTS Quick QuickControls2 Gui Core 
-    3DCore Qml Charts Multimedia Concurrent VirtualKeyboard)
-
-qt_standard_project_setup(REQUIRES ${QT_VERSION_MAJOR}.${QT_VERSION_MINOR})
-
+# ---- Add dependencies ----
 find_package(OpenMP 2.0)
 
 find_package(CUDAToolkit 11.0)
@@ -42,10 +32,24 @@ find_package(OpenCL 2.0)
 
 include_directories(external/thread-pool/include)
 
-# TODO: Change to target_include_directories
-add_subdirectory(source/gta_cheat_finder)
+# ---- Qt ----
+option(ENABLE_DEBUG_QT "Enable debug messages for Qt" OFF)
+set(QT_VERSION_MAJOR 6 CACHE BOOL "" FORCE)
+set(QT_VERSION_MINOR 8 CACHE BOOL "" FORCE)
 
-add_subdirectory(qml/AppLib)
+find_package(QT NAMES Qt6 COMPONENTS Quick QuickControls2 Gui Core Qml Charts Multimedia Concurrent VirtualKeyboard REQUIRED)
+find_package(Qt${QT_VERSION_MAJOR} ${QT_VERSION_MAJOR}.${QT_VERSION_MINOR} COMPONENTS Quick QuickControls2 Gui Core 
+    3DCore Qml Charts Multimedia Concurrent VirtualKeyboard)
+if (Qt${QT_VERSION_MAJOR}_FOUND)
+    qt_standard_project_setup(REQUIRES ${QT_VERSION_MAJOR}.${QT_VERSION_MINOR})
+endif()
+
+if (Qt${QT_VERSION_MAJOR}_FOUND)
+    add_subdirectory(qml/AppLib)
+endif()
+
+# TODO: Change to target_include_directories
+add_subdirectory(source/GTASA_alternative_code)
 
 # ---- Declare executable ----
 
@@ -72,20 +76,20 @@ if (Qt${QT_VERSION_MAJOR}_FOUND)
 endif()
 
 if (Qt${QT_VERSION_MAJOR}_FOUND)
-    qt_add_executable(GTA_SA_cheat_finder_exe
+    qt_add_executable(GTASA_alternative_code_exe
         ${SRCS} ${HEADERS}
     )
 else()
-    add_executable(GTA_SA_cheat_finder_exe
+    add_executable(GTASA_alternative_code_exe
         ${SRCS} ${HEADERS}
     )
 endif()
 
-add_executable(GTA_SA_cheat_finder::exe ALIAS GTA_SA_cheat_finder_exe)
+add_executable(GTASA_alternative_code::exe ALIAS GTASA_alternative_code_exe)
 
 
 if (Qt${QT_VERSION_MAJOR}_FOUND)
-    qt_add_qml_module(GTA_SA_cheat_finder_exe
+    qt_add_qml_module(GTASA_alternative_code_exe
         URI bensuperpc
         OUTPUT_DIRECTORY bensuperpc
         RESOURCE_PREFIX /bensuperpc.org
@@ -103,7 +107,7 @@ if (Qt${QT_VERSION_MAJOR}_FOUND)
     )
 endif()
 
-set_target_properties(GTA_SA_cheat_finder_exe PROPERTIES
+set_target_properties(GTASA_alternative_code_exe PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
@@ -112,33 +116,33 @@ set_target_properties(GTA_SA_cheat_finder_exe PROPERTIES
 )
 
 if (Qt${QT_VERSION_MAJOR}_FOUND)
-    target_link_libraries(GTA_SA_cheat_finder_exe PUBLIC Qt${QT_VERSION_MAJOR}::Quick
+    target_link_libraries(GTASA_alternative_code_exe PUBLIC Qt${QT_VERSION_MAJOR}::Quick
             Qt${QT_VERSION_MAJOR}::QuickControls2
             Qt${QT_VERSION_MAJOR}::Charts Qt${QT_VERSION_MAJOR}::Concurrent
             Qt${QT_VERSION_MAJOR}::3DCore Qt${QT_VERSION_MAJOR}::VirtualKeyboard)
 
-    target_link_libraries(GTA_SA_cheat_finder_exe PUBLIC AppLib AppLibplugin)
+    target_link_libraries(GTASA_alternative_code_exe PUBLIC AppLib AppLibplugin)
 endif()
 
 if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
-  target_link_libraries(GTA_SA_cheat_finder_exe PUBLIC OpenMP::OpenMP_CXX)
+  target_link_libraries(GTASA_alternative_code_exe PUBLIC OpenMP::OpenMP_CXX)
 endif()
 
 if (CUDAToolkit_FOUND)
-  target_include_directories(GTA_SA_cheat_finder_exe PUBLIC ${CUDAToolkit_INCLUDE_DIRS})
+  target_include_directories(GTASA_alternative_code_exe PUBLIC ${CUDAToolkit_INCLUDE_DIRS})
 endif()
 
-target_link_libraries(GTA_SA_cheat_finder_exe PUBLIC GTA_SA_cheat_finder_lib)
+target_link_libraries(GTASA_alternative_code_exe PUBLIC GTASA_alternative_code_lib)
 
-set_property(TARGET GTA_SA_cheat_finder_exe PROPERTY OUTPUT_NAME GTA_SA_cheat_finder)
+set_property(TARGET GTASA_alternative_code_exe PROPERTY OUTPUT_NAME GTASA_alternative_code)
 
-target_compile_definitions(GTA_SA_cheat_finder_exe PUBLIC PROJECT_VERSION="${PROJECT_VERSION}")
-target_compile_definitions(GTA_SA_cheat_finder_exe PUBLIC CMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE}")
-target_compile_definitions(GTA_SA_cheat_finder_exe PUBLIC CMAKE_CXX_COMPILER_ID="${CMAKE_CXX_COMPILER_ID}")
-target_compile_definitions(GTA_SA_cheat_finder_exe PUBLIC CMAKE_C_COMPILER_ID="${CMAKE_C_COMPILER_ID}")
-target_compile_definitions(GTA_SA_cheat_finder_exe PUBLIC CMAKE_VERSION="${CMAKE_VERSION}")
+target_compile_definitions(GTASA_alternative_code_exe PUBLIC PROJECT_VERSION="${PROJECT_VERSION}")
+target_compile_definitions(GTASA_alternative_code_exe PUBLIC CMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE}")
+target_compile_definitions(GTASA_alternative_code_exe PUBLIC CMAKE_CXX_COMPILER_ID="${CMAKE_CXX_COMPILER_ID}")
+target_compile_definitions(GTASA_alternative_code_exe PUBLIC CMAKE_C_COMPILER_ID="${CMAKE_C_COMPILER_ID}")
+target_compile_definitions(GTASA_alternative_code_exe PUBLIC CMAKE_VERSION="${CMAKE_VERSION}")
 
-#target_compile_definitions(GTA_SA_cheat_finder_exe PUBLIC QT_MESSAGELOGCONTEXT="1")
+#target_compile_definitions(GTASA_alternative_code_exe PUBLIC QT_MESSAGELOGCONTEXT="1")
 
 configure_file(image/cat_sticking_out_its_tongue.jpg ${CMAKE_BINARY_DIR}/image/cat_sticking_out_its_tongue.jpg COPYONLY)
 
@@ -151,12 +155,12 @@ endif()
 
 # ---- Developer mode ----
 
-if(NOT GTA_SA_cheat_finder_DEVELOPER_MODE)
+if(NOT GTASA_alternative_code_DEVELOPER_MODE)
   return()
 elseif(NOT PROJECT_IS_TOP_LEVEL)
   message(
       AUTHOR_WARNING
-      "Developer mode is intended for developers of GTA_SA_cheat_finder"
+      "Developer mode is intended for developers of GTASA_alternative_code"
   )
 endif()
 

@@ -1,4 +1,4 @@
-#include "GTA_SA_cheat_finder_cuda.hpp"
+#include "GTASA_alternative_code_cuda.hpp"
 
 GTA_SA_CUDA::GTA_SA_CUDA() {}
 

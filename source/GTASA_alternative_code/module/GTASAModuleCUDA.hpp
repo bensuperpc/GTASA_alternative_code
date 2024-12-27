@@ -1,7 +1,7 @@
 #ifndef GTASAMODULEOPENMP_HPP
 #define GTASAMODULEOPENMP_HPP
 
-#include "GTASAModuleVirtual.hpp"
+#include "GTASAModule.hpp"
 
 #if __has_include("cuda.h") || __has_include("cuda_runtime.h")
 #ifndef BUILD_WITH_CUDA
@@ -19,7 +19,7 @@
 #include "cuda/wrapper.hpp"
 #endif
 
-class GTASAModuleCUDA final : public GTASAModuleVirtual {
+class GTASAModuleCUDA final : public GTASAModule {
    public:
     explicit GTASAModuleCUDA();
     ~GTASAModuleCUDA();

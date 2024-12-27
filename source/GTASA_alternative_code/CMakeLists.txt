@@ -20,9 +20,9 @@
 
 cmake_minimum_required(VERSION 3.14)
 project(
-    GTA_SA_cheat_finder_lib
+    GTASA_alternative_code_lib
     VERSION 0.1.0
-    DESCRIPTION "GTA_SA_cheat_finder lib"
+    DESCRIPTION "GTASA_alternative_code lib"
     HOMEPAGE_URL "https://github.com/bensuperpc"
     LANGUAGES CXX
 )
@@ -32,9 +32,6 @@ find_package(OpenMP 2.0)
 find_package(CUDAToolkit 11.0)
 
 #find_package(OpenCL 2.0)
-
-# Download ThreadPool
-include(../../cmake/lib/threadpool.cmake)
 
 if (CUDAToolkit_FOUND)
   add_subdirectory(cuda)
@@ -46,12 +43,12 @@ endif()
 
 set(SRCS
     GTA_SA_engine.cpp
-    state/GTA_SA_cheat_finder_stdthread.cpp
-    state/GTA_SA_cheat_finder_virtual.cpp
+    state/GTASA_alternative_code_stdthread.cpp
+    state/GTASA_alternative_code_virtual.cpp
     GTASAResult.cpp
     GTASARequest.cpp
     GTASAEngine.cpp
-    module/GTASAModuleVirtual.cpp
+    module/GTASAModule.cpp
     module/GTASAModuleThreadpool.cpp
     module/GTASAModuleOpenMP.cpp
     module/GTASAModuleCUDA.cpp
@@ -60,12 +57,12 @@ set(SRCS
 	
 set(HEADERS
     GTA_SA_engine.hpp
-    state/GTA_SA_cheat_finder_stdthread.hpp
-    state/GTA_SA_cheat_finder_virtual.hpp
+    state/GTASA_alternative_code_stdthread.hpp
+    state/GTASA_alternative_code_virtual.hpp
     GTASAResult.hpp
     GTASARequest.hpp
     GTASAEngine.hpp
-    module/GTASAModuleVirtual.hpp
+    module/GTASAModule.hpp
     module/GTASAModuleThreadpool.hpp
     module/GTASAModuleOpenMP.hpp
     module/GTASAModuleCUDA.hpp
@@ -73,46 +70,46 @@ set(HEADERS
     )
 
 if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
-  list(APPEND SRCS state/GTA_SA_cheat_finder_openmp.cpp)
-  list(APPEND HEADERS state/GTA_SA_cheat_finder_openmp.hpp)
+  list(APPEND SRCS state/GTASA_alternative_code_openmp.cpp)
+  list(APPEND HEADERS state/GTASA_alternative_code_openmp.hpp)
 endif()
 
 if (CUDAToolkit_FOUND)
-  list(APPEND SRCS state/GTA_SA_cheat_finder_cuda.cpp)
-  list(APPEND HEADERS state/GTA_SA_cheat_finder_cuda.hpp)
+  list(APPEND SRCS state/GTASA_alternative_code_cuda.cpp)
+  list(APPEND HEADERS state/GTASA_alternative_code_cuda.hpp)
 endif()
 
 if (OpenCL_FOUND)
-  #list(APPEND SRCS state/GTA_SA_cheat_finder_opencl.cpp)
-  #list(APPEND HEADERS state/GTA_SA_cheat_finder_opencl.hpp)
+  #list(APPEND SRCS state/GTASA_alternative_code_opencl.cpp)
+  #list(APPEND HEADERS state/GTASA_alternative_code_opencl.hpp)
 endif()
   
-add_library(GTA_SA_cheat_finder_lib ${SRCS} ${HEADERS})
+add_library(GTASA_alternative_code_lib ${SRCS} ${HEADERS})
 
 target_include_directories(
-    GTA_SA_cheat_finder_lib ${warning_guard}
+    GTASA_alternative_code_lib ${warning_guard}
     PUBLIC
     "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/>"
     "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/state>"
 )
 
 if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
-    target_link_libraries(GTA_SA_cheat_finder_lib PUBLIC OpenMP::OpenMP_CXX)
+    target_link_libraries(GTASA_alternative_code_lib PUBLIC OpenMP::OpenMP_CXX)
 endif()
 
 if (CUDAToolkit_FOUND)
-  target_include_directories(GTA_SA_cheat_finder_lib PUBLIC ${CUDAToolkit_INCLUDE_DIRS})
-  target_link_libraries(GTA_SA_cheat_finder_lib PUBLIC CUDA::cudart)
-  target_link_libraries(GTA_SA_cheat_finder_lib PUBLIC cuda_lib)
+  target_include_directories(GTASA_alternative_code_lib PUBLIC ${CUDAToolkit_INCLUDE_DIRS})
+  target_link_libraries(GTASA_alternative_code_lib PUBLIC CUDA::cudart)
+  target_link_libraries(GTASA_alternative_code_lib PUBLIC cuda_lib)
 endif()
 
 if (OpenCL_FOUND)
-  #target_include_directories(GTA_SA_cheat_finder_lib PUBLIC ${OpenCL_INCLUDE_DIRS})
-  #target_link_libraries(GTA_SA_cheat_finder_lib PUBLIC ${OpenCL_LIBRARIES})
-  #target_link_libraries(GTA_SA_cheat_finder_lib PUBLIC opencl_lib)
+  #target_include_directories(GTASA_alternative_code_lib PUBLIC ${OpenCL_INCLUDE_DIRS})
+  #target_link_libraries(GTASA_alternative_code_lib PUBLIC ${OpenCL_LIBRARIES})
+  #target_link_libraries(GTASA_alternative_code_lib PUBLIC opencl_lib)
 endif()
 
-set_target_properties(GTA_SA_cheat_finder_lib
+set_target_properties(GTASA_alternative_code_lib
     PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"

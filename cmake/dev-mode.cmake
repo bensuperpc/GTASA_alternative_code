@@ -7,10 +7,10 @@ endif()
 
 add_custom_target(
     run-exe
-    COMMAND GTA_SA_cheat_finder_exe
+    COMMAND GTASA_alternative_code_exe
     VERBATIM
 )
-add_dependencies(run-exe GTA_SA_cheat_finder_exe)
+add_dependencies(run-exe GTASA_alternative_code_exe)
 
 option(BUILD_MCSS_DOCS "Build documentation using Doxygen and m.css" OFF)
 if(BUILD_MCSS_DOCS)

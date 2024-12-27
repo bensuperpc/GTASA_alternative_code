@@ -4,7 +4,7 @@
 #include <cstring> // strlen
 
 GTASAModuleOpenMP::GTASAModuleOpenMP():
-    GTASAModuleVirtual(COMPUTE_TYPE::OPENMP) {
+    GTASAModule(COMPUTE_TYPE::OPENMP) {
 }
 
 GTASAModuleOpenMP::~GTASAModuleOpenMP() {}

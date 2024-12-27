@@ -1,4 +1,4 @@
-#include "GTA_SA_cheat_finder_opencl.hpp"
+#include "GTASA_alternative_code_opencl.hpp"
 
 #include <algorithm>  // std::find
 #include <array>      // std::array

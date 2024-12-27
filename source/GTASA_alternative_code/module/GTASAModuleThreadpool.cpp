@@ -4,7 +4,7 @@
 #include <cstring> // strlen
 
 GTASAModuleThreadpool::GTASAModuleThreadpool():
-    GTASAModuleVirtual(COMPUTE_TYPE::STDTHREAD),
+    GTASAModule(COMPUTE_TYPE::STDTHREAD),
     _pool(BS::thread_pool<BS::tp::none>(0)) {
 }
 

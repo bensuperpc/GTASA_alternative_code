@@ -5,7 +5,7 @@
 
 #include <benchmark/benchmark.h>
 
-#include "GTA_SA_cheat_finder.hpp"
+#include "GTASA_alternative_code.hpp"
 
 static void find_string_inv_bench(benchmark::State& state) {
     // Code inside this loop is measured repeatedly

@@ -1,13 +1,13 @@
 #ifndef GTASAMODULEOPENMP_HPP
 #define GTASAMODULEOPENMP_HPP
 
-#include "GTASAModuleVirtual.hpp"
+#include "GTASAModule.hpp"
 
 #if __has_include("omp.h")
 #include <omp.h>
 #endif
 
-class GTASAModuleOpenMP final : public GTASAModuleVirtual {
+class GTASAModuleOpenMP final : public GTASAModule {
    public:
     explicit GTASAModuleOpenMP();
     ~GTASAModuleOpenMP();

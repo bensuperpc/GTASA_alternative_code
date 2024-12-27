@@ -1,6 +1,6 @@
 install(
-    TARGETS GTA_SA_cheat_finder_exe
-    RUNTIME COMPONENT GTA_SA_cheat_finder_Runtime
+    TARGETS GTASA_alternative_code_exe
+    RUNTIME COMPONENT GTASA_alternative_code_Runtime
 )
 
 if(PROJECT_IS_TOP_LEVEL)

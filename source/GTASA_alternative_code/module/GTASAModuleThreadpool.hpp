@@ -1,11 +1,11 @@
 #ifndef GTASAMODULETHREADPOOL_HPP
 #define GTASAMODULETHREADPOOL_HPP
 
-#include "GTASAModuleVirtual.hpp"
+#include "GTASAModule.hpp"
 
 #include "BS_thread_pool.hpp"
 
-class GTASAModuleThreadpool final : public GTASAModuleVirtual {
+class GTASAModuleThreadpool final : public GTASAModule {
    public:
     explicit GTASAModuleThreadpool();
     ~GTASAModuleThreadpool();

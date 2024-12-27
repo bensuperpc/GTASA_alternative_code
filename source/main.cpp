@@ -23,7 +23,7 @@
 #include <vector>
 #endif
 
-#include "gta_cheat_finder/GTA_SA_engine.hpp"
+#include "GTASA_alternative_code/GTA_SA_engine.hpp"
 
 int main(int argc, char* argv[]) {
     bool cli_only = false;
@@ -38,7 +38,7 @@ int main(int argc, char* argv[]) {
 
     for (auto i = args.begin(); i != args.end(); ++i) {
         if (*i == "-h" || *i == "--help") {
-            std::cout << "Syntax: GTA_SA_cheat_finder --min <from (uint64_t)> --max "
+            std::cout << "Syntax: GTASA_alternative_code --min <from (uint64_t)> --max "
                          "<to (uint64_t)>"
                          "--calc-mode <0-2> 0: std::thread, 1: OpenMP, 2: CUDA>"
                       << std::endl;
@@ -124,9 +124,9 @@ int main(int argc, char* argv[]) {
         // QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGL);
 
         QApplication app(argc, argv);
-        app.setOrganizationName("GTA_SA_Cheat_Finder");
-        app.setOrganizationDomain("GTA_SA_Cheat_Finder");
-        app.setApplicationName("GTA_SA_Cheat_Finder");
+        app.setOrganizationName("GTASA_alternative_code");
+        app.setOrganizationDomain("GTASA_alternative_code");
+        app.setApplicationName("GTASA_alternative_code");
         app.setApplicationVersion("0.1.0");
 
         QQuickStyle::setStyle("Material");

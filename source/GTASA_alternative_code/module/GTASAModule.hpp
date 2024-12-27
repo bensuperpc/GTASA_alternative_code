@@ -9,16 +9,16 @@
 
 #include "GTASAResult.hpp"
 
-enum class COMPUTE_TYPE { NONE, STDTHREAD, OPENMP, CUDA, OPENCL };
-
-class GTASAModuleVirtual {
+class GTASAModule {
    public:
-    virtual ~GTASAModuleVirtual();
+    enum class COMPUTE_TYPE { NONE, STDTHREAD, OPENMP, CUDA, OPENCL };
+
+    virtual ~GTASAModule();
     virtual std::vector<GTASAResult> run(std::uint64_t startRange, std::uint64_t endRange) = 0;
     COMPUTE_TYPE type() const;
     std::uint64_t runningInstance() const;
    protected:
-    explicit GTASAModuleVirtual(COMPUTE_TYPE type);
+    explicit GTASAModule(COMPUTE_TYPE type);
 
     const COMPUTE_TYPE _type = COMPUTE_TYPE::NONE;
     std::atomic<std::uint64_t> _runningInstance = 0;

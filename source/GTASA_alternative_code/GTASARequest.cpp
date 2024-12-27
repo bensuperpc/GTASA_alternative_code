@@ -1,6 +1,6 @@
 #include "GTASARequest.hpp"
 
-GTASARequest::GTASARequest(GTASAModuleVirtual& module, std::uint64_t startRange, std::uint64_t endRange) 
+GTASARequest::GTASARequest(GTASAModule& module, std::uint64_t startRange, std::uint64_t endRange) 
     : _startRange(startRange), _endRange(endRange), _status(RequestStatus::IDLE), _module(module) {}
 
 void GTASARequest::start() {
@@ -54,7 +54,7 @@ std::uint64_t GTASARequest::getEndRange() const {
     return _endRange;
 }
 
-COMPUTE_TYPE GTASARequest::getType() const {
+GTASAModule::COMPUTE_TYPE GTASARequest::getType() const {
     return _module.type();
 }
 

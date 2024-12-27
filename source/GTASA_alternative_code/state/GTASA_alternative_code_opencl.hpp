@@ -1,7 +1,7 @@
 #ifndef GTA_SA_OPENCL_HPP
 #define GTA_SA_OPENCL_HPP
 
-#include "GTA_SA_cheat_finder_virtual.hpp"
+#include "GTASA_alternative_code_virtual.hpp"
 
 class GTA_SA_OPENCL final : public GTA_SA_Virtual {
    public:

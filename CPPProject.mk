@@ -1,6 +1,6 @@
 #//////////////////////////////////////////////////////////////
 #//                                                          //
-#//  GTA_SA_cheat_finder, 2023                               //
+#//  GTASA_alternative_code, 2023                               //
 #//  Created: 04, June, 2021                                 //
 #//  Modified: 18, November, 2023                            //
 #//  file: -                                                 //
@@ -11,7 +11,7 @@
 #//                                                          //
 #//////////////////////////////////////////////////////////////
 
-PROJECT_NAME ?= GTA_SA_cheat_finder
+PROJECT_NAME ?= GTASA_alternative_code
 
 PARALLEL ?= 1
 
@@ -156,9 +156,13 @@ cloc:
 .PHONY: update
 update:
 # 	git submodule update --recursive --remote --force --rebase
-	git submodule update --init --recursive
+#	git submodule update --init --recursive
 	git pull --recurse-submodules --all --progress
 
 .PHONY: clear
 clear:
-	rm -rf build/*
+	rm -rf "build/*/bin/*"
+
+.PHONY: purge
+purge:
+	rm -rf "build"

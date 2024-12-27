@@ -1,7 +1,7 @@
 #ifndef GTASAMODULEOPENMP_HPP
 #define GTASAMODULEOPENMP_HPP
 
-#include "GTASAModuleVirtual.hpp"
+#include "GTASAModule.hpp"
 
 #if __has_include("CL/cl.h") || __has_include("CL/cl.hpp")
 #ifndef BUILD_WITH_OPENCL
@@ -19,7 +19,7 @@
 #include "opencl/wrapper.hpp"
 #endif
 
-class GTASAModuleOpenCL final : public GTASAModuleVirtual {
+class GTASAModuleOpenCL final : public GTASAModule {
    public:
     explicit GTASAModuleOpenCL();
     ~GTASAModuleOpenCL();

@@ -1,10 +1,10 @@
 #include <string>
-#include "GTA_SA_cheat_finder_openmp.hpp"
-#include "GTA_SA_cheat_finder_stdthread.hpp"
-#include "GTA_SA_cheat_finder_virtual.hpp"
+#include "GTASA_alternative_code_openmp.hpp"
+#include "GTASA_alternative_code_stdthread.hpp"
+#include "GTASA_alternative_code_virtual.hpp"
 
 #if defined(BUILD_WITH_CUDA)
-#include "GTA_SA_cheat_finder_cuda.hpp"
+#include "GTASA_alternative_code_cuda.hpp"
 #else
 #if _MSC_VER && !__INTEL_COMPILER
 #pragma message("CUDA test disabled.")
@@ -14,7 +14,7 @@
 #endif  // BUILD_WITH_CUDA
 
 #if defined(BUILD_WITH_OPENCL)
-#include "GTA_SA_cheat_finder_opencl.hpp"
+#include "GTASA_alternative_code_opencl.hpp"
 #else
 #if _MSC_VER && !__INTEL_COMPILER
 #pragma message("OpenCL test disabled.")

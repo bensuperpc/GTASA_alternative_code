@@ -1,18 +1,18 @@
-#include "GTASAModuleVirtual.hpp"
+#include "GTASAModule.hpp"
 
-GTASAModuleVirtual::GTASAModuleVirtual(COMPUTE_TYPE type) : _type(type) {}
+GTASAModule::GTASAModule(COMPUTE_TYPE type) : _type(type) {}
 
-GTASAModuleVirtual::~GTASAModuleVirtual() {}
+GTASAModule::~GTASAModule() {}
 
-COMPUTE_TYPE GTASAModuleVirtual::type() const {
+GTASAModule::COMPUTE_TYPE GTASAModule::type() const {
     return _type;
 }
 
-std::uint64_t GTASAModuleVirtual::runningInstance() const {
+std::uint64_t GTASAModule::runningInstance() const {
     return _runningInstance;
 }
 
-auto GTASAModuleVirtual::jamcrc(std::string_view my_string, const uint32_t previousCrc32) const noexcept -> std::uint32_t {
+auto GTASAModule::jamcrc(std::string_view my_string, const uint32_t previousCrc32) const noexcept -> std::uint32_t {
     auto crc = ~previousCrc32;
     const uint8_t* current = reinterpret_cast<const uint8_t*>(my_string.data());
     uint64_t length = my_string.length();
@@ -23,7 +23,7 @@ auto GTASAModuleVirtual::jamcrc(std::string_view my_string, const uint32_t previ
     return crc;
 }
 
-void GTASAModuleVirtual::generateString(char* array, uint64_t n) const noexcept {
+void GTASAModule::generateString(char* array, uint64_t n) const noexcept {
     std::uint64_t i = 0;
     while (n) {
         array[i] = alpha[(--n) % 26];
@@ -32,7 +32,7 @@ void GTASAModuleVirtual::generateString(char* array, uint64_t n) const noexcept 
     }
 }
 
-void GTASAModuleVirtual::generateStringV2(char* array, uint64_t n) const noexcept {
+void GTASAModule::generateStringV2(char* array, uint64_t n) const noexcept {
     std::uint64_t i = 0;
     do {
         array[i++] = alpha[--n % 26];
