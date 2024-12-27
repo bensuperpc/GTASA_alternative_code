@@ -1,6 +1,4 @@
 #include "GTASARequest.hpp"
-#include "module/GTASAModuleThreadpool.hpp"
-#include "module/GTASAModuleOpenMP.hpp"
 
 GTASARequest::GTASARequest(GTASAModuleVirtual& module, std::uint64_t startRange, std::uint64_t endRange) 
     : _startRange(startRange), _endRange(endRange), _status(RequestStatus::IDLE), _module(module) {}
@@ -19,6 +17,8 @@ void GTASARequest::run() {
         std::unique_lock<std::shared_mutex> lock(_mutex);
         _status = RequestStatus::RUNNING;
     }
+
+    _results = _module.run(_startRange, _endRange);
 
     {
         std::unique_lock<std::shared_mutex> lock(_mutex);

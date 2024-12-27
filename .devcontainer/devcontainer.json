@@ -1,0 +1,25 @@
+{
+    "name": "Dev container for BenLib",
+
+    "dockerComposeFile": "docker-compose.yaml",
+    "service": "docker-benlib",
+    "workspaceFolder": "/work",
+    
+    "runServices": [],
+
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-vscode.cpptools",
+                "ms-vscode.cpptools-extension-pack",
+                "eamodio.gitlens",
+                "GitHub.copilot",
+                "phil294.git-log--graph"
+            ]
+        }
+    },
+    "containerEnv": { 
+        "CCACHE_SIZE": "10G"
+    },
+    "postStartCommand" : ""
+}

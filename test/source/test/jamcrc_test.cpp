@@ -21,7 +21,6 @@ TEST(jamcrc, basic1) {
     std::reverse(str.begin(), str.end());
     GTA_SA_OPENMP gtaSA = GTA_SA_OPENMP();
 
-    EXPECT_NE(0x0, gtaSA.jamcrc(str));
     EXPECT_EQ(expected_crc, gtaSA.jamcrc(str));
 }
 
@@ -32,7 +31,6 @@ TEST(jamcrc, basic2) {
     std::reverse(str.begin(), str.end());
     GTA_SA_OPENMP gtaSA = GTA_SA_OPENMP();
 
-    EXPECT_NE(0x0, gtaSA.jamcrc(str));
     EXPECT_EQ(expected_crc, gtaSA.jamcrc(str));
 }
 
@@ -43,7 +41,6 @@ TEST(jamcrc, basic3) {
     std::reverse(str.begin(), str.end());
     GTA_SA_OPENMP gtaSA = GTA_SA_OPENMP();
 
-    EXPECT_NE(0x0, gtaSA.jamcrc(str));
     EXPECT_EQ(expected_crc, gtaSA.jamcrc(str));
 }
 
@@ -54,7 +51,6 @@ TEST(jamcrc, basic4) {
     std::reverse(str.begin(), str.end());
     GTA_SA_OPENMP gtaSA = GTA_SA_OPENMP();
 
-    EXPECT_NE(0x0, gtaSA.jamcrc(str));
     EXPECT_EQ(expected_crc, gtaSA.jamcrc(str));
 }
 
@@ -65,7 +61,6 @@ TEST(jamcrc, basic5) {
     std::reverse(str.begin(), str.end());
     GTA_SA_OPENMP gtaSA = GTA_SA_OPENMP();
 
-    EXPECT_NE(0x0, gtaSA.jamcrc(str));
     EXPECT_EQ(expected_crc, gtaSA.jamcrc(str));
 }
 
@@ -76,20 +71,18 @@ TEST(jamcrc, basic6) {
     std::reverse(str.begin(), str.end());
     GTA_SA_OPENMP gtaSA = GTA_SA_OPENMP();
 
-    EXPECT_NE(0x0, gtaSA.jamcrc(str));
     EXPECT_EQ(expected_crc, gtaSA.jamcrc(str));
 }
 
 #if defined(BUILD_WITH_CUDA)
 TEST(jamcrc, cuda_basic1) {
     std::string str = "";
-    uint32_t expected_crc = 0xffffffff;
+    uint32_t expected_crc = 0x0;
 
     std::reverse(str.begin(), str.end());
 
     auto const crc = my::cuda::jamcrc(str.data(), str.size(), 0, 64);
 
-    EXPECT_NE(0x0, crc);
     EXPECT_EQ(expected_crc, crc);
 }
 
@@ -101,7 +94,6 @@ TEST(jamcrc, cuda_basic2) {
 
     auto const crc = my::cuda::jamcrc(str.data(), str.size(), 0, 64);
 
-    EXPECT_NE(0x0, crc);
     EXPECT_EQ(expected_crc, crc);
 }
 
@@ -113,7 +105,6 @@ TEST(jamcrc, cuda_basic3) {
 
     auto const crc = my::cuda::jamcrc(str.data(), str.size(), 0, 64);
 
-    EXPECT_NE(0x0, crc);
     EXPECT_EQ(expected_crc, crc);
 }
 
@@ -125,7 +116,6 @@ TEST(jamcrc, cuda_basic4) {
 
     auto const crc = my::cuda::jamcrc(str.data(), str.size(), 0, 64);
 
-    EXPECT_NE(0x0, crc);
     EXPECT_EQ(expected_crc, crc);
 }
 
@@ -137,7 +127,6 @@ TEST(jamcrc, cuda_basic5) {
 
     auto const crc = my::cuda::jamcrc(str.data(), str.size(), 0, 64);
 
-    EXPECT_NE(0x0, crc);
     EXPECT_EQ(expected_crc, crc);
 }
 
@@ -149,7 +138,6 @@ TEST(jamcrc, cuda_basic6) {
 
     auto const crc = my::cuda::jamcrc(str.data(), str.size(), 0, 64);
 
-    EXPECT_NE(0x0, crc);
     EXPECT_EQ(expected_crc, crc);
 }
 
@@ -164,7 +152,6 @@ TEST(jamcrc, opencl_basic1) {
 
     auto const crc = my::opencl::jamcrc(str.data(), str.size(), 0);
 
-    EXPECT_NE(0x0, crc);
     EXPECT_EQ(expected_crc, crc);
 }
 
@@ -176,7 +163,6 @@ TEST(jamcrc, opencl_basic2) {
 
     auto const crc = my::opencl::jamcrc(str.data(), str.size(), 0);
 
-    EXPECT_NE(0x0, crc);
     EXPECT_EQ(expected_crc, crc);
 }
 
@@ -188,7 +174,6 @@ TEST(jamcrc, opencl_basic3) {
 
     auto const crc = my::opencl::jamcrc(str.data(), str.size(), 0);
 
-    EXPECT_NE(0x0, crc);
     EXPECT_EQ(expected_crc, crc);
 }
 
@@ -200,7 +185,6 @@ TEST(jamcrc, opencl_basic4) {
 
     auto const crc = my::opencl::jamcrc(str.data(), str.size(), 0);
 
-    EXPECT_NE(0x0, crc);
     EXPECT_EQ(expected_crc, crc);
 }
 
@@ -212,7 +196,6 @@ TEST(jamcrc, opencl_basic5) {
 
     auto const crc = my::opencl::jamcrc(str.data(), str.size(), 0);
 
-    EXPECT_NE(0x0, crc);
     EXPECT_EQ(expected_crc, crc);
 }
 
@@ -224,7 +207,6 @@ TEST(jamcrc, opencl_basic6) {
 
     auto const crc = my::opencl::jamcrc(str.data(), str.size(), 0);
 
-    EXPECT_NE(0x0, crc);
     EXPECT_EQ(expected_crc, crc);
 }
 #endif

@@ -31,7 +31,7 @@ __host__ uint32_t my::cuda::jamcrc(const void* data, const uint64_t length, cons
     int device = 0;
     cudaGetDevice(&device);
 
-    if (device <= 0) {
+    if (device < 0) {
         std::cout << "Error: No cuda device found" << std::endl;
         return 0;
     }
@@ -90,7 +90,7 @@ __host__ void my::cuda::launchKernel(std::vector<uint32_t>& jamcrc_results,
     int device = 0;
     cudaGetDevice(&device);
 
-    if (device <= 0) {
+    if (device < 0) {
         std::cout << "Error: No cuda device found" << std::endl;
         return;
     }
