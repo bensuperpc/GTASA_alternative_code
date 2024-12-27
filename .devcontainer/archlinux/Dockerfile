@@ -1,13 +1,14 @@
 # Base image
-ARG DOCKER_IMAGE=archlinux:base
-FROM ${DOCKER_IMAGE} AS base
+ARG BASE_IMAGE=archlinux:base
+FROM ${BASE_IMAGE} AS base
 
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN pacman -Syu --noconfirm && pacman -S --noconfirm \
     # Essential packages
     base-devel git cmake extra-cmake-modules ninja automake autoconf \
-    libtool pkgconf \ 
+    libtool pkgconf \
+    cuda-tools \
     openssl ccache bash \
     && pacman -Scc --noconfirm
 
@@ -53,9 +54,9 @@ LABEL description="Docker image for benlib"
 
 LABEL org.label-schema.schema-version="1.0" \
       org.label-schema.build-date=${BUILD_DATE} \
-      org.label-schema.name=${PROJECT_NAME} \
+      org.label-schema.name=${BASE_IMAGE_NAME} \
       org.label-schema.description="benlib" \
-      org.label-schema.version=${IMAGE_VERSION} \
+      org.label-schema.version=${OUTPUT_IMAGE_NAME} \
       org.label-schema.vendor=${AUTHOR} \
       org.label-schema.url=${URL} \
       org.label-schema.vcs-url=${VCS_URL} \

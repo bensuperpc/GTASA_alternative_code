@@ -27,8 +27,8 @@ std::vector<GTASAResult> GTASAModuleCUDA::run(std::uint64_t startRange, std::uin
                      tmpCUDA.data() + std::strlen(tmpCUDA.data()));
 
         const auto&& it = std::find(std::begin(GTASAModuleCUDA::cheatList), std::end(GTASAModuleCUDA::cheatList), jamcrc_results[i]);
-
         const uint64_t index = static_cast<uint64_t>(it - std::begin(GTASAModuleCUDA::cheatList));
+        
         results.emplace_back(index_results[i], std::string(tmpCUDA.data()), jamcrc_results[i], index);                                                                                       
     }
 

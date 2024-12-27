@@ -11,10 +11,14 @@
         "vscode": {
             "extensions": [
                 "ms-vscode.cpptools",
+                "ms-vscode.makefile-tools",
                 "ms-vscode.cpptools-extension-pack",
                 "eamodio.gitlens",
                 "GitHub.copilot",
-                "phil294.git-log--graph"
+                "ms-azuretools.vscode-docker",
+                "phil294.git-log--graph",
+                "yzhang.markdown-all-in-one",
+                "DavidAnson.vscode-markdownlint"
             ]
         }
     },
