@@ -5,7 +5,7 @@ GTASAModule::GTASAModule(COMPUTE_TYPE type) : _type(type) {}
 GTASAModule::~GTASAModule() {}
 
 GTASAModule::COMPUTE_TYPE GTASAModule::stringToComputeType(std::string_view type) noexcept {
-    if (type == "STDTHREAD") {
+    if (type == "STDTHREAD" || type == "THREADPOOL") {
         return COMPUTE_TYPE::STDTHREAD;
     } else if (type == "OPENMP") {
         return COMPUTE_TYPE::OPENMP;

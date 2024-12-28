@@ -1,292 +1,107 @@
 #include <string>
-#include "GTASA_alternative_code_openmp.hpp"
-#include "GTASA_alternative_code_stdthread.hpp"
-#include "GTASA_alternative_code_virtual.hpp"
-
-#if defined(BUILD_WITH_CUDA)
-#include "GTASA_alternative_code_cuda.hpp"
-#else
-#if _MSC_VER && !__INTEL_COMPILER
-#pragma message("CUDA test disabled.")
-#else
-#warning CUDA test disabled.
-#endif
-#endif  // BUILD_WITH_CUDA
-
-#if defined(BUILD_WITH_OPENCL)
-#include "GTASA_alternative_code_opencl.hpp"
-#else
-#if _MSC_VER && !__INTEL_COMPILER
-#pragma message("OpenCL test disabled.")
-#else
-#warning OpenCL test disabled.
-#endif
-#endif  // BUILD_WITH_OPENCL
 
 #include "gtest/gtest.h"
 
-/*
-20810792         ASNAEB         0x555fc201
-75396850         FHYSTV         0x44b34866
-147491485        LJSPQK         0xfeda77f7
-181355281        OFVIAC         0x6c0fa650
-181961057        OHDUDE         0xe958788a
-198489210        PRIEBJ         0xf2aa0c1d
-241414872        THGLOJ         0xcaec94ee
-289334426        XICWMD         0x1a9aa3d6
-299376767        YECGAA         0x40cf761
-311365503        ZEIIVG         0x74d4fcb1
-370535590        AEDUWNV        0x9a629401
-380229391        AEZAKMI        0xe1b33eb9
-535721682        ASBHGRB        0xa7613f99
-*/
+#include "GTASAEngine.hpp"
 
-TEST(GTA_SA_STDTHREAD, basic_calc_base_1) {
-    GTA_SA_STDTHREAD gtaSA;
-    gtaSA.minRange = 0;
-    gtaSA.maxRange = 60000;
+TEST(GTASAEngine, basic_calc_openmp_1) {
+    GTASAEngine gtaSA = GTASAEngine();
+    GTASARequest* request = gtaSA.addRequest("OPENMP", 0, 6'000'000);
+    gtaSA.waitAllRequests();
 
-    gtaSA.run();
-
-    EXPECT_EQ(gtaSA.results.size(), 0);
+    EXPECT_EQ(request->getResults().size(), 0);
 }
 
-TEST(GTA_SA_STDTHREAD, basic_calc_base_2) {
-    GTA_SA_STDTHREAD gtaSA;
-    gtaSA.minRange = 20810700;
-    gtaSA.maxRange = 20810800;
 
-    gtaSA.run();
+TEST(GTASAEngine, basic_calc_openmp_2) {
+    GTASAEngine gtaSA = GTASAEngine();
+    GTASARequest* request = gtaSA.addRequest("OPENMP", 20'810'700, 20'810'800);
+    gtaSA.waitAllRequests();
 
-    EXPECT_EQ(gtaSA.results.size(), 1);
-    EXPECT_EQ(gtaSA.results[0].index, 20810792);
-    EXPECT_EQ(gtaSA.results[0].code, "ASNAEB");
-    EXPECT_EQ(gtaSA.results[0].jamcrc, 0x555fc201);
+    EXPECT_EQ(request->getResults().size(), 1);
+    EXPECT_EQ(request->getResults()[0].index, 20810792);
+    EXPECT_EQ(request->getResults()[0].code, "ASNAEB");
+    EXPECT_EQ(request->getResults()[0].jamcrc, 0x555fc201);
 }
 
-TEST(GTA_SA_STDTHREAD, basic_calc_base_3) {
-    GTA_SA_STDTHREAD gtaSA;
-    gtaSA.minRange = 181961000;
-    gtaSA.maxRange = 181961100;
 
-    gtaSA.run();
+TEST(GTASAEngine, basic_calc_openmp_3) {
+    GTASAEngine gtaSA = GTASAEngine();
+    GTASARequest* request = gtaSA.addRequest("OPENMP", 181'961'000, 181'961'100);
+    gtaSA.waitAllRequests();
 
-    EXPECT_EQ(gtaSA.results.size(), 1);
-    EXPECT_EQ(gtaSA.results[0].index, 181961057);
-    EXPECT_EQ(gtaSA.results[0].code, "OHDUDE");
-    EXPECT_EQ(gtaSA.results[0].jamcrc, 0xe958788a);
+    EXPECT_EQ(request->getResults().size(), 1);
+    EXPECT_EQ(request->getResults()[0].index, 181'961'057);
+    EXPECT_EQ(request->getResults()[0].code, "OHDUDE");
+    EXPECT_EQ(request->getResults()[0].jamcrc, 0xe958788a);
 }
 
-TEST(GTA_SA_STDTHREAD, basic_calc_base_4) {
-    GTA_SA_STDTHREAD gtaSA;
-    gtaSA.minRange = 299376700;
-    gtaSA.maxRange = 299376800;
+TEST(GTASAEngine, basic_calc_openmp_4) {
+    GTASAEngine gtaSA = GTASAEngine();
+    GTASARequest* request = gtaSA.addRequest("OPENMP", 299'376'700, 299'376'800);
+    gtaSA.waitAllRequests();
 
-    gtaSA.run();
-
-    EXPECT_EQ(gtaSA.results.size(), 1);
-    EXPECT_EQ(gtaSA.results[0].index, 299376767);
-    EXPECT_EQ(gtaSA.results[0].code, "YECGAA");
-    EXPECT_EQ(gtaSA.results[0].jamcrc, 0x40cf761);
-}
-
-TEST(GTA_SA_STDTHREAD, basic_calc_base_5) {
-    GTA_SA_STDTHREAD gtaSA;
-    gtaSA.minRange = 20810700;
-    gtaSA.maxRange = 147491500;
-
-    gtaSA.run();
-
-    EXPECT_EQ(gtaSA.results.size(), 3);
-    EXPECT_EQ(gtaSA.results[0].index, 20810792);
-    EXPECT_EQ(gtaSA.results[0].code, "ASNAEB");
-    EXPECT_EQ(gtaSA.results[0].jamcrc, 0x555fc201);
-
-    EXPECT_EQ(gtaSA.results[1].index, 75396850);
-    EXPECT_EQ(gtaSA.results[1].code, "FHYSTV");
-    EXPECT_EQ(gtaSA.results[1].jamcrc, 0x44b34866);
-
-    EXPECT_EQ(gtaSA.results[2].index, 147491485);
-    EXPECT_EQ(gtaSA.results[2].code, "LJSPQK");
-    EXPECT_EQ(gtaSA.results[2].jamcrc, 0xfeda77f7);
-}
-
-#if defined(_OPENMP)
-TEST(GTA_SA_OPENMP, basic_calc_mode_openmp) {
-    GTA_SA_OPENMP gtaSA;
-    gtaSA.minRange = 0;
-    gtaSA.maxRange = 60000;
-
-    gtaSA.run();
-
-    EXPECT_EQ(gtaSA.results.size(), 0);
-}
-#endif
-
-#if defined(BUILD_WITH_CUDA)
-TEST(GTA_SA_CUDA, basic_calc_cuda_1) {
-    GTA_SA_CUDA gtaSA;
-    gtaSA.minRange = 0;
-    gtaSA.maxRange = 6000000;
-
-    gtaSA.run();
-
-    EXPECT_EQ(gtaSA.results.size(), 0);
-}
-
-TEST(GTA_SA_CUDA, basic_calc_cuda_2) {
-    GTA_SA_CUDA gtaSA;
-    gtaSA.minRange = 20810700;
-    gtaSA.maxRange = 20810800;
-
-    gtaSA.run();
-
-    EXPECT_EQ(gtaSA.results.size(), 1);
-    EXPECT_EQ(gtaSA.results[0].index, 20810792);
-    EXPECT_EQ(gtaSA.results[0].code, "ASNAEB");
-    EXPECT_EQ(gtaSA.results[0].jamcrc, 0x555fc201);
-}
-
-TEST(GTA_SA_CUDA, basic_calc_cuda_3) {
-    GTA_SA_CUDA gtaSA;
-    gtaSA.minRange = 181961000;
-    gtaSA.maxRange = 181961100;
-
-    gtaSA.run();
-
-    EXPECT_EQ(gtaSA.results.size(), 1);
-    EXPECT_EQ(gtaSA.results[0].index, 181961057);
-    EXPECT_EQ(gtaSA.results[0].code, "OHDUDE");
-    EXPECT_EQ(gtaSA.results[0].jamcrc, 0xe958788a);
-}
-
-TEST(GTA_SA_CUDA, basic_calc_cuda_4) {
-    GTA_SA_CUDA gtaSA;
-    gtaSA.minRange = 299376700;
-    gtaSA.maxRange = 299376800;
-
-    gtaSA.run();
-
-    EXPECT_EQ(gtaSA.results.size(), 1);
-    EXPECT_EQ(gtaSA.results[0].index, 299376767);
-    EXPECT_EQ(gtaSA.results[0].code, "YECGAA");
-    EXPECT_EQ(gtaSA.results[0].jamcrc, 0x40cf761);
+    EXPECT_EQ(request->getResults().size(), 1);
+    EXPECT_EQ(request->getResults()[0].index, 299'376'767);
+    EXPECT_EQ(request->getResults()[0].code, "YECGAA");
+    EXPECT_EQ(request->getResults()[0].jamcrc, 0x40cf761);
 }
 
 /*
-TEST(GTA_SA_CUDA, basic_calc_cuda_5) {
-    GTA_SA_CUDA gtaSA;
-    gtaSA.minRange = 0;
-    gtaSA.maxRange = 8'031'810'176;
+TEST(GTASAEngine, basic_calc_openmp_5) {
+    GTASAEngine gtaSA = GTASAEngine();
+    GTASARequest* request = gtaSA.addRequest("OPENMP", 0, 5'200'000'000);
+    gtaSA.waitAllRequests();
 
-    gtaSA.run();
+    EXPECT_EQ(request->getResults().size(), 102);
+    EXPECT_EQ(request->getResults()[0].index, 20'810'792);
+    EXPECT_EQ(request->getResults()[0].code, "ASNAEB");
+    EXPECT_EQ(request->getResults()[0].jamcrc, 0x555fc201);
 
-    EXPECT_EQ(gtaSA.results.size(), 152);
-    EXPECT_EQ(gtaSA.results[0].index, 20810792);
-    EXPECT_EQ(gtaSA.results[0].code, "ASNAEB");
-    EXPECT_EQ(gtaSA.results[0].jamcrc, 0x555fc201);
+    EXPECT_EQ(request->getResults()[50].index, 2'746'380'464);
+    EXPECT_EQ(request->getResults()[50].code, "HWCWJYV");
+    EXPECT_EQ(request->getResults()[50].jamcrc, 0xb2Afe368);
 
-    EXPECT_EQ(gtaSA.results[50].index, 2746380464);
-    EXPECT_EQ(gtaSA.results[50].code, "HWCWJYV");
-    EXPECT_EQ(gtaSA.results[50].jamcrc, 0xb2Afe368);
-
-    EXPECT_EQ(gtaSA.results[100].index, 5151099438);
-    EXPECT_EQ(gtaSA.results[100].code, "PQNCSOD");
-    EXPECT_EQ(gtaSA.results[100].jamcrc, 0x680416b1);
-
-    EXPECT_EQ(gtaSA.results[125].index, 6668091073);
-    EXPECT_EQ(gtaSA.results[125].code, "UOETDAG");
-    EXPECT_EQ(gtaSA.results[125].jamcrc, 0xd4966d59);
-
-    EXPECT_EQ(gtaSA.results[151].index, 8003059504);
-    EXPECT_EQ(gtaSA.results[151].code, "YWOBEJX");
-    EXPECT_EQ(gtaSA.results[151].jamcrc, 0xe1ef01ea);
+    EXPECT_EQ(request->getResults()[100].index, 5'151'099'438);
+    EXPECT_EQ(request->getResults()[100].code, "PQNCSOD");
+    EXPECT_EQ(request->getResults()[100].jamcrc, 0x680416b1);
 }
 */
-#endif
 
-#if defined(BUILD_WITH_OPENCL)
-/*
-TEST(GTA_SA_OPENCL, basic_calc_opencl_1) {
-    GTA_SA_OPENCL gtaSA;
-    gtaSA.minRange = 0;
-    gtaSA.maxRange = 6000000;
+TEST(GTASAEngine, multi_calc_openmp_1) {
+    GTASAEngine gtaSA = GTASAEngine();
+    GTASARequest* request1 = gtaSA.addRequest("OPENMP", 0, 182'000'000);
+    GTASARequest* request2 = gtaSA.addRequest("OPENMP", 182'000'000, 300'000'000);
+    GTASARequest* request3 = gtaSA.addRequest("OPENMP", 300'000'000, 545'000'000);
+    gtaSA.waitAllRequests();
 
-    gtaSA.run();
+    EXPECT_EQ(request1->getResults().size(), 5);
+    EXPECT_EQ(request1->getResults()[0].index, 20'810'792);
+    EXPECT_EQ(request1->getResults()[0].code, "ASNAEB");
+    EXPECT_EQ(request1->getResults()[0].jamcrc, 0x555fc201);
 
-    EXPECT_EQ(gtaSA.results.size(), 0);
+    EXPECT_EQ(request1->getResults()[4].index, 181'961'057);
+    EXPECT_EQ(request1->getResults()[4].code, "OHDUDE");
+    EXPECT_EQ(request1->getResults()[4].jamcrc, 0xe958788a);
+
+    EXPECT_EQ(request2->getResults().size(), 4);
+    EXPECT_EQ(request2->getResults()[0].index, 198'489'210);
+    EXPECT_EQ(request2->getResults()[0].code, "PRIEBJ");
+    EXPECT_EQ(request2->getResults()[0].jamcrc, 0xf2aa0c1d);
+
+    EXPECT_EQ(request2->getResults()[3].index, 299'376'767);
+    EXPECT_EQ(request2->getResults()[3].code, "YECGAA");
+    EXPECT_EQ(request2->getResults()[3].jamcrc, 0x40cf761);
+
+    EXPECT_EQ(request3->getResults().size(), 4);
+    EXPECT_EQ(request3->getResults()[0].index, 311'365'503);
+    EXPECT_EQ(request3->getResults()[0].code, "ZEIIVG");
+    EXPECT_EQ(request3->getResults()[0].jamcrc, 0x74d4fcb1);
+
+    EXPECT_EQ(request3->getResults()[3].index, 535'721'682);
+    EXPECT_EQ(request3->getResults()[3].code, "ASBHGRB");
+    EXPECT_EQ(request3->getResults()[3].jamcrc, 0xa7613f99);
 }
-
-TEST(GTA_SA_OPENCL, basic_calc_opencl_2) {
-    GTA_SA_OPENCL gtaSA;
-    gtaSA.minRange = 20810700;
-    gtaSA.maxRange = 20810800;
-
-    gtaSA.run();
-
-    EXPECT_EQ(gtaSA.results.size(), 1);
-    EXPECT_EQ(gtaSA.results[0].index, 20810792);
-    EXPECT_EQ(gtaSA.results[0].code, "ASNAEB");
-    EXPECT_EQ(gtaSA.results[0].jamcrc, 0x555fc201);
-}
-
-TEST(GTA_SA_OPENCL, basic_calc_opencl_3) {
-    GTA_SA_OPENCL gtaSA;
-    gtaSA.minRange = 181961000;
-    gtaSA.maxRange = 181961100;
-
-    gtaSA.run();
-
-    EXPECT_EQ(gtaSA.results.size(), 1);
-    EXPECT_EQ(gtaSA.results[0].index, 181961057);
-    EXPECT_EQ(gtaSA.results[0].code, "OHDUDE");
-    EXPECT_EQ(gtaSA.results[0].jamcrc, 0xe958788a);
-}
-
-TEST(GTA_SA_OPENCL, basic_calc_opencl_4) {
-    GTA_SA_OPENCL gtaSA;
-    gtaSA.minRange = 299376700;
-    gtaSA.maxRange = 299376800;
-
-    gtaSA.run();
-
-    EXPECT_EQ(gtaSA.results.size(), 1);
-    EXPECT_EQ(gtaSA.results[0].index, 299376767);
-    EXPECT_EQ(gtaSA.results[0].code, "YECGAA");
-    EXPECT_EQ(gtaSA.results[0].jamcrc, 0x40cf761);
-}
-*/
-/*
-TEST(GTA_SA_OPENCL, basic_calc_cuda_5) {
-    GTA_SA_OPENCL gtaSA;
-    gtaSA.minRange = 0;
-    gtaSA.maxRange = 8'031'810'176;
-
-    gtaSA.run();
-
-    EXPECT_EQ(gtaSA.results.size(), 152);
-    EXPECT_EQ(gtaSA.results[0].index, 20810792);
-    EXPECT_EQ(gtaSA.results[0].code, "ASNAEB");
-    EXPECT_EQ(gtaSA.results[0].jamcrc, 0x555fc201);
-
-    EXPECT_EQ(gtaSA.results[50].index, 2746380464);
-    EXPECT_EQ(gtaSA.results[50].code, "HWCWJYV");
-    EXPECT_EQ(gtaSA.results[50].jamcrc, 0xb2Afe368);
-
-    EXPECT_EQ(gtaSA.results[100].index, 5151099438);
-    EXPECT_EQ(gtaSA.results[100].code, "PQNCSOD");
-    EXPECT_EQ(gtaSA.results[100].jamcrc, 0x680416b1);
-
-    EXPECT_EQ(gtaSA.results[125].index, 6668091073);
-    EXPECT_EQ(gtaSA.results[125].code, "UOETDAG");
-    EXPECT_EQ(gtaSA.results[125].jamcrc, 0xd4966d59);
-
-    EXPECT_EQ(gtaSA.results[151].index, 8003059504);
-    EXPECT_EQ(gtaSA.results[151].code, "YWOBEJX");
-    EXPECT_EQ(gtaSA.results[151].jamcrc, 0xe1ef01ea);
-}
-*/
-#endif
 
 auto main(int argc, char** argv) -> int {
     ::testing::InitGoogleTest(&argc, argv);

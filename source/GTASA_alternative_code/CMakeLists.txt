@@ -27,7 +27,9 @@ project(
     LANGUAGES CXX
 )
 
-find_package(OpenMP 2.0)
+if(NOT OpenMP_FOUND)
+    find_package(OpenMP 2.0)
+endif()
 
 find_package(CUDAToolkit 11.0)
 

@@ -33,7 +33,9 @@ if(CMAKE_CUDA_COMPILER)
 	enable_language(CUDA)
 endif()
 
-find_package(CUDAToolkit 11.0 REQUIRED)
+if(NOT CUDAToolkit_FOUND)
+    find_package(CUDAToolkit 11.0 REQUIRED)
+endif()
 
 set(SRCS
     kernel.cu

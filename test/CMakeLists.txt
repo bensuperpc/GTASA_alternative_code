@@ -55,6 +55,10 @@ function(test_bench_generator TEST_BENCH_NAME IS_TEST ADD_TO_TEST)
 endfunction()
 
 if(NOT WIN32)
+    if(NOT OpenMP_FOUND)
+        find_package(OpenMP 2.0)
+    endif()
+
     add_subdirectory(../external/googletest external/googletest)
     set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "" FORCE)
     set(BENCHMARK_ENABLE_TESTING OFF)
@@ -70,14 +74,21 @@ if(NOT WIN32)
     set(CMAKE_REQUIRED_FLAGS "" CACHE STRING "" FORCE)
     add_subdirectory(../external/benchmark external/benchmark)
 
-  # Add tests
-  #test_bench_generator(find_string_inv_test true true)
-  #test_bench_generator(jamcrc_test true true)
-  test_bench_generator(gta_sa_test_cuda true true)
+    # Add tests
+    #test_bench_generator(find_string_inv_test true true)
+    #test_bench_generator(jamcrc_test true true)
+    
+    test_bench_generator(gta_sa_test_threadpool true true)
+    if(OpenMP_FOUND)
+        test_bench_generator(gta_sa_test_openmp true true)
+    endif()
+    if(CUDAToolkit_FOUND)
+        test_bench_generator(gta_sa_test_cuda true true)
+    endif()
 
-  # Add bench
-  #test_bench_generator(find_string_inv_bench false false)
-  #test_bench_generator(jamcrc_bench false false)
+    # Add bench
+    #test_bench_generator(find_string_inv_bench false false)
+    #test_bench_generator(jamcrc_bench false false)
   
 endif()
 

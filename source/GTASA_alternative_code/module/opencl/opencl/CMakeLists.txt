@@ -27,7 +27,9 @@ project(
     LANGUAGES C CXX
 )
 
-find_package(OpenCL 2.0 REQUIRED)
+if(NOT OpenCL_FOUND)
+    find_package(OpenCL 2.0 REQUIRED)
+endif()
 
 set(SRCS
     wrapper.cpp
