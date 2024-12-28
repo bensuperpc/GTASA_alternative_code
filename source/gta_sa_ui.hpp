@@ -9,9 +9,9 @@
 #include <thread>
 #include <vector>
 
-#include "GTA_SA_engine.hpp"
-
 #include "utils/utils.h"
+
+#include "GTASA_alternative_code/GTASAEngine.hpp"
 
 class GTA_SA_UI final : public QObject {
     Q_OBJECT
@@ -31,18 +31,18 @@ class GTA_SA_UI final : public QObject {
 
    public:
     GTA_SA_UI(QObject* parent = nullptr) = delete;
-    explicit GTA_SA_UI(std::unique_ptr<GTA_SA_ENGINE> _gta_sa, QObject* parent = nullptr);
+    explicit GTA_SA_UI(std::unique_ptr<GTASAEngine> _gta_sa, QObject* parent = nullptr);
 
     ~GTA_SA_UI();
 
-    std::unique_ptr<GTA_SA_ENGINE> _mainCalculator;
+    std::unique_ptr<GTASAEngine> _mainCalculator;
 
-    uint64_t minRangeValue() const { return _mainCalculator->getMinRange(); }
-    uint64_t maxRangeValue() const { return _mainCalculator->getMaxRange(); }
+    uint64_t minRangeValue() const { return 0; /* _mainCalculator->getMinRange();*/ }
+    uint64_t maxRangeValue() const { return 0; /* _mainCalculator->getMaxRange();*/ }
 
-    uint32_t nbrThreadValue() const { return _mainCalculator->getThreadCount(); }
+    uint32_t nbrThreadValue() const { return 0; /* _mainCalculator->getThreadCount();*/ }
 
-    uint64_t cudaBlockSize() const { return _mainCalculator->getCudaBlockSize(); }
+    uint64_t cudaBlockSize() const { return 0; /* _mainCalculator->getCudaBlockSize();*/ }
 
     uint64_t calc_mode() const;
 
@@ -53,13 +53,13 @@ class GTA_SA_UI final : public QObject {
     void runOpThread();
 
     Q_INVOKABLE
-    uint64_t maxThreadSupport() { return GTA_SA_Virtual::maxThreadSupport(); }
+    uint64_t maxThreadSupport() { return 0; /* GTA_SA_Virtual::maxThreadSupport();*/ }
 
-    bool builtWithOpenMP() const { return GTA_SA_Virtual::builtWithOpenMP; }
+    bool builtWithOpenMP() const { return true; /*GTA_SA_Virtual::builtWithOpenMP;*/ }
 
-    bool builtWithCUDA() const { return GTA_SA_Virtual::builtWithCUDA; }
+    bool builtWithCUDA() const { return true; /*GTA_SA_Virtual::builtWithCUDA;*/}
 
-    bool builtWithOpenCL() const { return GTA_SA_Virtual::builtWithOpenCL; }
+    bool builtWithOpenCL() const { return true; /*GTA_SA_Virtual::builtWithOpenCL;*/ }
 
    public slots:
     void setMinRangeValue(uint64_t value);
@@ -84,7 +84,6 @@ class GTA_SA_UI final : public QObject {
 
    private:
     QString _buttonValue = "Launch Bruteforce";
-    std::vector<std::thread> threads;
     std::mutex _mtx;
 };
 

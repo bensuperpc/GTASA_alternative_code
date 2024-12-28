@@ -70,17 +70,14 @@ if(NOT WIN32)
     set(CMAKE_REQUIRED_FLAGS "" CACHE STRING "" FORCE)
     add_subdirectory(../external/benchmark external/benchmark)
 
-  include(../cmake/lib/openmp.cmake)
-  include(../cmake/utile/ccache.cmake)
-
   # Add tests
-  test_bench_generator(find_string_inv_test true true)
-  test_bench_generator(jamcrc_test true true)
-  test_bench_generator(gta_sa_test true true)
+  #test_bench_generator(find_string_inv_test true true)
+  #test_bench_generator(jamcrc_test true true)
+  test_bench_generator(gta_sa_test_cuda true true)
 
   # Add bench
-  test_bench_generator(find_string_inv_bench false false)
-  test_bench_generator(jamcrc_bench false false)
+  #test_bench_generator(find_string_inv_bench false false)
+  #test_bench_generator(jamcrc_bench false false)
   
 endif()
 

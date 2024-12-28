@@ -23,9 +23,8 @@
 #include <vector>
 #endif
 
-#include "GTASA_alternative_code/GTA_SA_engine.hpp"
-
 int main(int argc, char* argv[]) {
+    /*
     bool cli_only = false;
 
     std::ios_base::sync_with_stdio(false);  // Improve std::cout speed
@@ -114,13 +113,11 @@ int main(int argc, char* argv[]) {
 
 #if __has_include(<QString>)
     if (cli_only == false) {
-        /*
         QString home = qEnvironmentVariable("HOME");
 
         if (!home.isNull()) {
             qDebug() << "HOME: " << home;
         }
-        */
         // QQuickWindow::setGraphicsApi(QSGRendererInterface::OpenGL);
 
         QApplication app(argc, argv);
@@ -173,5 +170,6 @@ int main(int argc, char* argv[]) {
 
     // Clear old data
     // gtaSA->clear();
+    */
     return 0;
 }

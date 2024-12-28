@@ -42,41 +42,31 @@ if (OpenCL_FOUND)
 endif()
 
 set(SRCS
-    GTA_SA_engine.cpp
-    state/GTASA_alternative_code_stdthread.cpp
-    state/GTASA_alternative_code_virtual.cpp
     GTASAResult.cpp
     GTASARequest.cpp
     GTASAEngine.cpp
     module/GTASAModule.cpp
     module/GTASAModuleThreadpool.cpp
-    module/GTASAModuleOpenMP.cpp
-    module/GTASAModuleCUDA.cpp
     #module/GTASAModuleOpenCL.cpp
 	)
 	
 set(HEADERS
-    GTA_SA_engine.hpp
-    state/GTASA_alternative_code_stdthread.hpp
-    state/GTASA_alternative_code_virtual.hpp
     GTASAResult.hpp
     GTASARequest.hpp
     GTASAEngine.hpp
     module/GTASAModule.hpp
     module/GTASAModuleThreadpool.hpp
-    module/GTASAModuleOpenMP.hpp
-    module/GTASAModuleCUDA.hpp
     #module/GTASAModuleOpenCL.hpp
     )
 
 if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
-  list(APPEND SRCS state/GTASA_alternative_code_openmp.cpp)
-  list(APPEND HEADERS state/GTASA_alternative_code_openmp.hpp)
+  list(APPEND SRCS module/GTASAModuleOpenMP.cpp)
+  list(APPEND HEADERS module/GTASAModuleOpenMP.hpp)
 endif()
 
 if (CUDAToolkit_FOUND)
-  list(APPEND SRCS state/GTASA_alternative_code_cuda.cpp)
-  list(APPEND HEADERS state/GTASA_alternative_code_cuda.hpp)
+  list(APPEND SRCS module/GTASAModuleCUDA.cpp)
+  list(APPEND HEADERS  module/GTASAModuleCUDA.hpp)
 endif()
 
 if (OpenCL_FOUND)

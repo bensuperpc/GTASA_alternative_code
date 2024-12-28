@@ -30,12 +30,6 @@
 #ifndef CUDA_KERNEL_HPP
 #define CUDA_KERNEL_HPP
 
-#if __has_include("cuda.h")
-#ifndef BUILD_WITH_CUDA
-#define BUILD_WITH_CUDA
-#endif
-#endif
-
 #include <cstdint>
 #include <cstdio>
 #include <iostream>

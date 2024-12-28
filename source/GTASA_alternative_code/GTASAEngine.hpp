@@ -16,13 +16,18 @@ class GTASAEngine {
     explicit GTASAEngine();
     ~GTASAEngine();
     GTASARequest* addRequest(GTASAModule::COMPUTE_TYPE type, std::uint64_t startRange, std::uint64_t endRange);
-    GTASARequest* addRequest(std::string type, std::uint64_t startRange, std::uint64_t endRange);
+    GTASARequest* addRequest(std::string&& type, std::uint64_t startRange, std::uint64_t endRange);
+
+    std::vector<std::unique_ptr<GTASARequest>>& getRequests();
+    std::shared_mutex& getMutex();
+    bool allRequestsFinished() const;
+    void waitAllRequests() const;
 
    private:
-      GTASAModule * _gtaSAModuleTheadpool = nullptr;
-      GTASAModule * _gtaSAModuleOpenMP = nullptr;
-      GTASAModule * _gtaSAModuleCUDA = nullptr;
-      GTASAModule * _gtaSAModuleOpenCL = nullptr;
+      std::unique_ptr<GTASAModule> _gtaSAModuleTheadpool = nullptr;
+      std::unique_ptr<GTASAModule> _gtaSAModuleOpenMP = nullptr;
+      std::unique_ptr<GTASAModule> _gtaSAModuleCUDA = nullptr;
+      std::unique_ptr<GTASAModule> _gtaSAModuleOpenCL = nullptr;
 
       mutable std::shared_mutex _mutex = std::shared_mutex();
       std::vector<std::unique_ptr<GTASARequest>> _requests = {};

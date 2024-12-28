@@ -3,6 +3,11 @@
 #include <algorithm> // std::find
 #include <cstring> // strlen
 
+
+//#if __has_include("cuda.h") || __has_include("cuda_runtime.h")
+#include "cuda/wrapper.hpp"
+//#endif 
+
 GTASAModuleCUDA::GTASAModuleCUDA():
     GTASAModule(COMPUTE_TYPE::CUDA) {
 }

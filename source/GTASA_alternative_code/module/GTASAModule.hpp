@@ -12,6 +12,7 @@
 class GTASAModule {
    public:
     enum class COMPUTE_TYPE { NONE, STDTHREAD, OPENMP, CUDA, OPENCL };
+    static COMPUTE_TYPE stringToComputeType(std::string_view type) noexcept;
 
     virtual ~GTASAModule();
     virtual std::vector<GTASAResult> run(std::uint64_t startRange, std::uint64_t endRange) = 0;

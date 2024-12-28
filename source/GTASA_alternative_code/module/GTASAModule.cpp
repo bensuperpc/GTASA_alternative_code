@@ -4,6 +4,19 @@ GTASAModule::GTASAModule(COMPUTE_TYPE type) : _type(type) {}
 
 GTASAModule::~GTASAModule() {}
 
+GTASAModule::COMPUTE_TYPE GTASAModule::stringToComputeType(std::string_view type) noexcept {
+    if (type == "STDTHREAD") {
+        return COMPUTE_TYPE::STDTHREAD;
+    } else if (type == "OPENMP") {
+        return COMPUTE_TYPE::OPENMP;
+    } else if (type == "CUDA") {
+        return COMPUTE_TYPE::CUDA;
+    } else if (type == "OPENCL") {
+        return COMPUTE_TYPE::OPENCL;
+    }
+    return COMPUTE_TYPE::NONE;
+}
+
 GTASAModule::COMPUTE_TYPE GTASAModule::type() const {
     return _type;
 }
