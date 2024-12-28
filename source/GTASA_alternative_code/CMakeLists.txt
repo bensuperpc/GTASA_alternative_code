@@ -46,8 +46,7 @@ set(SRCS
     GTASARequest.cpp
     GTASAEngine.cpp
     module/GTASAModule.cpp
-    module/GTASAModuleThreadpool.cpp
-    #module/GTASAModuleOpenCL.cpp
+    module/threadpool/GTASAModuleThreadpool.cpp
 	)
 	
 set(HEADERS
@@ -55,13 +54,12 @@ set(HEADERS
     GTASARequest.hpp
     GTASAEngine.hpp
     module/GTASAModule.hpp
-    module/GTASAModuleThreadpool.hpp
-    #module/GTASAModuleOpenCL.hpp
+    module/threadpool/GTASAModuleThreadpool.hpp
     )
 
 if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
-  list(APPEND SRCS module/GTASAModuleOpenMP.cpp)
-  list(APPEND HEADERS module/GTASAModuleOpenMP.hpp)
+  list(APPEND SRCS module/openmp/GTASAModuleOpenMP.cpp)
+  list(APPEND HEADERS module/openmp/GTASAModuleOpenMP.hpp)
 endif()
 
 if (CUDAToolkit_FOUND)
@@ -70,8 +68,8 @@ if (CUDAToolkit_FOUND)
 endif()
 
 if (OpenCL_FOUND)
-  #list(APPEND SRCS state/GTASA_alternative_code_opencl.cpp)
-  #list(APPEND HEADERS state/GTASA_alternative_code_opencl.hpp)
+  #list(APPEND SRCS module/opencl/GTASAModuleOpenCL.cpp)
+  #list(APPEND HEADERS module/opencl/GTASAModuleOpenCL.hpp)
 endif()
   
 add_library(GTASA_alternative_code_lib ${SRCS} ${HEADERS})

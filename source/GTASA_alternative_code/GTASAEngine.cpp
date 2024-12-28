@@ -1,12 +1,12 @@
 #include "GTASAEngine.hpp"
 
 #ifdef BUILD_WITH_OPENCL
-#include "module/GTASAModuleOpenCL.hpp"
+#include "module/opencl/GTASAModuleOpenCL.hpp"
 #endif  // BUILD_WITH_OPENCL
 
 #include "module/cuda/GTASAModuleCUDA.hpp"
-#include "module/GTASAModuleThreadpool.hpp"
-#include "module/GTASAModuleOpenMP.hpp"
+#include "module/threadpool/GTASAModuleThreadpool.hpp"
+#include "module/openmp/GTASAModuleOpenMP.hpp"
 
 GTASAEngine::GTASAEngine() {
     _gtaSAModuleTheadpool = std::make_unique<GTASAModuleThreadpool>();

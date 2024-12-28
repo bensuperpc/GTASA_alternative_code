@@ -1,7 +1,7 @@
 #ifndef GTASAMODULEOPENMP_HPP
 #define GTASAMODULEOPENMP_HPP
 
-#include "GTASAModule.hpp"
+#include <module/GTASAModule.hpp>
 
 #if __has_include("CL/cl.h") || __has_include("CL/cl.hpp")
 #ifndef BUILD_WITH_OPENCL

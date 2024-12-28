@@ -161,8 +161,5 @@ update:
 
 .PHONY: clear
 clear:
-	rm -rf "build/*/bin/*"
-
-.PHONY: purge
-purge:
 	rm -rf "build"
+	

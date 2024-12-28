@@ -1,7 +1,7 @@
 #ifndef GTASAMODULETHREADPOOL_HPP
 #define GTASAMODULETHREADPOOL_HPP
 
-#include "GTASAModule.hpp"
+#include <module/GTASAModule.hpp>
 
 #include "BS_thread_pool.hpp"
 
