@@ -9,11 +9,11 @@
 #include <QQuickWindow>
 #include <QtGlobal>
 
-#include "application.h"
-#include "asyncimageprovider.h"
-#include "gta_sa_ui.hpp"
-#include "imageprovider.h"
-#include "utils/utils.h"
+#include "Qt/application.h"
+#include "Qt/asyncimageprovider.h"
+#include "Qt/gta_sa_ui.hpp"
+#include "Qt/imageprovider.h"
+#include "Qt/utils/utils.h"
 #else
 #include <cstdint>
 #include <iostream>

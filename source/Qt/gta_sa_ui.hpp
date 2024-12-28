@@ -11,7 +11,7 @@
 
 #include "utils/utils.h"
 
-#include "GTASA_alternative_code/GTASAEngine.hpp"
+#include "GTASAEngine.hpp"
 
 class GTA_SA_UI final : public QObject {
     Q_OBJECT

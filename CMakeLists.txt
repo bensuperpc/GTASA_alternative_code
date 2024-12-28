@@ -62,16 +62,16 @@ set(HEADERS
 
 if (Qt${QT_VERSION_MAJOR}_FOUND)
     list(APPEND SRCS 
-        source/gta_sa_ui.cpp
-        source/imageprovider.cpp
-        source/application.cpp
+        source/Qt/gta_sa_ui.cpp
+        source/Qt/imageprovider.cpp
+        source/Qt/application.cpp
         )
     list(APPEND HEADERS 
-        source/gta_sa_ui.hpp
-        source/asyncimageprovider.h
-        source/application.h 
-        source/utils/about_compilation.h
-        source/utils/utils.h
+        source/Qt/gta_sa_ui.hpp
+        source/Qt/asyncimageprovider.h
+        source/Qt/application.h 
+        source/Qt/utils/about_compilation.h
+        source/Qt/utils/utils.h
         )
 endif()
 
