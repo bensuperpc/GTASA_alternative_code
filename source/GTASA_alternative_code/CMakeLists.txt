@@ -34,7 +34,7 @@ find_package(CUDAToolkit 11.0)
 #find_package(OpenCL 2.0)
 
 if (CUDAToolkit_FOUND)
-  add_subdirectory(cuda)
+  add_subdirectory(module/cuda/kernel)
 endif()
 
 if (OpenCL_FOUND)
@@ -65,8 +65,8 @@ if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
 endif()
 
 if (CUDAToolkit_FOUND)
-  list(APPEND SRCS module/GTASAModuleCUDA.cpp)
-  list(APPEND HEADERS  module/GTASAModuleCUDA.hpp)
+  list(APPEND SRCS module/cuda/GTASAModuleCUDA.cpp)
+  list(APPEND HEADERS  module/cuda/GTASAModuleCUDA.hpp)
 endif()
 
 if (OpenCL_FOUND)

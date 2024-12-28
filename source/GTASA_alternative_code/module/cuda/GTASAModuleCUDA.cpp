@@ -5,7 +5,7 @@
 
 
 //#if __has_include("cuda.h") || __has_include("cuda_runtime.h")
-#include "cuda/wrapper.hpp"
+#include "kernel/wrapper.hpp"
 //#endif 
 
 GTASAModuleCUDA::GTASAModuleCUDA():

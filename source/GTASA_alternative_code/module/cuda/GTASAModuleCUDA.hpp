@@ -1,7 +1,7 @@
 #ifndef GTASAMODULECUDA_HPP
 #define GTASAMODULECUDA_HPP
 
-#include "GTASAModule.hpp"
+#include <module/GTASAModule.hpp>
 
 class GTASAModuleCUDA final : public GTASAModule {
    public:

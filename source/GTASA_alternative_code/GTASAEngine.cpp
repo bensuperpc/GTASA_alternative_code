@@ -4,7 +4,7 @@
 #include "module/GTASAModuleOpenCL.hpp"
 #endif  // BUILD_WITH_OPENCL
 
-#include "module/GTASAModuleCUDA.hpp"
+#include "module/cuda/GTASAModuleCUDA.hpp"
 #include "module/GTASAModuleThreadpool.hpp"
 #include "module/GTASAModuleOpenMP.hpp"
 
