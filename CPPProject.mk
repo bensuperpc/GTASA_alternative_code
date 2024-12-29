@@ -26,7 +26,6 @@ CMAKE_ADDITONAL_ARGS ?= -DHAVE_STD_REGEX=ON
 
 # LANG := en
 # LANG=$(LANG)
-# -Werror=float-equal
 
 .PHONY: build
 build: base

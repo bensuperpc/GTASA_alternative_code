@@ -15,6 +15,7 @@ PROJECT_NAME := GTASA_alternative_code
 
 PROJECT_ROOT := .
 
+# -Werror=float-equal
 #-DRUN_HAVE_STD_REGEX=1
 CMAKE_ADDITONAL_ARGS := -DHAVE_STD_REGEX=ON
 
