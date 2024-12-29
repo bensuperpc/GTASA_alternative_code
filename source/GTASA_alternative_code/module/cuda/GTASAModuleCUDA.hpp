@@ -8,7 +8,7 @@ class GTASAModuleCUDA final : public GTASAModule {
     explicit GTASAModuleCUDA();
     ~GTASAModuleCUDA();
 
-    std::vector<GTASAResult> run(std::uint64_t startRange, std::uint64_t endRange) override;
+    auto run(std::uint64_t startRange, std::uint64_t endRange) -> std::vector<GTASAResult> override final;
 
     private:
      uint64_t _cudaBlockSize = 64;

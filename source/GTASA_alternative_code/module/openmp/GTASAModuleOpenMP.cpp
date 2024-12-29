@@ -9,7 +9,7 @@ GTASAModuleOpenMP::GTASAModuleOpenMP():
 
 GTASAModuleOpenMP::~GTASAModuleOpenMP() {}
 
-std::vector<GTASAResult> GTASAModuleOpenMP::run(std::uint64_t startRange, std::uint64_t endRange)  {
+auto GTASAModuleOpenMP::run(std::uint64_t startRange, std::uint64_t endRange) -> std::vector<GTASAResult> {
     _runningInstance++;
 
     std::vector<GTASAResult> results = {};
@@ -29,7 +29,7 @@ std::vector<GTASAResult> GTASAModuleOpenMP::run(std::uint64_t startRange, std::u
     return results;
 }
 
-GTASAResult GTASAModuleOpenMP::runner(const std::uint64_t i) {
+GTASAResult GTASAModuleOpenMP::runner(const std::uint64_t i) const {
     std::array<char, 29> tmp = {0};
     this->generateString(tmp.data(), i);
     const uint32_t crc = this->jamcrc(tmp.data());

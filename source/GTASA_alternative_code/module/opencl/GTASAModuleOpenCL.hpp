@@ -24,7 +24,7 @@ class GTASAModuleOpenCL final : public GTASAModule {
     explicit GTASAModuleOpenCL();
     ~GTASAModuleOpenCL();
 
-    std::vector<GTASAResult> run(std::uint64_t startRange, std::uint64_t endRange) override;
+    auto run(std::uint64_t startRange, std::uint64_t endRange) -> std::vector<GTASAResult> override final;
 
     private:
      uint64_t _openCLBlockSize = 64;

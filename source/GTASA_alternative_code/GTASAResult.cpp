@@ -6,9 +6,6 @@ GTASAResult::GTASAResult(std::uint64_t _index, std::string& _code, std::uint32_t
 GTASAResult::GTASAResult(std::uint64_t _index, std::string&& _code, std::uint32_t _jamcrc, std::uint64_t _codeIndex)
     : index(_index), code(_code), jamcrc(_jamcrc), codeIndex(_codeIndex) {}
 
-GTASAResult::GTASAResult(std::uint64_t _index, std::string _code, std::uint32_t _jamcrc, std::string _associated_code)
-    : index(_index), code(_code), jamcrc(_jamcrc), codeIndex(0), associated_code(_associated_code) {}
-
 GTASAResult::GTASAResult() {}
 
 GTASAResult::~GTASAResult() {}

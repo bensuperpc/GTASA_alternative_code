@@ -9,7 +9,7 @@ GTASAModuleOpenCL::GTASAModuleOpenCL():
 
 GTASAModuleOpenCL::~GTASAModuleOpenCL() {}
 
-std::vector<GTASAResult> GTASAModuleOpenCL::run(std::uint64_t startRange, std::uint64_t endRange)  {
+auto GTASAModuleOpenCL::run(std::uint64_t startRange, std::uint64_t endRange) -> std::vector<GTASAResult> {
     _runningInstance++;
 
     std::vector<uint32_t> jamcrc_results = {};

@@ -15,11 +15,12 @@ class GTASAModule {
     static COMPUTE_TYPE stringToComputeType(std::string_view type) noexcept;
 
     virtual ~GTASAModule();
-    virtual std::vector<GTASAResult> run(std::uint64_t startRange, std::uint64_t endRange) = 0;
-    COMPUTE_TYPE type() const;
-    std::uint64_t runningInstance() const;
+    virtual auto run(std::uint64_t startRange, std::uint64_t endRange) -> std::vector<GTASAResult> = 0;
+    auto type() const -> COMPUTE_TYPE;
+    auto runningInstance() const -> std::uint64_t;
    protected:
     explicit GTASAModule(COMPUTE_TYPE type);
+    virtual auto runner(const std::uint64_t i) const -> GTASAResult;
 
     const COMPUTE_TYPE _type = COMPUTE_TYPE::NONE;
     std::atomic<std::uint64_t> _runningInstance = 0;
@@ -41,8 +42,7 @@ class GTASAModule {
         0xF53EF5A5, 0xF2AA0C1D, 0xF36345A8, 0x8990D5E1, 0xB7013B1B, 0xCAEC94EE, 0x31F0C3CC, 0xB3B3E72A, 0xC25CDBFF, 0xD5CF4EFF, 0x680416B1,
         0xCF5FDA18, 0xF01286E9, 0xA841CC0A, 0x31EA09CF, 0xE958788A, 0x02C83A7C, 0xE49C3ED4, 0x171BA8CC, 0x86988DAE, 0x2BDD2FA1};
 
-    /*
-    static constexpr std::array<const std::string, 87> cheatListName{"Weapon Set 1",
+    static inline std::array<std::string, 87> cheatListName {"Weapon Set 1",
                                               "Weapon Set 2",
                                               "Weapon Set 3",
                                               "Health, Armor, $250k, Repairs car",
@@ -127,7 +127,7 @@ class GTASAModule {
                                               "Spawn Dozer",
                                               "pawn Stunt Plane",
                                               "Spawn Monster"};
-    */
+
     static constexpr std::array<const uint32_t, 256> crc32LookupTable = {
         0x00000000, 0x77073096, 0xEE0E612C, 0x990951BA, 0x076DC419, 0x706AF48F, 0xE963A535, 0x9E6495A3, 0x0EDB8832, 0x79DCB8A4, 0xE0D5E91E,
         0x97D2D988, 0x09B64C2B, 0x7EB17CBD, 0xE7B82D07, 0x90BF1D91, 0x1DB71064, 0x6AB020F2, 0xF3B97148, 0x84BE41DE, 0x1ADAD47D, 0x6DDDE4EB,

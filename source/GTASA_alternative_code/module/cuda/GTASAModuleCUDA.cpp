@@ -14,7 +14,7 @@ GTASAModuleCUDA::GTASAModuleCUDA():
 
 GTASAModuleCUDA::~GTASAModuleCUDA() {}
 
-std::vector<GTASAResult> GTASAModuleCUDA::run(std::uint64_t startRange, std::uint64_t endRange)  {
+auto GTASAModuleCUDA::run(std::uint64_t startRange, std::uint64_t endRange) -> std::vector<GTASAResult> {
     _runningInstance++;
 
     std::vector<uint32_t> jamcrc_results = {};

@@ -8,9 +8,6 @@ class GTASAResult {
    public:
     explicit GTASAResult(std::uint64_t, std::string&, std::uint32_t, std::uint64_t);
     explicit GTASAResult(std::uint64_t, std::string&&, std::uint32_t, std::uint64_t);
-
-    //TODO: Removed it after rewrite
-    explicit GTASAResult(std::uint64_t, std::string, std::uint32_t, std::string);
     
     GTASAResult();
     ~GTASAResult();

@@ -10,7 +10,7 @@ GTASAModuleThreadpool::GTASAModuleThreadpool():
 
 GTASAModuleThreadpool::~GTASAModuleThreadpool() {}
 
-std::vector<GTASAResult> GTASAModuleThreadpool::run(std::uint64_t startRange, std::uint64_t endRange)  {
+auto GTASAModuleThreadpool::run(std::uint64_t startRange, std::uint64_t endRange) -> std::vector<GTASAResult> {
     _runningInstance++;
 
     std::vector<GTASAResult> results = {};
@@ -35,7 +35,7 @@ std::vector<GTASAResult> GTASAModuleThreadpool::run(std::uint64_t startRange, st
     return results;
 }
 
-GTASAResult GTASAModuleThreadpool::runner(const std::uint64_t i) {
+GTASAResult GTASAModuleThreadpool::runner(const std::uint64_t i) const {
     std::array<char, 29> tmp = {0};
     this->generateString(tmp.data(), i);
     const uint32_t crc = this->jamcrc(tmp.data());

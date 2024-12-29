@@ -10,10 +10,10 @@ class GTASAModuleThreadpool final : public GTASAModule {
     explicit GTASAModuleThreadpool();
     ~GTASAModuleThreadpool();
 
-    std::vector<GTASAResult> run(std::uint64_t startRange, std::uint64_t endRange) override;
+    auto run(std::uint64_t startRange, std::uint64_t endRange) -> std::vector<GTASAResult> override final;
     
     private:
-     GTASAResult runner(const std::uint64_t i);
+     auto runner(const std::uint64_t i) const -> GTASAResult override final;
      BS::thread_pool<BS::tp::none> _pool = BS::thread_pool<BS::tp::none>(0);
 };
 

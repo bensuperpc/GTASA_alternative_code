@@ -74,36 +74,6 @@ BENCHMARK(jamcrc_bench)
     ->UseRealTime()
     ->Repetitions(repetitions);
 
-/*
-#if defined(BUILD_WITH_CUDA)
-static void cuda_jamcrc_bench(benchmark::State &state) {
-  // Code inside this loop is measured repeatedly
-  auto size = state.range(0);
-  std::string str = generate_array(size);
-  GTA_SA_CUDA gtaSA = GTA_SA_CUDA();
-  for (auto _ : state) {
-    benchmark::DoNotOptimize(str);
-    //gtaSA.jamcrc(str);
-    my::cuda::jamcrc(str.c_str(), size, 0, 64);
-    benchmark::ClobberMemory();
-  }
-    state.SetBytesProcessed(state.iterations() * state.range(0) * sizeof(std::string::value_type));
-    state.SetItemsProcessed(state.iterations() * state.range(0));
-}
-BENCHMARK(cuda_jamcrc_bench)
-    ->Name("cuda_jamcrc_bench")
-    ->RangeMultiplier(multiplier)
-    ->Range(minRange, maxRange)
-    ->ThreadRange(minThreadRange, maxThreadRange)
-    ->Unit(benchmark::kNanosecond)
-    ->Setup(DoSetup)
-    ->Teardown(DoTeardown)
-    ->MeasureProcessCPUTime()
-    ->UseRealTime()
-    ->Repetitions(repetitions);
-#endif
-*/
-
 int main(int argc, char** argv) {
     ::benchmark::Initialize(&argc, argv);
     ::benchmark::RunSpecifiedBenchmarks();

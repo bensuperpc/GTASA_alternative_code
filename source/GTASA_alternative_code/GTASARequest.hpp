@@ -34,7 +34,6 @@ class GTASARequest {
      void run();
      std::future<void> _future;
 
-
      mutable std::shared_mutex _mutex = std::shared_mutex();
 
      std::uint64_t _startRange = 0;
