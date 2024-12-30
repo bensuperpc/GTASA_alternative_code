@@ -22,8 +22,8 @@ jobs:
           - { image_name: android-x86_64, cmake_arg: "-DCMAKE_CXX_STANDARD=20 -DENABLE_OPENCL=OFF -DENABLE_CUDA=OFF -DENABLE_QT=OFF -DENABLE_THREADPOOL=OFF" }
 
           # Web images
-          - { image_name: web-wasm, cmake_arg: "-DCMAKE_CXX_STANDARD=20 -DENABLE_OPENCL=OFF -DENABLE_CUDA=OFF -DENABLE_QT=OFF" }
-          - { image_name: web-wasi, cmake_arg: "-DCMAKE_CXX_FLAGS='${CMAKE_CXX_FLAGS} -fno-exceptions'" }
+          - { image_name: web-wasm, cmake_arg: "-DCMAKE_CXX_STANDARD=20 -DENABLE_OPENCL=OFF -DENABLE_CUDA=OFF -DENABLE_QT=OFF -DENABLE_THREADPOOL=OF" }
+          - { image_name: web-wasi, cmake_arg: "-DCMAKE_CXX_FLAGS='${CMAKE_CXX_FLAGS} -fno-exceptions' -DENABLE_OPENCL=OFF -DENABLE_CUDA=OFF -DENABLE_QT=OFF -DENABLE_THREADPOOL=OFF" }
 
           # Linux ARMv5 images
           - { image_name: linux-armv5, cmake_arg: "-DCMAKE_CXX_STANDARD=20 -DENABLE_OPENCL=OFF -DENABLE_CUDA=OFF -DENABLE_QT=OFF" }
