@@ -79,6 +79,7 @@ On AMD R7 5800H (clang 16)
 1544578880 = ~3 sec
 308915776 = 0.6 sec
 ```
+
 ### GPU
 
 On NVIDIA RTX 3070 (clang 16 and CUDA 11.3)
@@ -101,7 +102,7 @@ On NVIDIA RTX 3070 (clang 16 and CUDA 11.3)
 
 More information on this video:
 
-[![GTA SA - Alternative Cheats - Feat. Badger Goodger](https://yt-embed.herokuapp.com/embed?v=W_eFZ4HzU7Q)](https://youtu.be/W_eFZ4HzU7Q "GTA SA - Alternative Cheats - Feat. Badger Goodger")
+[![GTA SA - Alternative Cheats - Feat. Badger Goodger](http://img.youtube.com/vi/W_eFZ4HzU7Q/0.jpg)](http://www.youtube.com/watch?v=W_eFZ4HzU7Q "GTA SA - Alternative Cheats - Feat. Badger Goodger")
 
 ## Building and installing
 
