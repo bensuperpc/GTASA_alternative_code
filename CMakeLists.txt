@@ -14,10 +14,6 @@ project(
 include(cmake/utile/ccache.cmake)
 #include(cmake/utile/sccache.cmake)
 
-if (NOT Threads_FOUND)
-    find_package(Threads REQUIRED)
-endif()
-
 include(cmake/project-is-top-level.cmake)
 include(cmake/variables.cmake)
 
@@ -53,6 +49,14 @@ elseif (ENABLE_OPENMP AND (NOT DEFINED OpenMP_FOUND OR NOT OpenMP_FOUND))
     find_package(OpenMP 2.0 REQUIRED)
 endif()
 
+# ---- Threadpool ----
+if (NOT DEFINED ENABLE_THREADPOOL)
+    find_package(Threads)
+    set(ENABLE_THREADPOOL ${Threads_FOUND} CACHE BOOL "Enable ThreadPool" FORCE)
+elseif (ENABLE_THREADPOOL AND (NOT DEFINED Threads_FOUND OR NOT Threads_FOUND))
+    find_package(Threads REQUIRED)
+endif()
+
 # ---- Qt ----
 option(ENABLE_DEBUG_QT "Enable debug messages for Qt" OFF)
 set(QT_VERSION_MAJOR 6 CACHE BOOL "" FORCE)
@@ -73,8 +77,6 @@ if (ENABLE_QT)
     qt_standard_project_setup(REQUIRES ${QT_VERSION_MAJOR}.${QT_VERSION_MINOR})
     add_subdirectory(qml/AppLib)
 endif()
-
-include_directories(external/thread-pool/include)
 
 # TODO: Change to target_include_directories
 add_subdirectory(source/GTASA_alternative_code)
@@ -151,7 +153,11 @@ if (ENABLE_QT)
     target_link_libraries(GTASA_alternative_code_exe PUBLIC AppLib AppLibplugin)
 endif()
 
-if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
+if(ENABLE_THREADPOOL)
+    target_link_libraries(GTASA_alternative_code_exe PRIVATE Threads::Threads)
+endif()
+
+if (ENABLE_OPENMP)
   target_link_libraries(GTASA_alternative_code_exe PUBLIC OpenMP::OpenMP_CXX)
 endif()
 
@@ -172,6 +178,7 @@ target_compile_definitions(GTASA_alternative_code_exe PUBLIC ENABLE_CUDA=$<IF:$<
 target_compile_definitions(GTASA_alternative_code_exe PUBLIC ENABLE_OPENCL=$<IF:$<BOOL:${ENABLE_OPENCL}>,1,0>)
 target_compile_definitions(GTASA_alternative_code_exe PUBLIC ENABLE_OPENMP=$<IF:$<BOOL:${ENABLE_OPENMP}>,1,0>)
 target_compile_definitions(GTASA_alternative_code_exe PUBLIC ENABLE_QT=$<IF:$<BOOL:${ENABLE_QT}>,1,0>)
+target_compile_definitions(GTASA_alternative_code_exe PUBLIC ENABLE_THREADPOOL=$<IF:$<BOOL:${ENABLE_THREADPOOL}>,1,0>)
 
 #target_compile_definitions(GTASA_alternative_code_exe PUBLIC QT_MESSAGELOGCONTEXT="1")
 

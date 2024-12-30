@@ -17,6 +17,8 @@ GTASAModule::COMPUTE_TYPE GTASAModule::stringToComputeType(std::string_view type
         return COMPUTE_TYPE::CUDA;
     } else if (type == "OPENCL") {
         return COMPUTE_TYPE::OPENCL;
+    } else if (type == "MONO") {
+        return COMPUTE_TYPE::MONO;
     }
     return COMPUTE_TYPE::NONE;
 }

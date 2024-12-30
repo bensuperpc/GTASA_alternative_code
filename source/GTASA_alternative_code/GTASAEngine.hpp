@@ -25,6 +25,7 @@ class GTASAEngine {
     GTASAModule* getModule(GTASAModule::COMPUTE_TYPE type) const noexcept;
 
    private:
+      std::unique_ptr<GTASAModule> _gtaSAModuleMono = nullptr;
       std::unique_ptr<GTASAModule> _gtaSAModuleTheadpool = nullptr;
       std::unique_ptr<GTASAModule> _gtaSAModuleOpenMP = nullptr;
       std::unique_ptr<GTASAModule> _gtaSAModuleCUDA = nullptr;

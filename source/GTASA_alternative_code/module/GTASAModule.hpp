@@ -11,7 +11,7 @@
 
 class GTASAModule {
    public:
-    enum class COMPUTE_TYPE { NONE, STDTHREAD, OPENMP, CUDA, OPENCL };
+    enum class COMPUTE_TYPE { NONE, MONO, STDTHREAD, OPENMP, CUDA, OPENCL };
     static COMPUTE_TYPE stringToComputeType(std::string_view type) noexcept;
 
     virtual ~GTASAModule();

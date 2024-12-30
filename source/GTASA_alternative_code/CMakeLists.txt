@@ -27,10 +27,6 @@ project(
     LANGUAGES C CXX
 )
 
-if (NOT Threads_FOUND)
-    find_package(Threads REQUIRED)
-endif()
-
 # ---- CUDA ----
 if (NOT DEFINED ENABLE_CUDA)
     find_package(CUDAToolkit 11.0)
@@ -63,12 +59,24 @@ elseif (ENABLE_OPENMP AND (NOT DEFINED OpenMP_FOUND OR NOT OpenMP_FOUND))
     find_package(OpenMP 2.0 REQUIRED)
 endif()
 
+# ---- Threadpool ----
+if (NOT DEFINED ENABLE_THREADPOOL)
+    find_package(Threads)
+    set(ENABLE_THREADPOOL ${Threads_FOUND} CACHE BOOL "Enable ThreadPool" FORCE)
+elseif (ENABLE_THREADPOOL AND (NOT DEFINED Threads_FOUND OR NOT Threads_FOUND))
+    find_package(Threads REQUIRED)
+endif()
+
 if (ENABLE_CUDA)
     add_subdirectory(module/cuda/kernel)
 endif()
 
-if (OpenCL_FOUND)
+if (ENABLE_OPENCL)
   #add_subdirectory(opencl)
+endif()
+
+if (ENABLE_THREADPOOL)
+    include_directories(../../external/thread-pool/include)
 endif()
 
 set(SRCS
@@ -76,7 +84,7 @@ set(SRCS
     GTASARequest.cpp
     GTASAEngine.cpp
     module/GTASAModule.cpp
-    module/threadpool/GTASAModuleThreadpool.cpp
+    module/mono/GTASAModuleMono.cpp
 	)
 	
 set(HEADERS
@@ -84,10 +92,15 @@ set(HEADERS
     GTASARequest.hpp
     GTASAEngine.hpp
     module/GTASAModule.hpp
-    module/threadpool/GTASAModuleThreadpool.hpp
+    module/mono/GTASAModuleMono.hpp
     )
 
-if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
+if (ENABLE_THREADPOOL)
+    list(APPEND SRCS module/threadpool/GTASAModuleThreadpool.cpp)
+    list(APPEND HEADERS module/threadpool/GTASAModuleThreadpool.hpp)
+endif()
+
+if (ENABLE_OPENMP)
   list(APPEND SRCS module/openmp/GTASAModuleOpenMP.cpp)
   list(APPEND HEADERS module/openmp/GTASAModuleOpenMP.hpp)
 endif()
@@ -111,7 +124,11 @@ target_include_directories(
     "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/state>"
 )
 
-if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
+if(ENABLE_THREADPOOL)
+    target_link_libraries(GTASA_alternative_code_lib PRIVATE Threads::Threads)
+endif()
+
+if (ENABLE_OPENMP)
     target_link_libraries(GTASA_alternative_code_lib PUBLIC OpenMP::OpenMP_CXX)
 endif()
 
@@ -130,6 +147,7 @@ endif()
 target_compile_definitions(GTASA_alternative_code_lib PUBLIC ENABLE_CUDA=$<IF:$<BOOL:${ENABLE_CUDA}>,1,0>)
 target_compile_definitions(GTASA_alternative_code_lib PUBLIC ENABLE_OPENCL=$<IF:$<BOOL:${ENABLE_OPENCL}>,1,0>)
 target_compile_definitions(GTASA_alternative_code_lib PUBLIC ENABLE_OPENMP=$<IF:$<BOOL:${ENABLE_OPENMP}>,1,0>)
+target_compile_definitions(GTASA_alternative_code_lib PUBLIC ENABLE_THREADPOOL=$<IF:$<BOOL:${ENABLE_THREADPOOL}>,1,0>)
 
 set_target_properties(GTASA_alternative_code_lib
     PROPERTIES

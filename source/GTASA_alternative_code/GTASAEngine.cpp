@@ -1,5 +1,7 @@
 #include "GTASAEngine.hpp"
 
+#include "module/mono/GTASAModuleMono.hpp"
+
 #if ENABLE_OPENCL == 1
 #include "module/opencl/GTASAModuleOpenCL.hpp"
 #endif  // BUILD_WITH_OPENCL
@@ -8,14 +10,21 @@
 #include "module/cuda/GTASAModuleCUDA.hpp"
 #endif  // ENABLE_CUDA
 
+#if ENABLE_THREADPOOL == 1
 #include "module/threadpool/GTASAModuleThreadpool.hpp"
+#endif  // ENABLE_THREADPOOL
 
 #if ENABLE_OPENMP == 1
 #include "module/openmp/GTASAModuleOpenMP.hpp"
 #endif  // ENABLE_OPENMP
 
 GTASAEngine::GTASAEngine() {
+    _gtaSAModuleMono = std::make_unique<GTASAModuleMono>();
+
+#if ENABLE_THREADPOOL == 1
     _gtaSAModuleTheadpool = std::make_unique<GTASAModuleThreadpool>();
+#endif  // ENABLE_THREADPOOL
+
 #if ENABLE_OPENMP == 1
     _gtaSAModuleOpenMP = std::make_unique<GTASAModuleOpenMP>();
 #endif  // ENABLE_OPENMP
@@ -37,8 +46,21 @@ GTASARequest* GTASAEngine::addRequest(std::string&& type, std::uint64_t startRan
 
 GTASARequest* GTASAEngine::addRequest(GTASAModule::COMPUTE_TYPE type, std::uint64_t startRange, std::uint64_t endRange) {
     switch (type) {
+        case GTASAModule::COMPUTE_TYPE::MONO: {
+            std::unique_ptr<GTASARequest> request = std::make_unique<GTASARequest>(_gtaSAModuleMono.get(), startRange, endRange);
+            request->start();
+            std::unique_lock<std::shared_mutex> lock(_mutex);
+            _requests.push_back(std::move(request));
+            return _requests.back().get();
+            break;
+        }
         case GTASAModule::COMPUTE_TYPE::STDTHREAD: {
+#if ENABLE_THREADPOOL == 1
             std::unique_ptr<GTASARequest> request = std::make_unique<GTASARequest>(_gtaSAModuleTheadpool.get(), startRange, endRange);
+#else
+            std::cerr << "STDTHREAD not supported, falling back to Mono module" << std::endl;
+            std::unique_ptr<GTASARequest> request = std::make_unique<GTASARequest>(_gtaSAModuleMono.get(), startRange, endRange);
+#endif  // ENABLE_THREADPOOL
             request->start();
             std::unique_lock<std::shared_mutex> lock(_mutex);
             _requests.push_back(std::move(request));
@@ -49,8 +71,8 @@ GTASARequest* GTASAEngine::addRequest(GTASAModule::COMPUTE_TYPE type, std::uint6
 #if ENABLE_OPENMP == 1
             std::unique_ptr<GTASARequest> request = std::make_unique<GTASARequest>(_gtaSAModuleOpenMP.get(), startRange, endRange);
 #else
-            std::cerr << "OPENMP not supported, falling back to STDTHREAD" << std::endl;
-            std::unique_ptr<GTASARequest> request = std::make_unique<GTASARequest>(_gtaSAModuleTheadpool.get(), startRange, endRange);
+            std::cerr << "OPENMP not supported, falling back to Mono module" << std::endl;
+            std::unique_ptr<GTASARequest> request = std::make_unique<GTASARequest>(_gtaSAModuleMono.get(), startRange, endRange);
 #endif  // ENABLE_OPENMP
             request->start();
             std::unique_lock<std::shared_mutex> lock(_mutex);
@@ -62,8 +84,8 @@ GTASARequest* GTASAEngine::addRequest(GTASAModule::COMPUTE_TYPE type, std::uint6
 #if ENABLE_CUDA == 1
             std::unique_ptr<GTASARequest> request = std::make_unique<GTASARequest>(_gtaSAModuleCUDA.get(), startRange, endRange);
 #else
-            std::cerr << "CUDA not supported, falling back to STDTHREAD" << std::endl;
-            std::unique_ptr<GTASARequest> request = std::make_unique<GTASARequest>(_gtaSAModuleTheadpool.get(), startRange, endRange);
+            std::cerr << "CUDA not supported, falling back to Mono module" << std::endl;
+            std::unique_ptr<GTASARequest> request = std::make_unique<GTASARequest>(_gtaSAModuleMono.get(), startRange, endRange);
 #endif  // ENABLE_CUDA
             request->start();
             std::unique_lock<std::shared_mutex> lock(_mutex);
@@ -75,8 +97,8 @@ GTASARequest* GTASAEngine::addRequest(GTASAModule::COMPUTE_TYPE type, std::uint6
 #if ENABLE_OPENCL == 1
             std::unique_ptr<GTASARequest> request = std::make_unique<GTASARequest>(_gtaSAModuleOpenCL.get(), startRange, endRange);
 #else
-            std::cerr << "OPENCL not supported, falling back to STDTHREAD" << std::endl;
-            std::unique_ptr<GTASARequest> request = std::make_unique<GTASARequest>(_gtaSAModuleTheadpool.get(), startRange, endRange);
+            std::cerr << "OPENCL not supported, falling back to Mono module" << std::endl;
+            std::unique_ptr<GTASARequest> request = std::make_unique<GTASARequest>(_gtaSAModuleMono.get(), startRange, endRange);
 #endif  // BUILD_WITH_OPENCL
             request->start();
             std::unique_lock<std::shared_mutex> lock(_mutex);
@@ -119,6 +141,9 @@ void GTASAEngine::waitAllRequests() const {
 
 GTASAModule* GTASAEngine::getModule(GTASAModule::COMPUTE_TYPE type) const noexcept {
     switch (type) {
+        case GTASAModule::COMPUTE_TYPE::MONO:
+            return nullptr;
+            break;
         case GTASAModule::COMPUTE_TYPE::STDTHREAD:
             return _gtaSAModuleTheadpool.get();
             break;
