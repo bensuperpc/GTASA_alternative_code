@@ -32,9 +32,10 @@ jobs:
         run: cmake -E make_directory ${{runner.workspace}}/build
 
       - name: Configure
-        run: cmake -S . -B build -D CMAKE_BUILD_TYPE=${{matrix.build_type}}
-          -A ${{matrix.platform}} -D CMAKE_CXX_STANDARD=${{matrix.standard}}
-          -D BUILD_SHARED_LIBS=${{matrix.shared}} --preset=ci-windows
+        run: cmake -S . -B build -D CMAKE_BUILD_TYPE=${{matrix.build_type}} \
+          -A ${{matrix.platform}} -D CMAKE_CXX_STANDARD=${{matrix.standard}} \
+          -D BUILD_SHARED_LIBS=${{matrix.shared}} --preset=ci-windows \
+          -DENABLE_OPENCL=OFF -DENABLE_CUDA=OFF -DENABLE_QT=OFF
 
       - name: Build
         run: |

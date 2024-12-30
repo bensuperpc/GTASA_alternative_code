@@ -22,6 +22,7 @@ class GTASAEngine {
     std::shared_mutex& getMutex();
     bool allRequestsFinished() const;
     void waitAllRequests() const;
+    GTASAModule* getModule(GTASAModule::COMPUTE_TYPE type) const noexcept;
 
    private:
       std::unique_ptr<GTASAModule> _gtaSAModuleTheadpool = nullptr;

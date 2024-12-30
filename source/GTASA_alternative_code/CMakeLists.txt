@@ -24,19 +24,43 @@ project(
     VERSION 0.1.0
     DESCRIPTION "GTASA_alternative_code lib"
     HOMEPAGE_URL "https://github.com/bensuperpc"
-    LANGUAGES CXX
+    LANGUAGES C CXX
 )
 
-if(NOT OpenMP_FOUND)
-    find_package(OpenMP 2.0)
+# ---- CUDA ----
+if (NOT DEFINED ENABLE_CUDA)
+    find_package(CUDAToolkit 11.0)
+    set(ENABLE_CUDA ${CUDAToolkit_FOUND} CACHE BOOL "Enable CUDA" FORCE)
+elseif (ENABLE_CUDA AND (NOT DEFINED CUDAToolkit_FOUND OR NOT CUDAToolkit_FOUND))
+    find_package(CUDAToolkit 11.0 REQUIRED)
 endif()
 
-find_package(CUDAToolkit 11.0)
+if (ENABLE_CUDA)
+    include(CheckLanguage)
+    check_language(CUDA)
+    if (CMAKE_CUDA_COMPILER)
+        enable_language(CUDA)
+    endif()
+endif()
 
-#find_package(OpenCL 2.0)
+# ---- OpenCL ----
+if (NOT DEFINED ENABLE_OPENCL)
+    find_package(OpenCL 2.0)
+    set(ENABLE_OPENCL ${OpenCL_FOUND} CACHE BOOL "Enable OpenCL" FORCE)
+elseif (ENABLE_OPENCL AND (NOT DEFINED OpenCL_FOUND OR NOT OpenCL_FOUND))
+    find_package(OpenCL 2.0 REQUIRED)
+endif()
 
-if (CUDAToolkit_FOUND)
-  add_subdirectory(module/cuda/kernel)
+# ---- OpenMP ----
+if (NOT DEFINED ENABLE_OPENMP)
+    find_package(OpenMP 2.0)
+    set(ENABLE_OPENMP ${OpenMP_FOUND} CACHE BOOL "Enable OpenMP" FORCE)
+elseif (ENABLE_OPENMP AND (NOT DEFINED OpenMP_FOUND OR NOT OpenMP_FOUND))
+    find_package(OpenMP 2.0 REQUIRED)
+endif()
+
+if (ENABLE_CUDA)
+    add_subdirectory(module/cuda/kernel)
 endif()
 
 if (OpenCL_FOUND)
@@ -64,12 +88,12 @@ if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
   list(APPEND HEADERS module/openmp/GTASAModuleOpenMP.hpp)
 endif()
 
-if (CUDAToolkit_FOUND)
+if (ENABLE_CUDA)
   list(APPEND SRCS module/cuda/GTASAModuleCUDA.cpp)
   list(APPEND HEADERS  module/cuda/GTASAModuleCUDA.hpp)
 endif()
 
-if (OpenCL_FOUND)
+if (ENABLE_OPENCL)
   #list(APPEND SRCS module/opencl/GTASAModuleOpenCL.cpp)
   #list(APPEND HEADERS module/opencl/GTASAModuleOpenCL.hpp)
 endif()
@@ -87,17 +111,21 @@ if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
     target_link_libraries(GTASA_alternative_code_lib PUBLIC OpenMP::OpenMP_CXX)
 endif()
 
-if (CUDAToolkit_FOUND)
-  target_include_directories(GTASA_alternative_code_lib PUBLIC ${CUDAToolkit_INCLUDE_DIRS})
-  target_link_libraries(GTASA_alternative_code_lib PUBLIC CUDA::cudart)
-  target_link_libraries(GTASA_alternative_code_lib PUBLIC cuda_lib)
+if (ENABLE_CUDA)
+    target_include_directories(GTASA_alternative_code_lib PUBLIC ${CUDAToolkit_INCLUDE_DIRS})
+    target_link_libraries(GTASA_alternative_code_lib PUBLIC CUDA::cudart)
+    target_link_libraries(GTASA_alternative_code_lib PUBLIC cuda_lib)
 endif()
 
-if (OpenCL_FOUND)
-  #target_include_directories(GTASA_alternative_code_lib PUBLIC ${OpenCL_INCLUDE_DIRS})
-  #target_link_libraries(GTASA_alternative_code_lib PUBLIC ${OpenCL_LIBRARIES})
-  #target_link_libraries(GTASA_alternative_code_lib PUBLIC opencl_lib)
+if (ENABLE_OPENCL)
+  target_include_directories(GTASA_alternative_code_lib PUBLIC ${OpenCL_INCLUDE_DIRS})
+  target_link_libraries(GTASA_alternative_code_lib PUBLIC ${OpenCL_LIBRARIES})
+  target_link_libraries(GTASA_alternative_code_lib PUBLIC opencl_lib)
 endif()
+
+target_compile_definitions(GTASA_alternative_code_lib PUBLIC ENABLE_CUDA=$<IF:$<BOOL:${ENABLE_CUDA}>,1,0>)
+target_compile_definitions(GTASA_alternative_code_lib PUBLIC ENABLE_OPENCL=$<IF:$<BOOL:${ENABLE_OPENCL}>,1,0>)
+target_compile_definitions(GTASA_alternative_code_lib PUBLIC ENABLE_OPENMP=$<IF:$<BOOL:${ENABLE_OPENMP}>,1,0>)
 
 set_target_properties(GTASA_alternative_code_lib
     PROPERTIES

@@ -83,7 +83,7 @@ jobs:
 
       - name: Configure
         env: { CXX: clang++-11 }
-        run: cmake --preset=ci-sanitize
+        run: cmake --preset=ci-sanitize -DENABLE_OPENCL=OFF -DENABLE_CUDA=OFF -DENABLE_QT=OFF
 
       - name: Build
         run: cmake --build build/sanitize -j 2
@@ -122,7 +122,7 @@ jobs:
 
       - name: Configure
         shell: pwsh
-        run: cmake "--preset=ci-$("${{ matrix.os }}".split("-")[0])"
+        run: cmake "--preset=ci-$("${{ matrix.os }}".split("-")[0])" -DENABLE_OPENCL=OFF -DENABLE_CUDA=OFF -DENABLE_QT=OFF
 
       - name: Build
         run: cmake --build build --config Release -j 2

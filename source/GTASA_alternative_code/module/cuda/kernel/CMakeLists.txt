@@ -22,16 +22,10 @@ cmake_minimum_required(VERSION 3.14)
 project(
     cuda_lib
     VERSION 0.1.0
-    DESCRIPTION "Krack cuda lib"
+    DESCRIPTION "Cuda lib"
     HOMEPAGE_URL "https://github.com/bensuperpc"
-    LANGUAGES C CXX
+    LANGUAGES C CXX CUDA
 )
-
-include(CheckLanguage)
-check_language(CUDA)
-if(CMAKE_CUDA_COMPILER)
-	enable_language(CUDA)
-endif()
 
 if(NOT CUDAToolkit_FOUND)
     find_package(CUDAToolkit 11.0 REQUIRED)
@@ -53,12 +47,10 @@ set(HEADERS
 
 add_library(cuda_lib ${SRCS} ${HEADERS})
 
-#if (CUDAToolkit_FOUND)
 #target_include_directories(cuda_lib PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 target_include_directories(cuda_lib PRIVATE ${CUDAToolkit_INCLUDE_DIRS})
 target_link_libraries(cuda_lib PRIVATE CUDA::cudart)
 #target_compile_features(cuda_lib PUBLIC cuda_std_17)
-#endif()
 
 set_target_properties(cuda_lib
     PROPERTIES

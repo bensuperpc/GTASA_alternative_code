@@ -35,7 +35,8 @@ jobs:
         run: |
           cmake -S . -B build -DCMAKE_BUILD_TYPE=${{matrix.build_type}} \
             -D BUILD_SHARED_LIBS=${{matrix.shared}} \
-            -D CMAKE_CXX_STANDARD=${{matrix.standard}} --preset=ci-macos
+            -D CMAKE_CXX_STANDARD=${{matrix.standard}} --preset=ci-macos \
+            -DENABLE_OPENCL=OFF -DENABLE_CUDA=OFF -DENABLE_QT=OFF
 
       - name: Build
         run: |

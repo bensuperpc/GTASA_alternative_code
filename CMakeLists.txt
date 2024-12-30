@@ -10,43 +10,67 @@ project(
     LANGUAGES C CXX
 )
 
-include(CheckLanguage)
-check_language(CUDA)
-if(CMAKE_CUDA_COMPILER)
-	enable_language(CUDA)
-endif()
-
-include(cmake/project-is-top-level.cmake)
-include(cmake/variables.cmake)
-
 # ---- Enable Utile ----
 include(cmake/utile/ccache.cmake)
 #include(cmake/utile/sccache.cmake)
 
-# ---- Add dependencies ----
-find_package(OpenMP 2.0)
+include(cmake/project-is-top-level.cmake)
+include(cmake/variables.cmake)
 
-find_package(CUDAToolkit 11.0)
+# ---- CUDA ----
+if (NOT DEFINED ENABLE_CUDA)
+    find_package(CUDAToolkit 11.0)
+    set(ENABLE_CUDA ${CUDAToolkit_FOUND} CACHE BOOL "Enable CUDA" FORCE)
+elseif (ENABLE_CUDA AND (NOT DEFINED CUDAToolkit_FOUND OR NOT CUDAToolkit_FOUND))
+    find_package(CUDAToolkit 11.0 REQUIRED)
+endif()
 
-find_package(OpenCL 2.0)
+if (ENABLE_CUDA)
+    include(CheckLanguage)
+    check_language(CUDA)
+    if (CMAKE_CUDA_COMPILER)
+        enable_language(CUDA)
+    endif()
+endif()
 
-include_directories(external/thread-pool/include)
+# ---- OpenCL ----
+if (NOT DEFINED ENABLE_OPENCL)
+    find_package(OpenCL 2.0)
+    set(ENABLE_OPENCL ${OpenCL_FOUND} CACHE BOOL "Enable OpenCL" FORCE)
+elseif (ENABLE_OPENCL AND (NOT DEFINED OpenCL_FOUND OR NOT OpenCL_FOUND))
+    find_package(OpenCL 2.0 REQUIRED)
+endif()
+
+# ---- OpenMP ----
+if (NOT DEFINED ENABLE_OPENMP)
+    find_package(OpenMP 2.0)
+    set(ENABLE_OPENMP ${OpenMP_FOUND} CACHE BOOL "Enable OpenMP" FORCE)
+elseif (ENABLE_OPENMP AND (NOT DEFINED OpenMP_FOUND OR NOT OpenMP_FOUND))
+    find_package(OpenMP 2.0 REQUIRED)
+endif()
 
 # ---- Qt ----
 option(ENABLE_DEBUG_QT "Enable debug messages for Qt" OFF)
 set(QT_VERSION_MAJOR 6 CACHE BOOL "" FORCE)
 set(QT_VERSION_MINOR 8 CACHE BOOL "" FORCE)
 
-find_package(QT NAMES Qt6 COMPONENTS Quick QuickControls2 Gui Core Qml Charts Multimedia Concurrent VirtualKeyboard REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} ${QT_VERSION_MAJOR}.${QT_VERSION_MINOR} COMPONENTS Quick QuickControls2 Gui Core 
-    3DCore Qml Charts Multimedia Concurrent VirtualKeyboard)
-if (Qt${QT_VERSION_MAJOR}_FOUND)
-    qt_standard_project_setup(REQUIRES ${QT_VERSION_MAJOR}.${QT_VERSION_MINOR})
+if (NOT DEFINED ENABLE_QT)
+    find_package(QT NAMES Qt6 COMPONENTS Quick QuickControls2 Gui Core Qml Charts Multimedia Concurrent VirtualKeyboard)
+    find_package(Qt6 ${QT_VERSION_MAJOR}.${QT_VERSION_MINOR} COMPONENTS Quick QuickControls2 Gui Core 
+        3DCore Qml Charts Multimedia Concurrent VirtualKeyboard)
+    set(ENABLE_QT ${Qt6_FOUND} CACHE BOOL "Enable OpenMP" FORCE)
+elseif (ENABLE_QT AND (NOT DEFINED Qt6_FOUND OR NOT Qt6_FOUND))
+    find_package(QT NAMES Qt6 COMPONENTS Quick QuickControls2 Gui Core Qml Charts Multimedia Concurrent VirtualKeyboard REQUIRED)
+    find_package(Qt6 ${QT_VERSION_MAJOR}.${QT_VERSION_MINOR} COMPONENTS Quick QuickControls2 Gui Core 
+        3DCore Qml Charts Multimedia Concurrent VirtualKeyboard REQUIRED)
 endif()
 
-if (Qt${QT_VERSION_MAJOR}_FOUND)
+if (ENABLE_QT)
+    qt_standard_project_setup(REQUIRES ${QT_VERSION_MAJOR}.${QT_VERSION_MINOR})
     add_subdirectory(qml/AppLib)
 endif()
+
+include_directories(external/thread-pool/include)
 
 # TODO: Change to target_include_directories
 add_subdirectory(source/GTASA_alternative_code)
@@ -60,7 +84,7 @@ set(SRCS
 set(HEADERS
     )
 
-if (Qt${QT_VERSION_MAJOR}_FOUND)
+    if (ENABLE_QT)
     list(APPEND SRCS 
         source/Qt/gta_sa_ui.cpp
         source/Qt/imageprovider.cpp
@@ -75,7 +99,7 @@ if (Qt${QT_VERSION_MAJOR}_FOUND)
         )
 endif()
 
-if (Qt${QT_VERSION_MAJOR}_FOUND)
+if (ENABLE_QT)
     qt_add_executable(GTASA_alternative_code_exe
         ${SRCS} ${HEADERS}
     )
@@ -87,8 +111,7 @@ endif()
 
 add_executable(GTASA_alternative_code::exe ALIAS GTASA_alternative_code_exe)
 
-
-if (Qt${QT_VERSION_MAJOR}_FOUND)
+if (ENABLE_QT)
     qt_add_qml_module(GTASA_alternative_code_exe
         URI bensuperpc
         OUTPUT_DIRECTORY bensuperpc
@@ -115,7 +138,7 @@ set_target_properties(GTASA_alternative_code_exe PROPERTIES
     WIN32_EXECUTABLE TRUE
 )
 
-if (Qt${QT_VERSION_MAJOR}_FOUND)
+if (ENABLE_QT)
     target_link_libraries(GTASA_alternative_code_exe PUBLIC Qt${QT_VERSION_MAJOR}::Quick
             Qt${QT_VERSION_MAJOR}::QuickControls2
             Qt${QT_VERSION_MAJOR}::Charts Qt${QT_VERSION_MAJOR}::Concurrent
@@ -128,7 +151,7 @@ if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
   target_link_libraries(GTASA_alternative_code_exe PUBLIC OpenMP::OpenMP_CXX)
 endif()
 
-if (CUDAToolkit_FOUND)
+if (ENABLE_CUDA)
   target_include_directories(GTASA_alternative_code_exe PUBLIC ${CUDAToolkit_INCLUDE_DIRS})
 endif()
 
@@ -141,6 +164,10 @@ target_compile_definitions(GTASA_alternative_code_exe PUBLIC CMAKE_BUILD_TYPE="$
 target_compile_definitions(GTASA_alternative_code_exe PUBLIC CMAKE_CXX_COMPILER_ID="${CMAKE_CXX_COMPILER_ID}")
 target_compile_definitions(GTASA_alternative_code_exe PUBLIC CMAKE_C_COMPILER_ID="${CMAKE_C_COMPILER_ID}")
 target_compile_definitions(GTASA_alternative_code_exe PUBLIC CMAKE_VERSION="${CMAKE_VERSION}")
+target_compile_definitions(GTASA_alternative_code_exe PUBLIC ENABLE_CUDA=$<IF:$<BOOL:${ENABLE_CUDA}>,1,0>)
+target_compile_definitions(GTASA_alternative_code_exe PUBLIC ENABLE_OPENCL=$<IF:$<BOOL:${ENABLE_OPENCL}>,1,0>)
+target_compile_definitions(GTASA_alternative_code_exe PUBLIC ENABLE_OPENMP=$<IF:$<BOOL:${ENABLE_OPENMP}>,1,0>)
+target_compile_definitions(GTASA_alternative_code_exe PUBLIC ENABLE_QT=$<IF:$<BOOL:${ENABLE_QT}>,1,0>)
 
 #target_compile_definitions(GTASA_alternative_code_exe PUBLIC QT_MESSAGELOGCONTEXT="1")
 

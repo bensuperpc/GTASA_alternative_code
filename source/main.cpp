@@ -1,4 +1,5 @@
-#if __has_include(<QString>)
+
+#if ENABLE_QT == 1
 #include <QApplication>
 #include <QDebug>
 #include <QGuiApplication>
@@ -14,16 +15,25 @@
 #include "Qt/gta_sa_ui.hpp"
 #include "Qt/imageprovider.h"
 #include "Qt/utils/utils.h"
-#else
+#endif
+
 #include <cstdint>
 #include <iostream>
 #include <memory>
 #include <sstream>
 #include <string>
 #include <vector>
-#endif
+
 
 int main(int argc, char* argv[]) {
+#if ENABLE_QT == 1
+#endif
+#if ENABLE_OPENMP == 1
+#endif
+#if ENABLE_CUDA == 1
+#endif
+#if ENABLE_OPENCL == 1
+#endif
     /*
     bool cli_only = false;
 

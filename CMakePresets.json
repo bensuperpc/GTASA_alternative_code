@@ -90,7 +90,7 @@
       "hidden": true,
       "cacheVariables": {
         "CMAKE_CUDA_FLAGS": "--default-stream per-thread -Xfatbin=-compress-all -arch=all-major -Xcompiler=-Wall,-Wextra,-Wconversion,-Wsign-conversion,-Wcast-qual,-Wundef,-Wshadow,-Wunused,-Wnull-dereference,-Wdouble-promotion,-Wimplicit-fallthrough,-Wextra-semi,-Woverloaded-virtual,-Wnon-virtual-dtor,-Wformat-security",
-        "CMAKE_CUDA_ARCHITECTURES": "50;52;53;60;61;62;70;72;75;80;86;87;89;90",
+        "CMAKE_CUDA_ARCHITECTURES": "all-major",
         "CUDA_PROPAGATE_HOST_FLAGS": "OFF",
         "CMAKE_CUDA_SEPARABLE_COMPILATION": "ON"
       }

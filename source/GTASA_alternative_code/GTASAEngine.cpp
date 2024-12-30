@@ -1,19 +1,30 @@
 #include "GTASAEngine.hpp"
 
-#ifdef BUILD_WITH_OPENCL
+#if ENABLE_OPENCL == 1
 #include "module/opencl/GTASAModuleOpenCL.hpp"
 #endif  // BUILD_WITH_OPENCL
 
+#if ENABLE_CUDA == 1
 #include "module/cuda/GTASAModuleCUDA.hpp"
+#endif  // ENABLE_CUDA
+
 #include "module/threadpool/GTASAModuleThreadpool.hpp"
+
+#if ENABLE_OPENMP == 1
 #include "module/openmp/GTASAModuleOpenMP.hpp"
+#endif  // ENABLE_OPENMP
 
 GTASAEngine::GTASAEngine() {
     _gtaSAModuleTheadpool = std::make_unique<GTASAModuleThreadpool>();
+#if ENABLE_OPENMP == 1
     _gtaSAModuleOpenMP = std::make_unique<GTASAModuleOpenMP>();
-    _gtaSAModuleCUDA = std::make_unique<GTASAModuleCUDA>();
+#endif  // ENABLE_OPENMP
 
-#ifdef BUILD_WITH_OPENCL
+#if ENABLE_CUDA == 1
+    _gtaSAModuleCUDA = std::make_unique<GTASAModuleCUDA>();
+#endif  // ENABLE_CUDA
+
+#if ENABLE_OPENCL == 1
     _gtaSAModuleOpenCL = std::make_unique<GTASAModuleOpenCL>();
 #endif  // BUILD_WITH_OPENCL
 }
@@ -35,7 +46,12 @@ GTASARequest* GTASAEngine::addRequest(GTASAModule::COMPUTE_TYPE type, std::uint6
             break;
         }
         case GTASAModule::COMPUTE_TYPE::OPENMP: {
+#if ENABLE_OPENMP == 1
             std::unique_ptr<GTASARequest> request = std::make_unique<GTASARequest>(_gtaSAModuleOpenMP.get(), startRange, endRange);
+#else
+            std::cerr << "OPENMP not supported, falling back to STDTHREAD" << std::endl;
+            std::unique_ptr<GTASARequest> request = std::make_unique<GTASARequest>(_gtaSAModuleTheadpool.get(), startRange, endRange);
+#endif  // ENABLE_OPENMP
             request->start();
             std::unique_lock<std::shared_mutex> lock(_mutex);
             _requests.push_back(std::move(request));
@@ -43,7 +59,12 @@ GTASARequest* GTASAEngine::addRequest(GTASAModule::COMPUTE_TYPE type, std::uint6
             break;
         }
         case GTASAModule::COMPUTE_TYPE::CUDA: {
+#if ENABLE_CUDA == 1
             std::unique_ptr<GTASARequest> request = std::make_unique<GTASARequest>(_gtaSAModuleCUDA.get(), startRange, endRange);
+#else
+            std::cerr << "CUDA not supported, falling back to STDTHREAD" << std::endl;
+            std::unique_ptr<GTASARequest> request = std::make_unique<GTASARequest>(_gtaSAModuleTheadpool.get(), startRange, endRange);
+#endif  // ENABLE_CUDA
             request->start();
             std::unique_lock<std::shared_mutex> lock(_mutex);
             _requests.push_back(std::move(request));
@@ -51,16 +72,16 @@ GTASARequest* GTASAEngine::addRequest(GTASAModule::COMPUTE_TYPE type, std::uint6
             break;
         }
         case GTASAModule::COMPUTE_TYPE::OPENCL: {
-#ifdef BUILD_WITH_OPENCL
+#if ENABLE_OPENCL == 1
             std::unique_ptr<GTASARequest> request = std::make_unique<GTASARequest>(_gtaSAModuleOpenCL.get(), startRange, endRange);
+#else
+            std::cerr << "OPENCL not supported, falling back to STDTHREAD" << std::endl;
+            std::unique_ptr<GTASARequest> request = std::make_unique<GTASARequest>(_gtaSAModuleTheadpool.get(), startRange, endRange);
+#endif  // BUILD_WITH_OPENCL
             request->start();
             std::unique_lock<std::shared_mutex> lock(_mutex);
             _requests.push_back(std::move(request));
             return _requests.back().get();
-#else
-            std::cerr << "OPENCL not supported." << std::endl;
-            return nullptr;
-#endif
             break;
         }
         case GTASAModule::COMPUTE_TYPE::NONE: {
@@ -94,4 +115,25 @@ void GTASAEngine::waitAllRequests() const {
     while (!allRequestsFinished()) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
+}
+
+GTASAModule* GTASAEngine::getModule(GTASAModule::COMPUTE_TYPE type) const noexcept {
+    switch (type) {
+        case GTASAModule::COMPUTE_TYPE::STDTHREAD:
+            return _gtaSAModuleTheadpool.get();
+            break;
+        case GTASAModule::COMPUTE_TYPE::OPENMP:
+            return _gtaSAModuleOpenMP.get();
+            break;
+        case GTASAModule::COMPUTE_TYPE::CUDA:
+            return _gtaSAModuleCUDA.get();
+            break;
+        case GTASAModule::COMPUTE_TYPE::OPENCL:
+            return _gtaSAModuleOpenCL.get();
+            break;
+        case GTASAModule::COMPUTE_TYPE::NONE:
+            return nullptr;
+            break;
+    }
+    return nullptr;
 }
