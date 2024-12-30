@@ -16,10 +16,10 @@ jobs:
       matrix:
         dockcross:
           # Android images
-          - { image_name: android-arm, cmake_arg: "-DCMAKE_CXX_STANDARD=20 -DENABLE_OPENCL=OFF -DENABLE_CUDA=OFF -DENABLE_QT=OFF" }
-          - { image_name: android-arm64, cmake_arg: "-DCMAKE_CXX_STANDARD=20 -DENABLE_OPENCL=OFF -DENABLE_CUDA=OFF -DENABLE_QT=OFF" }
-          - { image_name: android-x86, cmake_arg: "-DCMAKE_CXX_STANDARD=20 -DENABLE_OPENCL=OFF -DENABLE_CUDA=OFF -DENABLE_QT=OFF" }
-          - { image_name: android-x86_64, cmake_arg: "-DCMAKE_CXX_STANDARD=20 -DENABLE_OPENCL=OFF -DENABLE_CUDA=OFF -DENABLE_QT=OFF" }
+          - { image_name: android-arm, cmake_arg: "-DCMAKE_CXX_STANDARD=20 -DENABLE_OPENCL=OFF -DENABLE_CUDA=OFF -DENABLE_QT=OFF -DENABLE_THREADPOOL=OFF" }
+          - { image_name: android-arm64, cmake_arg: "-DCMAKE_CXX_STANDARD=20 -DENABLE_OPENCL=OFF -DENABLE_CUDA=OFF -DENABLE_QT=OFF -DENABLE_THREADPOOL=OFF" }
+          - { image_name: android-x86, cmake_arg: "-DCMAKE_CXX_STANDARD=20 -DENABLE_OPENCL=OFF -DENABLE_CUDA=OFF -DENABLE_QT=OFF -DENABLE_THREADPOOL=OFF" }
+          - { image_name: android-x86_64, cmake_arg: "-DCMAKE_CXX_STANDARD=20 -DENABLE_OPENCL=OFF -DENABLE_CUDA=OFF -DENABLE_QT=OFF -DENABLE_THREADPOOL=OFF" }
 
           # Web images
           - { image_name: web-wasm, cmake_arg: "-DCMAKE_CXX_STANDARD=20 -DENABLE_OPENCL=OFF -DENABLE_CUDA=OFF -DENABLE_QT=OFF" }
@@ -89,7 +89,7 @@ jobs:
           # Linux PowerPC 64 images
           - { image_name: linux-ppc64le, cmake_arg: "-DCMAKE_CXX_STANDARD=20 -DENABLE_OPENCL=OFF -DENABLE_CUDA=OFF -DENABLE_QT=OFF" }
           - { image_name: linux-ppc, cmake_arg: "-DCMAKE_CXX_STANDARD=20 -DENABLE_OPENCL=OFF -DENABLE_CUDA=OFF -DENABLE_QT=OFF" }
-          - { image_name: linux-ppc64, cmake_arg: "-DCMAKE_CXX_STANDARD=20 -DENABLE_OPENCL=OFF -DENABLE_CUDA=OFF -DENABLE_QT=OFF" }
+          #- { image_name: linux-ppc64, cmake_arg: "-DCMAKE_CXX_STANDARD=20 -DENABLE_OPENCL=OFF -DENABLE_CUDA=OFF -DENABLE_QT=OFF" }
 
           # Linux xtensa images
           - { image_name: linux-xtensa-uclibc, cmake_arg: "-DCMAKE_CXX_STANDARD=20 -DENABLE_OPENCL=OFF -DENABLE_CUDA=OFF -DENABLE_QT=OFF" }
