@@ -27,6 +27,10 @@ project(
     LANGUAGES C CXX
 )
 
+if (NOT Threads_FOUND)
+    find_package(Threads REQUIRED)
+endif()
+
 # ---- CUDA ----
 if (NOT DEFINED ENABLE_CUDA)
     find_package(CUDAToolkit 11.0)

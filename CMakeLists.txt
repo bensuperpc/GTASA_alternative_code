@@ -14,6 +14,10 @@ project(
 include(cmake/utile/ccache.cmake)
 #include(cmake/utile/sccache.cmake)
 
+if (NOT Threads_FOUND)
+    find_package(Threads REQUIRED)
+endif()
+
 include(cmake/project-is-top-level.cmake)
 include(cmake/variables.cmake)
 

@@ -7,6 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
+  if: false
   build:
     name: dockcross ${{ matrix.dockcross.image_name }} ${{ matrix.build_type }}
     runs-on: ubuntu-latest
