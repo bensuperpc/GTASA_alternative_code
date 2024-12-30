@@ -44,6 +44,6 @@ jobs:
           cmake --build build  --config ${{matrix.build_type}} --parallel $threads
 
       - name: Test
-        run: ctest --test-dir build --verbose --output-on-failure --parallel 2
+        run: ctest --test-dir build --verbose --output-on-failure --parallel 2 -C Debug
         env:
           CTEST_OUTPUT_ON_FAILURE: True
