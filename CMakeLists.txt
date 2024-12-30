@@ -3,52 +3,83 @@ cmake_minimum_required(VERSION 3.14)
 include(cmake/prelude.cmake)
 
 project(
-    GTA_SA_cheat_finder
+    GTASA_alternative_code
     VERSION 2.0.0
     DESCRIPTION "Find alternative cheat code in Grand Theft Auto San Andreas (2004) by bruteforce"
     HOMEPAGE_URL "https://github.com/bensuperpc"
     LANGUAGES C CXX
 )
 
-include(CheckLanguage)
-check_language(CUDA)
-if(CMAKE_CUDA_COMPILER)
-	enable_language(CUDA)
-endif()
+# ---- Enable Utile ----
+include(cmake/utile/ccache.cmake)
+#include(cmake/utile/sccache.cmake)
 
 include(cmake/project-is-top-level.cmake)
 include(cmake/variables.cmake)
 
-# ---- Enable Utile ----
-include(cmake/utile/ccache.cmake)
-# include(cmake/utile/ninja_color.cmake)
-
-find_package(QT NAMES Qt6 COMPONENTS Quick QuickControls2 Gui Core Qml Charts Multimedia Widgets Concurrent SerialPort)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Quick QuickControls2 Gui Core Qml Charts Multimedia Widgets Concurrent SerialPort)
-
-if (Qt${QT_VERSION_MAJOR}_FOUND)
-    if (Qt${QT_VERSION_MAJOR}_VERSION VERSION_GREATER_EQUAL 6.5)
-        qt_standard_project_setup()
-    else()
-        set(CMAKE_AUTOMOC ON)
-        set(CMAKE_AUTORCC ON)
-        set(CMAKE_AUTOUIC ON)
-        set(CMAKE_AUTOSRC ON)
-    endif()
-else()
-    message(WARNING "Qt${QT_VERSION_MAJOR} not found, project will be CLI only")
+# ---- CUDA ----
+if (NOT DEFINED ENABLE_CUDA)
+    find_package(CUDAToolkit 11.0)
+    set(ENABLE_CUDA ${CUDAToolkit_FOUND} CACHE BOOL "Enable CUDA" FORCE)
+elseif (ENABLE_CUDA AND (NOT DEFINED CUDAToolkit_FOUND OR NOT CUDAToolkit_FOUND))
+    find_package(CUDAToolkit 11.0 REQUIRED)
 endif()
 
-find_package(OpenMP 2.0)
+if (ENABLE_CUDA)
+    include(CheckLanguage)
+    check_language(CUDA)
+    if (CMAKE_CUDA_COMPILER)
+        enable_language(CUDA)
+    endif()
+endif()
 
-find_package(CUDAToolkit 11.0)
+# ---- OpenCL ----
+if (NOT DEFINED ENABLE_OPENCL)
+    find_package(OpenCL 2.0)
+    set(ENABLE_OPENCL ${OpenCL_FOUND} CACHE BOOL "Enable OpenCL" FORCE)
+elseif (ENABLE_OPENCL AND (NOT DEFINED OpenCL_FOUND OR NOT OpenCL_FOUND))
+    find_package(OpenCL 2.0 REQUIRED)
+endif()
 
-find_package(OpenCL 2.0)
+# ---- OpenMP ----
+if (NOT DEFINED ENABLE_OPENMP)
+    find_package(OpenMP 2.0)
+    set(ENABLE_OPENMP ${OpenMP_FOUND} CACHE BOOL "Enable OpenMP" FORCE)
+elseif (ENABLE_OPENMP AND (NOT DEFINED OpenMP_FOUND OR NOT OpenMP_FOUND))
+    find_package(OpenMP 2.0 REQUIRED)
+endif()
 
-# Download ThreadPool
-include(cmake/lib/threadpool.cmake)
+# ---- Threadpool ----
+if (NOT DEFINED ENABLE_THREADPOOL)
+    find_package(Threads)
+    set(ENABLE_THREADPOOL ${Threads_FOUND} CACHE BOOL "Enable ThreadPool" FORCE)
+elseif (ENABLE_THREADPOOL AND (NOT DEFINED Threads_FOUND OR NOT Threads_FOUND))
+    find_package(Threads REQUIRED)
+endif()
 
-add_subdirectory(source/gta_cheat_finder)
+# ---- Qt ----
+option(ENABLE_DEBUG_QT "Enable debug messages for Qt" OFF)
+set(QT_VERSION_MAJOR 6 CACHE BOOL "" FORCE)
+set(QT_VERSION_MINOR 8 CACHE BOOL "" FORCE)
+
+if (NOT DEFINED ENABLE_QT)
+    find_package(QT NAMES Qt6 COMPONENTS Quick QuickControls2 Gui Core Qml Charts Multimedia Concurrent VirtualKeyboard)
+    find_package(Qt6 ${QT_VERSION_MAJOR}.${QT_VERSION_MINOR} COMPONENTS Quick QuickControls2 Gui Core 
+        3DCore Qml Charts Multimedia Concurrent VirtualKeyboard)
+    set(ENABLE_QT ${Qt6_FOUND} CACHE BOOL "Enable OpenMP" FORCE)
+elseif (ENABLE_QT AND (NOT DEFINED Qt6_FOUND OR NOT Qt6_FOUND))
+    find_package(QT NAMES Qt6 COMPONENTS Quick QuickControls2 Gui Core Qml Charts Multimedia Concurrent VirtualKeyboard REQUIRED)
+    find_package(Qt6 ${QT_VERSION_MAJOR}.${QT_VERSION_MINOR} COMPONENTS Quick QuickControls2 Gui Core 
+        3DCore Qml Charts Multimedia Concurrent VirtualKeyboard REQUIRED)
+endif()
+
+if (ENABLE_QT)
+    qt_standard_project_setup(REQUIRES ${QT_VERSION_MAJOR}.${QT_VERSION_MINOR})
+    add_subdirectory(qml/AppLib)
+endif()
+
+# TODO: Change to target_include_directories
+add_subdirectory(source/GTASA_alternative_code)
 
 # ---- Declare executable ----
 
@@ -59,42 +90,35 @@ set(SRCS
 set(HEADERS
     )
 
-if (Qt${QT_VERSION_MAJOR}_FOUND)
+    if (ENABLE_QT)
     list(APPEND SRCS 
-        source/gta_sa_ui.cpp
-        source/imageprovider.cpp
-        source/application.cpp
-        source/lineseries.cpp
-        source/tablemodel.cpp
-        source/customlabel.cpp
+        source/Qt/gta_sa_ui.cpp
+        source/Qt/imageprovider.cpp
+        source/Qt/application.cpp
         )
     list(APPEND HEADERS 
-        source/gta_sa_ui.hpp
-        source/asyncimageprovider.h
-        source/application.h 
-        source/lineseries.h 
-        source/tablemodel.h 
-        source/customlabel.h 
-        source/utils/about_compilation.h
-        source/utils/utils.h
+        source/Qt/gta_sa_ui.hpp
+        source/Qt/asyncimageprovider.h
+        source/Qt/application.h 
+        source/Qt/utils/about_compilation.h
+        source/Qt/utils/utils.h
         )
 endif()
 
-if (Qt${QT_VERSION_MAJOR}_FOUND)
-    qt_add_executable(GTA_SA_cheat_finder_exe
+if (ENABLE_QT)
+    qt_add_executable(GTASA_alternative_code_exe
         ${SRCS} ${HEADERS}
     )
 else()
-    add_executable(GTA_SA_cheat_finder_exe
+    add_executable(GTASA_alternative_code_exe
         ${SRCS} ${HEADERS}
     )
 endif()
 
-add_executable(GTA_SA_cheat_finder::exe ALIAS GTA_SA_cheat_finder_exe)
+add_executable(GTASA_alternative_code::exe ALIAS GTASA_alternative_code_exe)
 
-
-if (Qt${QT_VERSION_MAJOR}_FOUND)
-    qt_add_qml_module(GTA_SA_cheat_finder_exe
+if (ENABLE_QT)
+    qt_add_qml_module(GTASA_alternative_code_exe
         URI bensuperpc
         OUTPUT_DIRECTORY bensuperpc
         RESOURCE_PREFIX /bensuperpc.org
@@ -103,21 +127,16 @@ if (Qt${QT_VERSION_MAJOR}_FOUND)
         qml/responsive.qml
         qml/main.qml
         qml/home.qml qml/image.qml
-        qml/about.qml qml/graphic.qml
         qml/table.qml
         qml/settings.qml
         qml/swipe.qml
-        qml/custom/ProportionalRect.qml
-        qml/custom/CustomMenuSeparator.qml
-        qml/custom/HorizontalLabelDelegateMenu.qml
-        qml/custom/VerticalLabelDelegateMenu.qml
         IMPORT_PATH qml
         RESOURCES
         image/cat_sticking_out_its_tongue.jpg
     )
 endif()
 
-set_target_properties(GTA_SA_cheat_finder_exe PROPERTIES
+set_target_properties(GTASA_alternative_code_exe PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
@@ -125,33 +144,43 @@ set_target_properties(GTA_SA_cheat_finder_exe PROPERTIES
     WIN32_EXECUTABLE TRUE
 )
 
-target_compile_features(GTA_SA_cheat_finder_exe PUBLIC cxx_std_20)
+if (ENABLE_QT)
+    target_link_libraries(GTASA_alternative_code_exe PUBLIC Qt${QT_VERSION_MAJOR}::Quick
+            Qt${QT_VERSION_MAJOR}::QuickControls2
+            Qt${QT_VERSION_MAJOR}::Charts Qt${QT_VERSION_MAJOR}::Concurrent
+            Qt${QT_VERSION_MAJOR}::3DCore Qt${QT_VERSION_MAJOR}::VirtualKeyboard)
 
-if (OpenMP_FOUND OR OpenMP_CXX_FOUND)
-  target_link_libraries(GTA_SA_cheat_finder_exe PUBLIC OpenMP::OpenMP_CXX)
+    target_link_libraries(GTASA_alternative_code_exe PUBLIC AppLib AppLibplugin)
 endif()
 
-
-if (CUDAToolkit_FOUND)
-  target_include_directories(GTA_SA_cheat_finder_exe PUBLIC ${CUDAToolkit_INCLUDE_DIRS})
+if(ENABLE_THREADPOOL)
+    target_link_libraries(GTASA_alternative_code_exe PRIVATE Threads::Threads)
 endif()
 
-target_link_libraries(GTA_SA_cheat_finder_exe PUBLIC GTA_SA_cheat_finder_lib)
-
-set_property(TARGET GTA_SA_cheat_finder_exe PROPERTY OUTPUT_NAME GTA_SA_cheat_finder)
-
-target_compile_features(GTA_SA_cheat_finder_exe PRIVATE cxx_std_20)
-
-if (Qt${QT_VERSION_MAJOR}_FOUND)
-    target_link_libraries(GTA_SA_cheat_finder_exe
-        PRIVATE Qt${QT_VERSION_MAJOR}::Quick Qt${QT_VERSION_MAJOR}::QuickControls2 Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Charts Qt${QT_VERSION_MAJOR}::Concurrent Qt${QT_VERSION_MAJOR}::SerialPort)
+if (ENABLE_OPENMP)
+  target_link_libraries(GTASA_alternative_code_exe PUBLIC OpenMP::OpenMP_CXX)
 endif()
 
-target_compile_definitions(GTA_SA_cheat_finder_exe PUBLIC PROJECT_VERSION="${PROJECT_VERSION}")
-target_compile_definitions(GTA_SA_cheat_finder_exe PUBLIC CMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE}")
-target_compile_definitions(GTA_SA_cheat_finder_exe PUBLIC CMAKE_CXX_COMPILER_ID="${CMAKE_CXX_COMPILER_ID}")
-target_compile_definitions(GTA_SA_cheat_finder_exe PUBLIC CMAKE_C_COMPILER_ID="${CMAKE_C_COMPILER_ID}")
-target_compile_definitions(GTA_SA_cheat_finder_exe PUBLIC CMAKE_VERSION="${CMAKE_VERSION}")
+if (ENABLE_CUDA)
+  target_include_directories(GTASA_alternative_code_exe PUBLIC ${CUDAToolkit_INCLUDE_DIRS})
+endif()
+
+target_link_libraries(GTASA_alternative_code_exe PUBLIC GTASA_alternative_code_lib)
+
+set_property(TARGET GTASA_alternative_code_exe PROPERTY OUTPUT_NAME GTASA_alternative_code)
+
+target_compile_definitions(GTASA_alternative_code_exe PUBLIC PROJECT_VERSION="${PROJECT_VERSION}")
+target_compile_definitions(GTASA_alternative_code_exe PUBLIC CMAKE_BUILD_TYPE="${CMAKE_BUILD_TYPE}")
+target_compile_definitions(GTASA_alternative_code_exe PUBLIC CMAKE_CXX_COMPILER_ID="${CMAKE_CXX_COMPILER_ID}")
+target_compile_definitions(GTASA_alternative_code_exe PUBLIC CMAKE_C_COMPILER_ID="${CMAKE_C_COMPILER_ID}")
+target_compile_definitions(GTASA_alternative_code_exe PUBLIC CMAKE_VERSION="${CMAKE_VERSION}")
+target_compile_definitions(GTASA_alternative_code_exe PUBLIC ENABLE_CUDA=$<IF:$<BOOL:${ENABLE_CUDA}>,1,0>)
+target_compile_definitions(GTASA_alternative_code_exe PUBLIC ENABLE_OPENCL=$<IF:$<BOOL:${ENABLE_OPENCL}>,1,0>)
+target_compile_definitions(GTASA_alternative_code_exe PUBLIC ENABLE_OPENMP=$<IF:$<BOOL:${ENABLE_OPENMP}>,1,0>)
+target_compile_definitions(GTASA_alternative_code_exe PUBLIC ENABLE_QT=$<IF:$<BOOL:${ENABLE_QT}>,1,0>)
+target_compile_definitions(GTASA_alternative_code_exe PUBLIC ENABLE_THREADPOOL=$<IF:$<BOOL:${ENABLE_THREADPOOL}>,1,0>)
+
+#target_compile_definitions(GTASA_alternative_code_exe PUBLIC QT_MESSAGELOGCONTEXT="1")
 
 configure_file(image/cat_sticking_out_its_tongue.jpg ${CMAKE_BINARY_DIR}/image/cat_sticking_out_its_tongue.jpg COPYONLY)
 
@@ -164,12 +193,12 @@ endif()
 
 # ---- Developer mode ----
 
-if(NOT GTA_SA_cheat_finder_DEVELOPER_MODE)
+if(NOT GTASA_alternative_code_DEVELOPER_MODE)
   return()
 elseif(NOT PROJECT_IS_TOP_LEVEL)
   message(
       AUTHOR_WARNING
-      "Developer mode is intended for developers of GTA_SA_cheat_finder"
+      "Developer mode is intended for developers of GTASA_alternative_code"
   )
 endif()
 

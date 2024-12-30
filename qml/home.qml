@@ -6,9 +6,8 @@ import QtQuick.Window
 import QtCharts
 
 import org.bensuperpc.application 1.0
-import org.bensuperpc.MyLabelLib 1.0
 
-import "custom/"
+import AppLib 1.0
 
 Page {
     title: qsTr("Home")

@@ -4,6 +4,8 @@ import QtQuick.Controls.Material
 import QtQuick.Layouts
 import QtQuick.Window
 
+import AppLib 1.0
+
 ApplicationWindow {
     width: 720
     height: 1280
@@ -26,8 +28,8 @@ ApplicationWindow {
     //property bool inPortrait: window.width < window.height
 
     // List all pages and names
-    property var drawerPageFile: ["responsive.qml", "home.qml", "graphic.qml", "table.qml", "image.qml", "swipe.qml", "settings.qml"]
-    property var drawerPageName: ["GTA_SA", "Home", "Graphic", "Table", "Image", "Swipe", "Settings"]
+    property var drawerPageFile: ["responsive.qml", "home.qml", "table.qml", "image.qml", "swipe.qml", "settings.qml"]
+    property var drawerPageName: ["GTA_SA", "Home", "Table", "Image", "Swipe", "Settings"]
     property int currentPageIndex: 0
 
     header: ToolBar {

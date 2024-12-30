@@ -26,7 +26,7 @@
       "hidden": true,
       "inherits": "cmake-pedantic",
       "cacheVariables": {
-        "GTA_SA_cheat_finder_DEVELOPER_MODE": "ON"
+        "GTASA_alternative_code_DEVELOPER_MODE": "ON"
       }
     },
     {
@@ -51,7 +51,7 @@
       "hidden": true,
       "cacheVariables": {
         "CMAKE_CXX_EXTENSIONS": "ON",
-        "CMAKE_CXX_STANDARD": "20",
+        "CMAKE_CXX_STANDARD": "23",
         "CMAKE_CXX_STANDARD_REQUIRED": "ON",
         "CMAKE_C_EXTENSIONS": "ON",
         "CMAKE_C_STANDARD": "17",
@@ -60,20 +60,20 @@
     },
     {
       "name": "flags-gcc-clang",
+      "description": "These flags are supported by both GCC and Clang",
       "hidden": true,
       "cacheVariables": {
-        "CMAKE_CXX_FLAGS": "-U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=3 -pipe -fstack-protector-strong -fstack-clash-protection -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Wcast-qual -Wformat=2 -Wundef -Wshadow -Wcast-align -Wunused -Wnull-dereference -Wdouble-promotion -Wimplicit-fallthrough -Wextra-semi -Woverloaded-virtual -Wnon-virtual-dtor -Wold-style-cast -Wformat-security",
+        "CMAKE_CXX_FLAGS": "-U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=3 -D_GLIBCXX_ASSERTIONS=1 -pipe -fstack-protector-strong -fcf-protection=full -fstack-clash-protection -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Wcast-qual -Wformat=2 -Wundef -Wshadow -Wcast-align -Wunused -Wnull-dereference -Wdouble-promotion -Wimplicit-fallthrough -Wextra-semi -Woverloaded-virtual -Wnon-virtual-dtor -Wold-style-cast -Wformat-security",
         "CMAKE_C_FLAGS": "-U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=3 -pipe -fstack-protector-strong -fstack-clash-protection -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Wcast-qual -Wformat=2 -Wundef -Wshadow -Wcast-align -Wunused -Wnull-dereference -Wdouble-promotion -Wformat-security",
-        "CMAKE_EXE_LINKER_FLAGS": "-Wl,--allow-shlib-undefined,--as-needed,-z,noexecstack,-z,relro,-z,now",
-        "CMAKE_SHARED_LINKER_FLAGS": "-Wl,--allow-shlib-undefined,--as-needed,-z,noexecstack,-z,relro,-z,now"
+        "CMAKE_EXE_LINKER_FLAGS": "-Wl,--allow-shlib-undefined,--as-needed,-z,noexecstack,-z,relro,-z,now,-z,nodlopen",
+        "CMAKE_SHARED_LINKER_FLAGS": "-Wl,--allow-shlib-undefined,--as-needed,-z,noexecstack,-z,relro,-z,now,-z,nodlopen"
       }
     },
     {
       "name": "flags-appleclang",
       "hidden": true,
       "cacheVariables": {
-        "CMAKE_CXX_FLAGS": "-pipe -fstack-protector-strong -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Wcast-qual -Wformat=2 -Wundef -Wshadow -Wcast-align -Wunused -Wnull-dereference -Wdouble-promotion -Wimplicit-fallthrough -Wextra-semi -Woverloaded-virtual -Wnon-virtual-dtor -Wold-style-cast",
-        "CMAKE_C_FLAGS": "-pipe -fstack-protector-strong -Wall -Wextra -Wpedantic"
+        "CMAKE_CXX_FLAGS": "-fstack-protector-strong -Wall -Wextra -Wpedantic -Wconversion -Wsign-conversion -Wcast-qual -Wformat=2 -Wundef -Werror=float-equal -Wshadow -Wcast-align -Wunused -Wnull-dereference -Wdouble-promotion -Wimplicit-fallthrough -Wextra-semi -Woverloaded-virtual -Wnon-virtual-dtor -Wold-style-cast"
       }
     },
     {
@@ -90,7 +90,7 @@
       "hidden": true,
       "cacheVariables": {
         "CMAKE_CUDA_FLAGS": "--default-stream per-thread -Xfatbin=-compress-all -arch=all-major -Xcompiler=-Wall,-Wextra,-Wconversion,-Wsign-conversion,-Wcast-qual,-Wundef,-Wshadow,-Wunused,-Wnull-dereference,-Wdouble-promotion,-Wimplicit-fallthrough,-Wextra-semi,-Woverloaded-virtual,-Wnon-virtual-dtor,-Wformat-security",
-        "CMAKE_CUDA_ARCHITECTURES": "50;52;53;60;61;62;70;72;75;80;86;87;89;90",
+        "CMAKE_CUDA_ARCHITECTURES": "all-major",
         "CUDA_PROPAGATE_HOST_FLAGS": "OFF",
         "CMAKE_CUDA_SEPARABLE_COMPILATION": "ON"
       }
@@ -124,12 +124,9 @@
     },
     {
       "name": "ci-darwin",
-      "generator": "Unix Makefiles",
-      "hidden": true,
       "inherits": ["flags-appleclang", "ci-std"],
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Release"
-      }
+      "generator": "Xcode",
+      "hidden": true
     },
     {
       "name": "ci-base",
@@ -184,6 +181,14 @@
       "hidden": true
     },
     {
+      "name": "ci-multi-config",
+      "description": "Speed up multi-config generators by generating only one configuration instead of the defaults",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_CONFIGURATION_TYPES": "Release"
+      }
+    },
+    {
       "name": "base",
       "binaryDir": "${sourceDir}/build/base",
       "inherits": ["ci-base"],
@@ -224,24 +229,16 @@
       }
     },
     {
-      "name": "dev-common",
-      "hidden": true,
-      "inherits": ["dev-mode", "clang-tidy", "cppcheck"],
-      "cacheVariables": {
-        "BUILD_MCSS_DOCS": "ON"
-      }
-    },
-    {
       "name": "ci-macos",
-      "inherits": ["ci-build", "ci-darwin", "dev-mode"]
+      "inherits": ["ci-build", "ci-darwin", "dev-mode", "ci-multi-config"]
     },
     {
       "name": "ci-ubuntu",
-      "inherits": ["ci-build", "ci-linux", "dev-common"]
+      "inherits": ["ci-build", "ci-linux", "clang-tidy", "cppcheck", "dev-mode"]
     },
     {
       "name": "ci-windows",
-      "inherits": ["ci-build", "ci-win64", "dev-mode"]
+      "inherits": ["ci-build", "ci-win64", "dev-mode", "ci-multi-config"]
     }
   ]
 }

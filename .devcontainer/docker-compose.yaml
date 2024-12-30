@@ -1,0 +1,55 @@
+services:
+  # docker-gtasa_alternative_code
+  docker-benlib:
+    build: 
+      context: archlinux
+      dockerfile: Dockerfile
+      args:
+        - USERNAME=bensuperpc
+    container_name: docker-gtasa_alternative_code
+    #user: ${PUID:-1000}:${PGID:-1000}
+    user: bensuperpc
+    #profiles:
+    #  - docker-gtasa_alternative_code
+    restart: on-failure:3
+    env_file:
+      - ./env/devcontainer.env
+    working_dir: /work
+    command: /bin/sh -c "while sleep 1000; do :; done"
+    #ports:
+    #  - "80:80"
+    volumes:
+      - ./../:/work:cached
+      - build_tmpfs:/work/build:rw
+    # Xauthority
+      - /tmp/.X11-unix:/tmp/.X11-unix
+#      - ${HOME}/.Xauthority:/tmp/.Xauthority
+    network_mode: host
+    #networks:
+    #  - gtasa_alternative_code-network
+    #security_opt:
+    #  - no-new-privileges:true
+    #read_only: true
+    #cap_drop:
+    #  - SYS_ADMIN
+    deploy:
+      resources:
+        limits:
+          cpus: '8.0'
+          memory: 8G
+        reservations:
+          cpus: '0.001'
+          memory: 20M
+
+#networks:
+#  gtasa_alternative_code-network:
+#    driver: bridge
+#    name: gtasa_alternative_code-network
+
+volumes:
+  build_tmpfs:
+    name: build_tmpfs
+    driver_opts:
+      type: tmpfs
+      device: tmpfs
+      o: size=4g,uid=${PUID:-1000},gid=${PGID:-1000}

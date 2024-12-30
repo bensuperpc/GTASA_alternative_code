@@ -8,7 +8,7 @@ RUN cmake -Bbuild -H. -GNinja -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=20
 
 FROM alpine:latest as runtime
 RUN apk add --no-cache libstdc++ libgomp libgcc
-COPY --from=builder app/build/GTA_SA_cheat_finder .
+COPY --from=builder app/build/GTASA_alternative_code .
 # Test exec
-RUN ./GTA_SA_cheat_finder --min 0 --max 396
-ENTRYPOINT ["./GTA_SA_cheat_finder"] 
+RUN ./GTASA_alternative_code --min 0 --max 396
+ENTRYPOINT ["./GTASA_alternative_code"] 

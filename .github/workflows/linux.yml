@@ -19,7 +19,7 @@ jobs:
       matrix:
         compiler: [g++, clang++]
         shared: [YES, NO]
-        standard: [20]
+        standard: [20, 23]
         build_type: [Debug, Release]
 
     steps:
@@ -38,7 +38,8 @@ jobs:
         run: |
           cmake -S . -B build -D CMAKE_BUILD_TYPE=${{matrix.build_type}} \
                 -D CMAKE_CXX_STANDARD=${{matrix.standard}} -G Ninja \
-                -D BUILD_SHARED_LIBS=${{matrix.shared}} --preset=ci-coverage
+                -D BUILD_SHARED_LIBS=${{matrix.shared}} --preset=ci-coverage \
+                -DENABLE_OPENCL=OFF -DENABLE_CUDA=OFF -DENABLE_QT=OFF
 
       - name: Build
         run: ninja -C build

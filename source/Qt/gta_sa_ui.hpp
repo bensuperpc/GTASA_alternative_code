@@ -1,0 +1,90 @@
+#ifndef _GTA_SA_UI_H_
+#define _GTA_SA_UI_H_
+
+#include <QEventLoop>
+#include <QObject>
+#include <QString>
+#include <memory>
+#include <mutex>
+#include <thread>
+#include <vector>
+
+#include "utils/utils.h"
+
+#include "GTASAEngine.hpp"
+
+class GTA_SA_UI final : public QObject {
+    Q_OBJECT
+    Q_PROPERTY(uint64_t minRangeValue READ minRangeValue WRITE setMinRangeValue NOTIFY minRangeValueChanged)
+    Q_PROPERTY(uint64_t maxRangeValue READ maxRangeValue WRITE setMaxRangeValue NOTIFY maxRangeValueChanged)
+
+    Q_PROPERTY(uint32_t nbrThreadValue READ nbrThreadValue WRITE setNbrThreadValue NOTIFY nbrThreadValueChanged)
+    Q_PROPERTY(uint64_t cudaBlockSize READ cudaBlockSize WRITE set_cuda_block_size NOTIFY cuda_block_size_changed)
+
+    Q_PROPERTY(QString buttonValue READ buttonValue WRITE setButtonValue NOTIFY buttonValueChanged)
+
+    Q_PROPERTY(uint64_t calc_mode READ calc_mode WRITE set_calc_mode NOTIFY calc_mode_changed)
+
+    Q_PROPERTY(bool builtWithOpenMP READ builtWithOpenMP CONSTANT)
+    Q_PROPERTY(bool builtWithCUDA READ builtWithCUDA CONSTANT)
+    Q_PROPERTY(bool builtWithOpenCL READ builtWithOpenCL CONSTANT)
+
+   public:
+    GTA_SA_UI(QObject* parent = nullptr) = delete;
+    explicit GTA_SA_UI(std::unique_ptr<GTASAEngine> _gta_sa, QObject* parent = nullptr);
+
+    ~GTA_SA_UI();
+
+    std::unique_ptr<GTASAEngine> _mainCalculator;
+
+    uint64_t minRangeValue() const { return 0; /* _mainCalculator->getMinRange();*/ }
+    uint64_t maxRangeValue() const { return 0; /* _mainCalculator->getMaxRange();*/ }
+
+    uint32_t nbrThreadValue() const { return 0; /* _mainCalculator->getThreadCount();*/ }
+
+    uint64_t cudaBlockSize() const { return 0; /* _mainCalculator->getCudaBlockSize();*/ }
+
+    uint64_t calc_mode() const;
+
+    QString buttonValue() const { return _buttonValue; }
+
+    Q_INVOKABLE
+    void runOp();
+    void runOpThread();
+
+    Q_INVOKABLE
+    uint64_t maxThreadSupport() { return 0; /* GTA_SA_Virtual::maxThreadSupport();*/ }
+
+    bool builtWithOpenMP() const { return true; /*GTA_SA_Virtual::builtWithOpenMP;*/ }
+
+    bool builtWithCUDA() const { return true; /*GTA_SA_Virtual::builtWithCUDA;*/}
+
+    bool builtWithOpenCL() const { return true; /*GTA_SA_Virtual::builtWithOpenCL;*/ }
+
+   public slots:
+    void setMinRangeValue(uint64_t value);
+    void setMaxRangeValue(uint64_t value);
+
+    void setNbrThreadValue(uint32_t value);
+    void set_cuda_block_size(uint64_t value);
+
+    void set_calc_mode(uint64_t value);
+
+    void setButtonValue(QString value);
+
+   signals:
+    void minRangeValueChanged(uint64_t value);
+    void maxRangeValueChanged(uint64_t value);
+
+    void nbrThreadValueChanged(uint32_t value);
+    void cuda_block_size_changed(uint64_t value);
+    void calc_mode_changed(uint64_t value);
+
+    void buttonValueChanged(QString value);
+
+   private:
+    QString _buttonValue = "Launch Bruteforce";
+    std::mutex _mtx;
+};
+
+#endif  // GTA_SA_UI_H

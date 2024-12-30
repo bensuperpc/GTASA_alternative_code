@@ -8,7 +8,7 @@ import org.bensuperpc.GTA_SAObjectType 1.0
 import org.bensuperpc.GTA_SAObjects 1.0
 //import org.bensuperpc.TableModelObjects 1.0
 
-import "custom/"
+import AppLib 1.0
 
 Page {
     title: qsTr("BruteForce GTA SA")

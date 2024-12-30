@@ -8,7 +8,7 @@ import org.bensuperpc.GTA_SAObjectType 1.0
 import org.bensuperpc.GTA_SAObjects 1.0
 //import org.bensuperpc.TableModelObjects 1.0
 
-import org.bensuperpc.TableData 1.0
+import AppLib 1.0
 
 Page {
     title: qsTr("About")
@@ -255,6 +255,7 @@ Page {
                     title: qsTr("Result")
                     id: tableResult
                     anchors.fill: parent
+                    /*
                     TableView {
                         clip: true
                         id: tableViewData
@@ -298,7 +299,7 @@ Page {
                             }
                         }
                         }
-                    }
+                    }*/
                 }
             }
             
