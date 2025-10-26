@@ -123,10 +123,11 @@ std::shared_mutex& GTASAEngine::getMutex() {
     return _mutex;
 }
 
-bool GTASAEngine::allRequestsFinished() const {
+bool GTASAEngine::allRequestsIsFinished() const {
     std::shared_lock<std::shared_mutex> lock(_mutex);
     for (const auto& request : _requests) {
-        if (!request->isFinished()) {
+        if (request->getStatus() != GTASARequest::Status::FINISHED &&
+            request->getStatus() != GTASARequest::Status::ERROR) {
             return false;
         }
     }
@@ -134,7 +135,7 @@ bool GTASAEngine::allRequestsFinished() const {
 }
 
 void GTASAEngine::waitAllRequests() const {
-    while (!allRequestsFinished()) {
+    while (!allRequestsIsFinished()) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 }
@@ -142,7 +143,7 @@ void GTASAEngine::waitAllRequests() const {
 GTASAModule* GTASAEngine::getModule(GTASAModule::COMPUTE_TYPE type) const noexcept {
     switch (type) {
         case GTASAModule::COMPUTE_TYPE::MONO:
-            return nullptr;
+            return _gtaSAModuleMono.get();
             break;
         case GTASAModule::COMPUTE_TYPE::STDTHREAD:
             return _gtaSAModuleTheadpool.get();

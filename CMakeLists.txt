@@ -57,27 +57,6 @@ elseif (ENABLE_THREADPOOL AND (NOT DEFINED Threads_FOUND OR NOT Threads_FOUND))
     find_package(Threads REQUIRED)
 endif()
 
-# ---- Qt ----
-option(ENABLE_DEBUG_QT "Enable debug messages for Qt" OFF)
-set(QT_VERSION_MAJOR 6 CACHE BOOL "" FORCE)
-set(QT_VERSION_MINOR 8 CACHE BOOL "" FORCE)
-
-if (NOT DEFINED ENABLE_QT)
-    find_package(QT NAMES Qt6 COMPONENTS Quick QuickControls2 Gui Core Qml Charts Multimedia Concurrent VirtualKeyboard)
-    find_package(Qt6 ${QT_VERSION_MAJOR}.${QT_VERSION_MINOR} COMPONENTS Quick QuickControls2 Gui Core 
-        3DCore Qml Charts Multimedia Concurrent VirtualKeyboard)
-    set(ENABLE_QT ${Qt6_FOUND} CACHE BOOL "Enable OpenMP" FORCE)
-elseif (ENABLE_QT AND (NOT DEFINED Qt6_FOUND OR NOT Qt6_FOUND))
-    find_package(QT NAMES Qt6 COMPONENTS Quick QuickControls2 Gui Core Qml Charts Multimedia Concurrent VirtualKeyboard REQUIRED)
-    find_package(Qt6 ${QT_VERSION_MAJOR}.${QT_VERSION_MINOR} COMPONENTS Quick QuickControls2 Gui Core 
-        3DCore Qml Charts Multimedia Concurrent VirtualKeyboard REQUIRED)
-endif()
-
-if (ENABLE_QT)
-    qt_standard_project_setup(REQUIRES ${QT_VERSION_MAJOR}.${QT_VERSION_MINOR})
-    add_subdirectory(qml/AppLib)
-endif()
-
 # TODO: Change to target_include_directories
 add_subdirectory(source/GTASA_alternative_code)
 
@@ -90,51 +69,11 @@ set(SRCS
 set(HEADERS
     )
 
-    if (ENABLE_QT)
-    list(APPEND SRCS 
-        source/Qt/gta_sa_ui.cpp
-        source/Qt/imageprovider.cpp
-        source/Qt/application.cpp
-        )
-    list(APPEND HEADERS 
-        source/Qt/gta_sa_ui.hpp
-        source/Qt/asyncimageprovider.h
-        source/Qt/application.h 
-        source/Qt/utils/about_compilation.h
-        source/Qt/utils/utils.h
-        )
-endif()
-
-if (ENABLE_QT)
-    qt_add_executable(GTASA_alternative_code_exe
-        ${SRCS} ${HEADERS}
-    )
-else()
-    add_executable(GTASA_alternative_code_exe
-        ${SRCS} ${HEADERS}
-    )
-endif()
+add_executable(GTASA_alternative_code_exe
+    ${SRCS} ${HEADERS}
+)
 
 add_executable(GTASA_alternative_code::exe ALIAS GTASA_alternative_code_exe)
-
-if (ENABLE_QT)
-    qt_add_qml_module(GTASA_alternative_code_exe
-        URI bensuperpc
-        OUTPUT_DIRECTORY bensuperpc
-        RESOURCE_PREFIX /bensuperpc.org
-        VERSION 1.0
-        QML_FILES
-        qml/responsive.qml
-        qml/main.qml
-        qml/home.qml qml/image.qml
-        qml/table.qml
-        qml/settings.qml
-        qml/swipe.qml
-        IMPORT_PATH qml
-        RESOURCES
-        image/cat_sticking_out_its_tongue.jpg
-    )
-endif()
 
 set_target_properties(GTASA_alternative_code_exe PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
@@ -143,15 +82,6 @@ set_target_properties(GTASA_alternative_code_exe PROPERTIES
     MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
 )
-
-if (ENABLE_QT)
-    target_link_libraries(GTASA_alternative_code_exe PUBLIC Qt${QT_VERSION_MAJOR}::Quick
-            Qt${QT_VERSION_MAJOR}::QuickControls2
-            Qt${QT_VERSION_MAJOR}::Charts Qt${QT_VERSION_MAJOR}::Concurrent
-            Qt${QT_VERSION_MAJOR}::3DCore Qt${QT_VERSION_MAJOR}::VirtualKeyboard)
-
-    target_link_libraries(GTASA_alternative_code_exe PUBLIC AppLib AppLibplugin)
-endif()
 
 if(ENABLE_THREADPOOL)
     target_link_libraries(GTASA_alternative_code_exe PRIVATE Threads::Threads)

@@ -9,8 +9,12 @@ GTASARequest::GTASARequest(GTASAModule* module, std::uint64_t startRange, std::u
     }
 
 void GTASARequest::start() {
-    if (isRunning() || isFinished() || isError()) {
+    if (_status == Status::RUNNING || _status == Status::FINISHED || _status == Status::ERROR) {
         std::cerr << "Request already running or finished." << std::endl;
+        return;
+    }
+
+    if (_module == nullptr) {
         return;
     }
 
@@ -25,9 +29,7 @@ void GTASARequest::run() {
         _status = Status::RUNNING;
     }
 
-    if (_module != nullptr) {
-        _results = _module->run(_startRange, _endRange);
-    }
+    _results = _module->run(_startRange, _endRange);
 
     {
         std::unique_lock<std::shared_mutex> lock(_mutex);
@@ -35,24 +37,9 @@ void GTASARequest::run() {
     }
 }
 
-bool GTASARequest::isRunning() const {
+GTASARequest::Status GTASARequest::getStatus() const {
     std::shared_lock<std::shared_mutex> lock(_mutex);
-    return _status == Status::RUNNING;
-}
-
-bool GTASARequest::isFinished() const {
-    std::shared_lock<std::shared_mutex> lock(_mutex);
-    return _status == Status::FINISHED || _status == Status::ERROR;
-}
-
-bool GTASARequest::isError() const {
-    std::shared_lock<std::shared_mutex> lock(_mutex);
-    return _status == Status::ERROR;
-}
-
-bool GTASARequest::isStarted() const {
-    std::shared_lock<std::shared_mutex> lock(_mutex);
-    return _status != Status::IDLE;
+    return _status;
 }
 
 std::uint64_t GTASARequest::getStartRange() const {

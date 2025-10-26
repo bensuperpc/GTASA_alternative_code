@@ -20,15 +20,11 @@ class GTASARequest {
 
     void start();
 
-    bool isStarted() const;
-    bool isRunning() const;
-    bool isFinished() const;
-    bool isError() const;
-
     std::uint64_t getStartRange() const;
     std::uint64_t getEndRange() const;
     GTASAModule::COMPUTE_TYPE getType() const;
     std::vector<GTASAResult>& getResults();
+    Status getStatus() const;
 
     private:
      void run();
