@@ -43,5 +43,5 @@ if (NOT raylib_FOUND AND NOT FETCHCONTENT_FULLY_DISCONNECTED)
 
     set(raylib_FOUND TRUE)
 else()
-    find_package(raylib 4.2.0 REQUIRED)
+    find_package(raylib 5.0.0 REQUIRED)
 endif()

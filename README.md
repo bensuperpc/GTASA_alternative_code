@@ -1,10 +1,10 @@
-# GTA_SA_cheat_finder
+# GTASA_alternative_code
 
 ## _Find alternate cheat codes in Grand Theft Auto San Andreas by hash collision_
 
-[![Continuous Integration](https://github.com/bensuperpc/GTA_SA_cheat_finder/actions/workflows/ci.yml/badge.svg)](https://github.com/bensuperpc/GTA_SA_cheat_finder/actions/workflows/base.yml) [![Dockcross CI](https://github.com/bensuperpc/GTA_SA_cheat_finder/actions/workflows/dockcross.yml/badge.svg)](https://github.com/bensuperpc/GTA_SA_cheat_finder/actions/workflows/dockcross.yml) [![tagged-release](https://github.com/bensuperpc/GTA_SA_cheat_finder/actions/workflows/release.yml/badge.svg)](https://github.com/bensuperpc/GTA_SA_cheat_finder/actions/workflows/release.yml) [![linux](https://github.com/bensuperpc/GTA_SA_cheat_finder/actions/workflows/linux.yml/badge.svg)](https://github.com/bensuperpc/GTA_SA_cheat_finder/actions/workflows/linux.yml)
+[![Continuous Integration](https://github.com/bensuperpc/GTASA_alternative_code/actions/workflows/ci.yml/badge.svg)](https://github.com/bensuperpc/GTASA_alternative_code/actions/workflows/base.yml) [![Dockcross CI](https://github.com/bensuperpc/GTASA_alternative_code/actions/workflows/dockcross.yml/badge.svg)](https://github.com/bensuperpc/GTASA_alternative_code/actions/workflows/dockcross.yml) [![tagged-release](https://github.com/bensuperpc/GTASA_alternative_code/actions/workflows/release.yml/badge.svg)](https://github.com/bensuperpc/GTASA_alternative_code/actions/workflows/release.yml) [![linux](https://github.com/bensuperpc/GTASA_alternative_code/actions/workflows/linux.yml/badge.svg)](https://github.com/bensuperpc/GTASA_alternative_code/actions/workflows/linux.yml)
 
-![GitHub top language](https://img.shields.io/github/languages/top/bensuperpc/GTA_SA_cheat_finder) ![GitHub](https://img.shields.io/github/license/bensuperpc/GTA_SA_cheat_finder) ![GitHub all releases](https://img.shields.io/github/downloads/bensuperpc/GTA_SA_cheat_finder/total) ![GitHub Release Date](https://img.shields.io/github/release-date/bensuperpc/GTA_SA_cheat_finder) ![GitHub release (latest by date)](https://img.shields.io/github/v/release/bensuperpc/GTA_SA_cheat_finder) [![codecov](https://codecov.io/gh/bensuperpc/GTA_SA_cheat_finder/branch/main/graph/badge.svg?token=34WAC5P9TR)](https://codecov.io/gh/bensuperpc/GTA_SA_cheat_finder)
+![GitHub top language](https://img.shields.io/github/languages/top/bensuperpc/GTASA_alternative_code) ![GitHub](https://img.shields.io/github/license/bensuperpc/GTASA_alternative_code) ![GitHub all releases](https://img.shields.io/github/downloads/bensuperpc/GTASA_alternative_code/total) ![GitHub Release Date](https://img.shields.io/github/release-date/bensuperpc/GTASA_alternative_code) ![GitHub release (latest by date)](https://img.shields.io/github/v/release/bensuperpc/GTASA_alternative_code) [![codecov](https://codecov.io/gh/bensuperpc/GTASA_alternative_code/branch/main/graph/badge.svg?token=34WAC5P9TR)](https://codecov.io/gh/bensuperpc/GTASA_alternative_code)
 
  [![Twitter](https://img.shields.io/twitter/follow/Bensuperpc?style=social)](https://img.shields.io/twitter/follow/Bensuperpc?style=social) [![Youtube](https://img.shields.io/youtube/channel/subscribers/UCJsQFFL7QW4LSX9eskq-9Yg?style=social)](https://img.shields.io/youtube/channel/subscribers/UCJsQFFL7QW4LSX9eskq-9Yg?style=social) 
 
@@ -18,27 +18,27 @@
 ## Usage (GUI)
 
 ```sh
-./GTA_SA_cheat_finder
+./GTASA_alternative_code
 ```
 
 ## Usage (CLI)
 
 ```sh
-./GTA_SA_cheat_finder --min 0 --max 60000000 # (Searches codes from index 0 to 60000000, from A to: BYKYLXA alphabetic sequence)
+./GTASA_alternative_code --min 0 --max 60000000 # (Searches codes from index 0 to 60000000, from A to: BYKYLXA alphabetic sequence)
 ```
 
 ```sh
-./GTA_SA_cheat_finder --min 50 --max 58800000 # (Searches codes from index 50 to 58800000, from XA to: LFLQXD Alphabetic sequence)
+./GTASA_alternative_code --min 50 --max 58800000 # (Searches codes from index 50 to 58800000, from XA to: LFLQXD Alphabetic sequence)
 ```
 
 ```sh
-./GTA_SA_cheat_finder -h # Get help (or with --help)
+./GTASA_alternative_code -h # Get help (or with --help)
 ```
 
 ## Example
 
 ```sh
-./GTA_SA_cheat_finder --min 0 --max 600000000
+./GTASA_alternative_code --min 0 --max 600000000
 ```
 
 **You should get this result:**
@@ -79,6 +79,7 @@ On AMD R7 5800H (clang 16)
 1544578880 = ~3 sec
 308915776 = 0.6 sec
 ```
+
 ### GPU
 
 On NVIDIA RTX 3070 (clang 16 and CUDA 11.3)
@@ -101,7 +102,7 @@ On NVIDIA RTX 3070 (clang 16 and CUDA 11.3)
 
 More information on this video:
 
-[![GTA SA - Alternative Cheats - Feat. Badger Goodger](https://yt-embed.herokuapp.com/embed?v=W_eFZ4HzU7Q)](https://youtu.be/W_eFZ4HzU7Q "GTA SA - Alternative Cheats - Feat. Badger Goodger")
+[![GTA SA - Alternative Cheats - Feat. Badger Goodger](http://img.youtube.com/vi/W_eFZ4HzU7Q/0.jpg)](http://www.youtube.com/watch?v=W_eFZ4HzU7Q "GTA SA - Alternative Cheats - Feat. Badger Goodger")
 
 ## Building and installing
 

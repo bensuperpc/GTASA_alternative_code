@@ -1,11 +1,11 @@
 # ---- Developer mode ----
 
 # Developer mode enables targets and code paths in the CMake scripts that are
-# only relevant for the developer(s) of GTA_SA_cheat_finder
+# only relevant for the developer(s) of GTASA_alternative_code
 # Targets necessary to build the project must be provided unconditionally, so
 # consumers can trivially build and package the project
 if(PROJECT_IS_TOP_LEVEL)
-  option(GTA_SA_cheat_finder_DEVELOPER_MODE "Enable developer mode" OFF)
+  option(GTASA_alternative_code_DEVELOPER_MODE "Enable developer mode" OFF)
 endif()
 
 # ---- Warning guard ----
@@ -17,12 +17,12 @@ endif()
 set(warning_guard "")
 if(NOT PROJECT_IS_TOP_LEVEL)
   option(
-      GTA_SA_cheat_finder_INCLUDES_WITH_SYSTEM
-      "Use SYSTEM modifier for GTA_SA_cheat_finder's includes, disabling warnings"
+      GTASA_alternative_code_INCLUDES_WITH_SYSTEM
+      "Use SYSTEM modifier for GTASA_alternative_code's includes, disabling warnings"
       ON
   )
-  mark_as_advanced(GTA_SA_cheat_finder_INCLUDES_WITH_SYSTEM)
-  if(GTA_SA_cheat_finder_INCLUDES_WITH_SYSTEM)
+  mark_as_advanced(GTASA_alternative_code_INCLUDES_WITH_SYSTEM)
+  if(GTASA_alternative_code_INCLUDES_WITH_SYSTEM)
     set(warning_guard SYSTEM)
   endif()
 endif()

@@ -5,10 +5,10 @@
 
 #include <benchmark/benchmark.h>
 
-#include "GTA_SA_cheat_finder_openmp.hpp"
-#include "GTA_SA_cheat_finder_stdthread.hpp"
+#include "GTASA_alternative_code_openmp.hpp"
+#include "GTASA_alternative_code_stdthread.hpp"
 #if defined(BUILD_WITH_CUDA)
-#include "GTA_SA_cheat_finder_cuda.hpp"
+#include "GTASA_alternative_code_cuda.hpp"
 #endif  // BUILD_WITH_CUDA
 
 static constexpr int64_t multiplier = 16;
@@ -40,6 +40,34 @@ static void find_string_inv_bench(benchmark::State& state) {
 
 BENCHMARK(find_string_inv_bench)
     ->Name("find_string_inv_bench")
+    ->RangeMultiplier(multiplier)
+    ->Range(minRange, maxRange)
+    ->ThreadRange(minThreadRange, maxThreadRange)
+    ->Unit(benchmark::kNanosecond)
+    ->Setup(DoSetup)
+    ->Teardown(DoTeardown)
+    ->MeasureProcessCPUTime()
+    ->UseRealTime()
+    ->Repetitions(repetitions);
+
+static void find_string_inv_benchV2(benchmark::State& state) {
+    auto range = state.range(0);
+
+    const auto array_size = 29;
+    std::array<char, array_size> tmp = {0};
+    GTA_SA_STDTHREAD gtaSA = GTA_SA_STDTHREAD();
+    benchmark::DoNotOptimize(tmp);
+    benchmark::DoNotOptimize(gtaSA);
+    for (auto _ : state) {
+        gtaSA.generateStringV2(tmp.data(), range);
+        benchmark::ClobberMemory();
+    }
+    state.SetItemsProcessed(state.iterations() * 1);
+    state.SetBytesProcessed(state.iterations() * 1 * sizeof(uint64_t));
+}
+
+BENCHMARK(find_string_inv_benchV2)
+    ->Name("find_string_inv_benchV2")
     ->RangeMultiplier(multiplier)
     ->Range(minRange, maxRange)
     ->ThreadRange(minThreadRange, maxThreadRange)

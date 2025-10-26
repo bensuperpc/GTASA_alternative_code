@@ -16,7 +16,7 @@ if (NOT nlohmann_json_FOUND)
 
     FetchContent_Declare(nlohmann_json
         GIT_REPOSITORY https://github.com/nlohmann/json.git
-        GIT_TAG f56c6e2e30241b9245161a86ae9fecf6543bf411 # 2023-11-26
+        GIT_TAG v3.11.3 # 2023-11-28
     )
     FetchContent_MakeAvailable(nlohmann_json)
     # nlohmann_json::nlohmann_json

@@ -6,11 +6,12 @@ set(BUILD_RAYLIB_CPP_EXAMPLES OFF CACHE BOOL "" FORCE)
 
 find_package(raygui QUIET)
 
-if (NOT raylib_FOUND)
+if (NOT raygui_FOUND)
     FetchContent_Declare(raygui
         GIT_REPOSITORY https://github.com/raysan5/raygui.git
-        GIT_TAG 3.2
+        GIT_TAG 4.0
     )
     FetchContent_MakeAvailable(raygui)
-    include_directories(${raygui_SOURCE_DIR}/src)
+    include_directories(SYSTEM ${raygui_SOURCE_DIR})
+    include_directories(SYSTEM ${raygui_SOURCE_DIR}/src)
 endif()

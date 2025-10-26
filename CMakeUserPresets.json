@@ -7,6 +7,14 @@
   },
   "configurePresets": [
     {
+      "name": "dev-common",
+      "hidden": true,
+      "inherits": ["dev-mode", "clang-tidy", "cppcheck"],
+      "cacheVariables": {
+        "BUILD_MCSS_DOCS": "ON"
+      }
+    },
+    {
       "name": "dev-linux",
       "binaryDir": "${sourceDir}/build/dev-linux",
       "inherits": ["dev-common", "ci-linux"],
@@ -18,11 +26,7 @@
     {
       "name": "dev-darwin",
       "binaryDir": "${sourceDir}/build/dev-darwin",
-      "inherits": ["dev-common", "ci-darwin"],
-      "cacheVariables": {
-        "CMAKE_BUILD_TYPE": "Debug",
-        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
-      }
+      "inherits": ["dev-common", "ci-darwin"]
     },
     {
       "name": "dev-win64",
